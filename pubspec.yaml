@@ -1,0 +1,40 @@
+name: esjzone
+description: "第三方EsjZone应用"
+
+publish_to: 'none'
+
+version: 1.0.0+3
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  dio: ^5.9.0
+  html: ^0.15.6
+  quiver: ^3.2.2
+  provider: ^6.1.5+1
+  flutter_html: ^3.0.0
+  shared_preferences: ^2.5.3
+  cached_network_image: ^3.4.1
+  flutter_cache_manager: ^3.4.1
+  flutter_launcher_icons: ^0.14.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  json_to_model: ^3.0.1
+
+flutter:
+  uses-material-design: true
+
+flutter_icons:
+  image_path: "assets/icon/icon.png"
+  android: true
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  adaptive_icon_background: "#FFFFFFFF"
