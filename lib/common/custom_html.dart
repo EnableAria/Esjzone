@@ -32,6 +32,33 @@ class CustomHtml extends StatelessWidget {
             );
           },
         ),
+        TagExtension(
+          tagsToExtend: {"ruby"},
+          builder: (context) {
+            final baseText = context.element?.nodes[0].text;
+            final rubyText = context.element?.querySelector("rt")?.text;
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (rubyText != null) Text(
+                    rubyText,
+                    textScaler: TextScaler.linear(0.6),
+                    style: TextStyle(fontSize: fontSize, height: 0.8),
+                  ),
+                  Text(
+                    baseText ?? rubyText ?? "",
+                    textScaler: TextScaler.linear(0.95),
+                    style: TextStyle(fontSize: fontSize),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ],
     );
   }

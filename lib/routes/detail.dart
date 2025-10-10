@@ -1,4 +1,3 @@
-import 'package:esjzone/routes/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../common/custom_html.dart';
@@ -12,6 +11,7 @@ import '../widgets/icon_text.dart';
 import '../widgets/mask_image.dart';
 import '../widgets/ratio_image.dart';
 import '../widgets/tooltip_button.dart';
+import 'image.dart';
 
 // 书籍详情路由页
 class DetailPage extends StatefulWidget {
