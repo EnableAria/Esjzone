@@ -164,10 +164,13 @@ ChapterContent parseHTMLFormChapter(String htmlStr, int id) {
   Document document = html_parser.parse(htmlStr);
   Element content = document.querySelector(".container>.row>div")!;
   List<Element> info = content.querySelectorAll(".single-post-meta .column");
+  List<Element> contents = content.querySelector(".forum-content")?.children ?? [];
   result = ChapterContent(
     id: id,
     title: (content.querySelector("h2")?.text ?? _unknown).trim(),
-    content: CustomHtml(data: content.querySelector(".forum-content")?.innerHtml, fontSize: 18.0),
+    contents: contents.map((e) =>
+      CustomHtml(data: e.innerHtml, fontSize: 18.0)
+    ).toList(),
     author: (info[0].querySelector("a")?.text ?? _unknown).trim(),
     updateDate: info[1].text.trim(),
     like: int.tryParse(content.querySelector(".btn-likes")?.text ?? "0") ?? 0,

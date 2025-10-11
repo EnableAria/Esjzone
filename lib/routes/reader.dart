@@ -111,7 +111,12 @@ class _ReaderPageState extends State<ReaderPage> {
                           controller: _controller,
                           slivers: [
                             wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
-                            SliverToBoxAdapter(child: content.content), // 章节正文
+                            SliverList( // 章节正文
+                              delegate: SliverChildBuilderDelegate(
+                                  childCount: content.contents.length,
+                                      (_, index) => content.contents[index]
+                              ),
+                            ),
                             wFooter(like: content.like, words: content.words), // 底部信息
                           ].map((e) => SliverPadding(
                             padding: const EdgeInsets.symmetric(horizontal: 14.0),

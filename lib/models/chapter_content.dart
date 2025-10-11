@@ -5,7 +5,7 @@ class ChapterContent {
   ChapterContent({
     required this.id,
     required this.title,
-    required this.content,
+    required this.contents,
     required this.author,
     required this.updateDate,
     required this.like,
@@ -17,7 +17,7 @@ class ChapterContent {
   });
   final int id; // 章节id
   final String title; // 章节标题
-  final CustomHtml content; // 章节内容
+  final List<CustomHtml> contents; // 章节内容
   final String author; // 作者
   final String updateDate; // 更新日期
   final int like; // 点赞数
@@ -33,7 +33,7 @@ class ChapterContent {
   ChapterContent copyWith({
     int? id,
     String? title,
-    CustomHtml? content,
+    List<CustomHtml>? contents,
     String? author,
     String? updateDate,
     int? like,
@@ -46,7 +46,7 @@ class ChapterContent {
     return ChapterContent(
       id: id ?? this.id,
       title: title ?? this.title,
-      content: content ?? this.content,
+      contents: contents ?? this.contents,
       author: author ?? this.author,
       updateDate: updateDate ?? this.updateDate,
       like: like ?? this.like,
