@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'image.dart';
 import '../common/custom_html.dart';
 import '../common/format.dart';
 import '../common/network.dart';
 import '../models/detail.dart';
-import '../widgets/chapter_list.dart';
-import '../widgets/comment_list.dart';
-import '../widgets/expandable_text.dart';
 import '../widgets/icon_text.dart';
 import '../widgets/mask_image.dart';
 import '../widgets/ratio_image.dart';
+import '../widgets/chapter_list.dart';
+import '../widgets/comment_list.dart';
 import '../widgets/tooltip_button.dart';
-import 'image.dart';
+import '../widgets/expandable_text.dart';
+import '../widgets/controller_button.dart';
 
 // 书籍详情路由页
 class DetailPage extends StatefulWidget {
@@ -139,7 +140,9 @@ class _DetailPageState extends State<DetailPage> {
                           controller: _controller,
                           slivers: [
                             wBasicCard(), // 书籍基础信息
-                            wPadding(),
+                            wPadding(size: 8.0),
+                            wController(), // 书籍控件(收藏|评论)
+                            wPadding(size: 4.0),
                             wDescription(detail.description), // 书籍简介
                             wPadding(),
                             wTags(detail.tags), // 书籍标签
@@ -177,47 +180,6 @@ class _DetailPageState extends State<DetailPage> {
                                 ) : SizedBox.shrink();
                               },
                             ),
-                            // 收藏按钮
-                            ValueListenableBuilder(
-                              valueListenable: _favBtnLoading,
-                              builder: (context, loading, _) {
-                                return TooltipButton(
-                                  onPressed: () async {
-                                    if (!loading) {
-                                      _favBtnLoading.value = true;
-                                      int? result = await Esjzone().bookFavorite(detail.id);
-                                      if (result != null) {
-                                        detail = detail.copyWith(
-                                          isFavorite: !detail.isFavorite,
-                                          favorite: result,
-                                        );
-                                      }
-                                      _favBtnLoading.value = false;
-                                      setState(() => _future = _updateDetail(request: false));
-                                    }
-                                  },
-                                  tooltip: detail.isFavorite ? "取消收藏" : "收藏",
-                                  child: loading
-                                      ? SizedBox.square(
-                                    dimension: 20.0,
-                                    child: CircularProgressIndicator(strokeWidth: 3.0),
-                                  )
-                                      : (Icon(detail.isFavorite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border)
-                                  ),
-                                );
-                              },
-                            ),
-                            // 评论按钮
-                            if (detail.comments != null) TooltipButton(
-                              onPressed: () {
-                                showCommentList(context, detail.comments!);
-                              },
-                              tooltip: "书籍评论",
-                              child: Icon(Icons.message),
-                            ),
-                            // 继续阅读按钮
                             if (detail.lastWatched != null && detail.lastWatched! >= 0) TooltipButton(
                               onPressed: () {
                                 if (detail.lastWatched != null && detail.lastWatched! > -1) {
@@ -247,8 +209,8 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   // 组件间距封装
-  Widget wPadding() {
-    return SliverPadding(padding: const EdgeInsets.only(top: 20.0));
+  Widget wPadding({double size = 20.0}) {
+    return SliverPadding(padding: EdgeInsets.only(top: size));
   }
 
   // 通用包装
@@ -367,6 +329,50 @@ class _DetailPageState extends State<DetailPage> {
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 书籍控件
+  Widget wController() {
+    return sliverWidget(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          // 收藏按钮
+          ValueListenableBuilder(
+            valueListenable: _favBtnLoading,
+            builder: (context, loading, _) {
+              return ControllerButton(
+                loading: loading,
+                icon: detail.isFavorite
+                    ? Icons.favorite
+                    : Icons.favorite_border,
+                text: detail.isFavorite ? "已收藏" : "收藏",
+                onPressed: () async {
+                  if (!loading) {
+                    _favBtnLoading.value = true;
+                    int? result = await Esjzone().bookFavorite(detail.id);
+                    if (result != null) {
+                      detail = detail.copyWith(
+                        isFavorite: !detail.isFavorite,
+                        favorite: result,
+                      );
+                    }
+                    _favBtnLoading.value = false;
+                    setState(() => _future = _updateDetail(request: false));
+                  }
+                },
+              );
+            },
+          ),
+          // 评论按钮
+          ControllerButton(
+            icon: Icons.message,
+            text: detail.comments != null ? "评论(${detail.comments?.length})" : "无评论",
+            onPressed: () { if(detail.comments != null) showCommentList(context, detail.comments!); },
           ),
         ],
       ),
