@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import '../routes/image.dart';
 import '../widgets/network_image.dart';
 
 // 定制Html解析
@@ -26,10 +27,7 @@ class CustomHtml extends StatelessWidget {
           builder: (context) {
             final src = context.attributes['src'] ?? '';
 
-            return CustomNetImage(
-              src,
-              fit: BoxFit.contain,
-            );
+            return HeroImagePage(child: CustomNetImage(src, fit: BoxFit.contain));
           },
         ),
         TagExtension(

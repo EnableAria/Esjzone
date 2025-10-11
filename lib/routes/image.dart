@@ -3,9 +3,8 @@ import '../widgets/network_image.dart';
 
 // 大图路由页(Hero动画)
 class HeroImagePage extends StatelessWidget {
-  const HeroImagePage({super.key, required this.imgSrc, this.child});
-  final String imgSrc;
-  final Widget? child;
+  const HeroImagePage({super.key, required this.child});
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +21,8 @@ class HeroImagePage extends StatelessWidget {
                   onTap: () { Navigator.of(context).pop(); },
                   child: Center(
                     child: Hero(
-                      tag: "HeroImage",
-                      child: CustomNetImage(imgSrc),
+                      tag: "HeroImage-${child.hashCode}",
+                      child: child,
                     ),
                   ),
                 ),
@@ -33,10 +32,10 @@ class HeroImagePage extends StatelessWidget {
         ));
       },
       child: Hero(
-        tag: "HeroImage",
+        tag: "HeroImage-${child.hashCode}",
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
-          child: child ?? CustomNetImage(imgSrc),
+          child: child,
         ),
       ),
     );

@@ -107,22 +107,31 @@ class _ReaderPageState extends State<ReaderPage> {
                     children: [
                       // 章节内容
                       SelectionArea(
-                        child: CustomScrollView(
-                          controller: _controller,
-                          slivers: [
-                            wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
-                            SliverList( // 章节正文
-                              delegate: SliverChildBuilderDelegate(
-                                  childCount: content.contents.length,
-                                      (_, index) => content.contents[index]
-                              ),
+                        child: Builder(builder: (context) {
+                          return GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () { // 点击监听区域(点击唤起/收起浮动工具栏)
+                              _showControl.value = !_showControl.value;
+                              FocusScope.of(context).unfocus(); // 清除选择焦点
+                            },
+                            child: CustomScrollView(
+                              controller: _controller,
+                              slivers: [
+                                wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
+                                SliverList( // 章节正文
+                                  delegate: SliverChildBuilderDelegate(
+                                      childCount: content.contents.length,
+                                          (_, index) => content.contents[index]
+                                  ),
+                                ),
+                                wFooter(like: content.like, words: content.words), // 底部信息
+                              ].map((e) => SliverPadding(
+                                padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                                sliver: e,
+                              )).toList(),
                             ),
-                            wFooter(like: content.like, words: content.words), // 底部信息
-                          ].map((e) => SliverPadding(
-                            padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                            sliver: e,
-                          )).toList(),
-                        ),
+                          );
+                        }),
                       ),
                       // 章节加载进度条
                       if (_changeChapter) IgnorePointer(
@@ -137,11 +146,10 @@ class _ReaderPageState extends State<ReaderPage> {
                       // 浮动工具栏
                       ValueListenableBuilder(
                         valueListenable: _showControl,
-                        builder: (context, showControl, child) {
+                        builder: (context, showControl, _) {
                           Duration duration = Duration(milliseconds: 300);
                           return Stack(
                             children: [
-                              child!, // 点击监听区域
                               AnimatedAlign(
                                 duration: duration,
                                 curve: Curves.easeInOut,
@@ -161,16 +169,6 @@ class _ReaderPageState extends State<ReaderPage> {
                             ],
                           );
                         },
-                        // 点击监听区域(点击唤起/收起浮动工具栏)
-                        child: AbsorbPointer(
-                          absorbing: false, // 允许事件穿透
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              _showControl.value = !_showControl.value;
-                            },
-                          ),
-                        ),
                       ),
                     ],
                   ),

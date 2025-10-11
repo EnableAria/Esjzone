@@ -284,7 +284,6 @@ class _DetailPageState extends State<DetailPage> {
                   // 书籍封面
                   Expanded(flex: 1,
                     child: HeroImagePage(
-                      imgSrc: detail.imgSrc,
                       child: RatioImage(imgSrc: detail.imgSrc),
                     ),
                   ),
