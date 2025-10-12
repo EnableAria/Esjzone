@@ -4,6 +4,7 @@ import '../widgets/icon_text.dart';
 import '../widgets/icon_button.dart';
 import '../widgets/comment_list.dart';
 import '../models/chapter_content.dart';
+import '../widgets/load_indicator.dart';
 
 // 阅读器路由页
 class ReaderPage extends StatefulWidget {
@@ -45,11 +46,13 @@ class _ReaderPageState extends State<ReaderPage> {
 
   // 章节跳转
   void _toNewChapter({required int id}) {
-    _changeChapter = true;
-    setState(() {
-      chapterId = id;
-      _future = _updateContent();
-    });
+    if (!_changeChapter) {
+      _changeChapter = true;
+      setState(() {
+        chapterId = id;
+        _future = _updateContent();
+      });
+    }
   }
 
   // 返回详情页
@@ -64,7 +67,7 @@ class _ReaderPageState extends State<ReaderPage> {
     _controller = ScrollController();
     _controller.addListener(() { // 滚动更新滑条
       if (!_isSliding) {
-        _sliderValue.value = _controller.offset / _controller.position.maxScrollExtent;
+        _sliderValue.value = (_controller.offset / _controller.position.maxScrollExtent).clamp(0.0, 1.0);
       }
     });
     super.initState();
@@ -114,21 +117,29 @@ class _ReaderPageState extends State<ReaderPage> {
                               _showControl.value = !_showControl.value;
                               FocusScope.of(context).unfocus(); // 清除选择焦点
                             },
-                            child: CustomScrollView(
-                              controller: _controller,
-                              slivers: [
-                                wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
-                                SliverList( // 章节正文
-                                  delegate: SliverChildBuilderDelegate(
-                                      childCount: content.contents.length,
-                                          (_, index) => content.contents[index]
+                            child: LoadIndicator( // 上拉加载下一章
+                              idleTitle: "继续上拉",
+                              canLoadTitle: "松开加载下一章",
+                              loadingTitle: "加载中",
+                              noDataTitle: "已无下一章",
+                              onLoad: (content.nextChapterId == null || content.nextChapterId! < 0) ? null
+                                  : () async => _toNewChapter(id: content.nextChapterId!),
+                              child: CustomScrollView(
+                                controller: _controller,
+                                slivers: [
+                                  wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
+                                  SliverList( // 章节正文
+                                    delegate: SliverChildBuilderDelegate(
+                                        childCount: content.contents.length,
+                                            (_, index) => content.contents[index]
+                                    ),
                                   ),
-                                ),
-                                wFooter(like: content.like, words: content.words), // 底部信息
-                              ].map((e) => SliverPadding(
-                                padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                                sliver: e,
-                              )).toList(),
+                                  wFooter(like: content.like, words: content.words), // 底部信息
+                                ].map((e) => SliverPadding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                                  sliver: e,
+                                )).toList(),
+                              ),
                             ),
                           );
                         }),
