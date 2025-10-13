@@ -91,7 +91,7 @@ class _ReaderPageState extends State<ReaderPage> {
         return Material(
           child: Builder(builder: (context) {
             if (_changeChapter && _isInInitialized && snapshot.connectionState == ConnectionState.done) { // 更换章节重置阅读进度
-              _controller.jumpTo(0.0);
+              _sliderValue.value = 0.0; // 重置滑条位置 滚动位置由key更新
               _changeChapter = false;
             }
             if (_isInInitialized || snapshot.connectionState == ConnectionState.done) { // 存在旧数据或请求结束
@@ -125,6 +125,7 @@ class _ReaderPageState extends State<ReaderPage> {
                               onLoad: (content.nextChapterId == null || content.nextChapterId! < 0) ? null
                                   : () async => _toNewChapter(id: content.nextChapterId!),
                               child: CustomScrollView(
+                                key: ValueKey(content.id),
                                 controller: _controller,
                                 slivers: [
                                   wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
