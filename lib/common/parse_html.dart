@@ -147,7 +147,7 @@ Detail parseHTMLFormDetail(String htmlStr, int id) {
     imgSrc: _extractSrc(content.querySelector(".product-gallery img")?.attributes["src"]),
     nsfw: document.querySelector("#ticrf") != null,
     tags: (content.querySelector(".widget-tags")?.querySelectorAll("a") ?? []).map((e) => e.text.trim()).toList(),
-    description: CustomHtml(data: content.querySelector(".description")?.innerHtml),
+    description: CustomHtml(data: content.querySelector(".description")?.innerHtml, defaultData: "无简介",),
     contents: _extractContents(content.querySelector("#chapterList")),
     isFavorite: content.querySelector(".btn-favorite")?.text.trim() == "已收藏",
     lastWatched: _extractHref(content.querySelector("p.active")?.parent?.attributes["href"]),
