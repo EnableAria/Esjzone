@@ -239,43 +239,48 @@ class _DetailPageState extends State<DetailPage> {
               left: 8.0,
               right: 8.0,
             ),
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // 书籍封面
-                  Expanded(flex: 1,
-                    child: HeroImagePage(
-                      child: RatioImage(imgSrc: detail.imgSrc),
+            child: Stack(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 1,
+                      child: HeroImagePage(
+                        child: RatioImage(imgSrc: detail.imgSrc),
+                      ),
                     ),
-                  ),
-                  Expanded(flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Column(
-                        children: [
-                          // 书籍标题
-                          Expanded(flex: 6,
-                            child: Container(
+                    Expanded(flex: 2, child: SizedBox()), // 信息留空
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(flex: 1, child: RatioImage()), // 封面留空
+                    Expanded(flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 8.0,
+                          children: [
+                            // 书籍标题
+                            Container(
                               alignment: Alignment.centerLeft,
-                              child: Text(
+                              child: SelectableText(
                                 detail.title,
-                                maxLines: 4,
                                 style: TextStyle(fontSize: 20),
-                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                          ),
-                          Expanded(flex: 1,
-                            child: Row(
+                            Row(
                               children: [
                                 // 作者
                                 Expanded(flex: 2,
-                                  child: IconText(
-                                    icon: Icons.create,
-                                    text: detail.author,
-                                    size: 18.0,
-                                    ellipsis: true,
+                                  child: SelectionArea(
+                                    child: IconText(
+                                      icon: Icons.create,
+                                      text: detail.author,
+                                      size: 18.0,
+                                      ellipsis: true,
+                                    ),
                                   ),
                                 ),
                                 // 标签
@@ -288,9 +293,7 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                               ],
                             ),
-                          ),
-                          Expanded(flex: 1,
-                            child: Row(
+                            Row(
                               children: [
                                 // 阅读数
                                 Expanded(flex: 1,
@@ -321,13 +324,13 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],

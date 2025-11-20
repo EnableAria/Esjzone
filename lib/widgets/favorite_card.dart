@@ -33,19 +33,19 @@ class FavoriteCard extends DataCard<Favorite> {
                   // 书籍标题
                   Text(data.title, textAlign: TextAlign.left),
                   SizedBox(height: 10.0),
-                  // 更新时间
+                  // 最新章节
                   IconText(
                     icon: Icons.update,
                     text: data.latestChapter,
                     size: 16.0,
-                    fittedText: true,
+                    ellipsis: true,
                   ),
                   // 最后观看章节
                   if (data.lastWatched != null) IconText(
                     icon: Icons.visibility,
                     text: data.lastWatched!,
                     size: 16.0,
-                    fittedText: true,
+                    ellipsis: true,
                   ),
                   // 更新时间
                   IconText(

@@ -38,7 +38,7 @@ class HistoryCard extends DataCard<History> {
                     icon: Icons.visibility,
                     text: data.lastWatched,
                     size: 16.0,
-                    fittedText: true,
+                    ellipsis: true,
                   ),
                 ],
               ),
