@@ -164,13 +164,12 @@ ChapterContent parseHTMLFormChapter(String htmlStr, int id) {
   Document document = html_parser.parse(htmlStr);
   Element content = document.querySelector(".container>.row>div")!;
   List<Element> info = content.querySelectorAll(".single-post-meta .column");
-  List<Element> contents = content.querySelector(".forum-content")?.children ?? [];
+  Element contents = content.querySelector(".forum-content")!;
+  while(contents.children.length == 1) { contents = contents.children[0]; }
   result = ChapterContent(
     id: id,
     title: (content.querySelector("h2")?.text ?? _unknown).trim(),
-    contents: contents.map((e) =>
-      CustomHtml(data: e.innerHtml, fontSize: 18.0)
-    ).toList(),
+    contents: _extractChapterText(contents),
     author: (info[0].querySelector("a")?.text ?? _unknown).trim(),
     updateDate: info[1].text.trim(),
     like: int.tryParse(content.querySelector(".btn-likes")?.text ?? "0") ?? 0,
@@ -304,6 +303,25 @@ Contents _extractContents(Element? contents) {
   result.total = total; // 更新总章节数
   if (tempOuter.chapter.isNotEmpty) result.contents.add(tempOuter);
   return result;
+}
+
+/// 解析文章
+List<CustomHtml> _extractChapterText(Element? contents) {
+  List<CustomHtml> children = [];
+  if (contents != null) {
+    for (Node node in contents.nodes){
+      if (node.nodeType == Node.ELEMENT_NODE) { // 元素节点
+        Element element = node as Element;
+        children.add(CustomHtml(data: element.outerHtml, fontSize: 18.0));
+      }
+      else {  // 非元素节点
+        if (node.text!.trim().isNotEmpty) {
+          children.add(CustomHtml(data: node.text, fontSize: 18.0));
+        }
+      }
+    }
+  }
+  return children;
 }
 
 /// 解析评论

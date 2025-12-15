@@ -21,6 +21,9 @@ class CustomHtml extends StatelessWidget {
           padding: HtmlPaddings.zero,
           lineHeight: LineHeight(1.4), // 行高倍数，1.0为最小
         ),
+        "br": Style(
+          display: Display.none,
+        ),
       },
       extensions: [
         TagExtension(
