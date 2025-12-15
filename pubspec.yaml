@@ -3,7 +3,7 @@ description: "第三方EsjZone应用"
 
 publish_to: 'none'
 
-version: 1.0.3+11
+version: 1.0.3+12
 
 environment:
   sdk: ^3.9.0
@@ -17,6 +17,7 @@ dependencies:
   html: ^0.15.6
   quiver: ^3.2.2
   provider: ^6.1.5+1
+  flutter_svg: ^2.2.3
   flutter_html: ^3.0.0
   shared_preferences: ^2.5.3
   cached_network_image: ^3.4.1

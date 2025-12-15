@@ -325,10 +325,10 @@ List<CustomHtml> _extractChapterText(Element? contents) {
 }
 
 /// 解析评论
-TextSpan _extractCommentText(Element? commentText) {
+TextSpan _extractCommentText(Element? comment) {
   List<InlineSpan> children = [];
-  if (commentText != null) {
-    for (Node node in commentText.nodes) {
+  if (comment != null) {
+    for (Node node in comment.nodes) {
       // 文本节点
       if (node.nodeType == Node.TEXT_NODE) {
         children.add(TextSpan(
@@ -338,10 +338,21 @@ TextSpan _extractCommentText(Element? commentText) {
       // 元素节点
       else if (node.nodeType == Node.ELEMENT_NODE) {
         Element element = node as Element;
-        if (element.localName == "span") {
-          children.add(WidgetSpan(
-            child: CustomNetImage(_extractCommentSrc(element.attributes["style"])),
+        if (element.localName == "s") {
+          children.add(TextSpan(
+            style: TextStyle(
+              decoration: TextDecoration.lineThrough,
+            ),
+            children: [_extractCommentText(element)],
           ));
+        }
+        else if (element.localName == "span") {
+          children.add(WidgetSpan(
+            child: CustomNetImage(_extractCommentSrc(element.attributes["style"]), small: true),
+          ));
+        }
+        else {
+          children.add(TextSpan(text: element.text));
         }
       }
     }
