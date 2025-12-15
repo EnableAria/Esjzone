@@ -11,6 +11,7 @@ class UserPage extends StatefulWidget {
   UserPage({super.key});
   final List<(IconData, String, String)> _settingItem = [
     (Icons.settings, "设置", "settings"),
+    (Icons.info, "关于", "about"),
   ];
 
   @override

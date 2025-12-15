@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../common/global.dart';
 import '../routes/main.dart';
 import '../routes/login.dart';
+import '../routes/about.dart';
 import '../routes/search.dart';
 import '../routes/reader.dart';
 import '../routes/detail.dart';
@@ -35,6 +36,7 @@ class EsjzoneApp extends StatelessWidget {
           routes: {
             "/": (context) => AppPage(),
             "settings": (context) => SettingsRoute(),
+            "about": (context) => AboutRoute(),
             "search": (context) => SearchPage(),
             "detail": (context) {
               final int id = int.tryParse("${ModalRoute.of(context)!.settings.arguments}") ?? 0;
