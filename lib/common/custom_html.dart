@@ -36,7 +36,7 @@ class CustomHtml extends StatelessWidget {
         TagExtension(
           tagsToExtend: {"ruby"},
           builder: (context) {
-            final baseText = context.element?.nodes[0].text;
+            final baseText = context.element?.nodes[0].text ?? "";
             final rubyText = context.element?.querySelector("rt")?.text;
 
             return Padding(
@@ -45,19 +45,27 @@ class CustomHtml extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  if (rubyText != null) Text(
-                    rubyText,
-                    textScaler: TextScaler.linear(0.6),
-                    style: TextStyle(fontSize: fontSize, height: 0.8),
+                  if (rubyText != null) DefaultTextStyle.merge(
+                    style: TextStyle(
+                      fontSize: fontSize * 0.6,
+                      height: 0.8,
+                    ),
+                    child: Text(rubyText),
                   ),
-                  Text(
-                    baseText ?? rubyText ?? "",
-                    textScaler: TextScaler.linear(0.95),
-                    style: TextStyle(fontSize: fontSize),
+                  DefaultTextStyle.merge(
+                    style: context.style?.generateTextStyle(),
+                    child: Text(baseText),
                   ),
                 ],
               ),
             );
+          },
+        ),
+        TagExtension(
+          // 避免错误格式导致解析错误
+          tagsToExtend: {"rt", "rp"},
+          builder: (context) {
+            return SizedBox();
           },
         ),
       ],
