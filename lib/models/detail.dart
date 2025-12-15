@@ -2,11 +2,17 @@ import 'comment.dart';
 import 'contents.dart';
 import '../common/custom_html.dart';
 
+Map<String, String> _bookGenre = {
+  "日輕": "日轻",
+  "原創": "原创",
+  "韓輕": "韩轻",
+};
+
 class Detail {
   Detail({
     required this.id,
     required this.title,
-    required this.type,
+    required String type,
     required this.author,
     required this.updateDate,
     required this.rating,
@@ -21,10 +27,10 @@ class Detail {
     required this.isFavorite,
     this.lastWatched,
     this.comments,
-  });
+  }): type = _bookGenre[type] ?? type;
   final int id; // 书籍id
   final String title; // 标题
-  final String type; // 类型
+  late final String type; // 类型
   final String author; // 作者
   final String updateDate; // 更新日期
   final double rating; // 评分
