@@ -210,9 +210,15 @@ class _ReaderPageState extends State<ReaderPage> {
             SizedBox(height: 8.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconText(icon: Icons.create, text: author, size: 18.0), // 编辑者
-                IconText(icon: Icons.access_time, text: updateDate, size: 18.0), // 发布时间
+                // IconText(icon: Icons.create, text: author, size: 18.0),
+                // IconText(icon: Icons.access_time, text: updateDate, size: 18.0),
+                Expanded(flex: 1, child: IconText(icon: Icons.create, text: author, size: 18.0, flex: true)), // 编辑者
+                Expanded(flex: 1, child: Align(
+                  alignment: Alignment.centerRight,
+                  child: IconText(icon: Icons.access_time, text: updateDate, size: 18.0),
+                )), // 发布时间
               ],
             ),
           ],

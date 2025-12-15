@@ -8,6 +8,7 @@ class IconText extends StatelessWidget {
     required this.text,
     this.color,
     this.size,
+    this.flex = false,
     this.ellipsis = false,
     this.fittedText = false,
   });
@@ -15,6 +16,7 @@ class IconText extends StatelessWidget {
   final String text;
   final Color? color;
   final double? size;
+  final bool flex;
   final bool ellipsis;
   final bool fittedText;
 
@@ -25,10 +27,10 @@ class IconText extends StatelessWidget {
         color: color,
         fontSize: size != null ? (size! - 4.0) : size,
       ),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+      maxLines: flex ? null : 1,
+      overflow: ellipsis ? TextOverflow.ellipsis : null,
     );
-    if (ellipsis || fittedText) {
+    if (flex || ellipsis || fittedText) {
       child = Expanded(
         child: fittedText
             ? FittedBox(
@@ -39,6 +41,8 @@ class IconText extends StatelessWidget {
       );
     }
     return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(icon, color: color, size: size),
         SizedBox(width: 4.0),
