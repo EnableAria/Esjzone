@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../common/debug_tools.dart';
 import '../models/page.dart';
 
 class DataView<T> extends StatefulWidget {
@@ -18,23 +17,24 @@ class DataView<T> extends StatefulWidget {
 }
 
 class DataViewState<T> extends State<DataView<T>> {
+  bool isBottom = false;
   bool isLoading = false;
   int _pageIndex = 1; // 下个加载页
   int _pageCount = 1; // 总页数
   List<T?> _data = [null];
-  ValueNotifier<bool> isBottom = ValueNotifier(false);
+  ValueNotifier<bool> needLoad = ValueNotifier(true);
 
   // 更新列表
   void _updateList() async {
     isLoading = true;
-    // 总页数>1且总页数≥下一页(非初始状态) 或者 页面处于底部(初始状态)
-    if (!isBottom.value) {
+    if (needLoad.value) {
       ListPage<T> newPage = await widget.onUpdate(_pageIndex++);
       setState(() {
-        _pageCount = newPage.pageCount;
+        if (newPage.pageCount > 0) { _pageCount = newPage.pageCount; }
+        isBottom = (_pageCount < _pageIndex);
+        if (newPage.pageCount <= 0 || isBottom) needLoad.value = false;
         _data.insertAll(_data.length - 1, newPage.dataList);
       });
-      isBottom.value = (_pageCount < _pageIndex);
     }
     isLoading = false;
   }
@@ -53,6 +53,8 @@ class DataViewState<T> extends State<DataView<T>> {
     // 重置页数计数器
     _pageIndex = 1;
     _pageCount = 1;
+    isBottom = false;
+    needLoad.value = true;
 
     ListPage<T> newPage = await widget.onUpdate(_pageIndex++);
     setState(() {
@@ -63,7 +65,7 @@ class DataViewState<T> extends State<DataView<T>> {
 
   @override
   void dispose() {
-    isBottom.dispose();
+    needLoad.dispose();
     super.dispose();
   }
 
@@ -100,13 +102,21 @@ class DataViewState<T> extends State<DataView<T>> {
                     padding: const EdgeInsets.all(16.0),
                     alignment: Alignment.center,
                     child: ValueListenableBuilder(
-                      valueListenable: isBottom,
-                      builder: (context, isBottom, _) {
-                        return !isBottom
+                      valueListenable: needLoad,
+                      builder: (context, isLoading, _) {
+                        return isLoading
                             ? SizedBox(
                           width: 24.0,
                           height: 24.0,
                           child: CircularProgressIndicator(strokeWidth: 3.0),)
+                            : !isBottom
+                            ? GestureDetector(
+                          onTap: () {
+                            needLoad.value = true;
+                            _returnListItem(_data.length - 1, widget.useLine);
+                          },
+                          child: Text("加载失败，点击重试"),
+                        )
                             : Text("已经到底了");
                       },
                     ),
