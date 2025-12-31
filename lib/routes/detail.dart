@@ -329,7 +329,7 @@ class _DetailPageState extends State<DetailPage> {
                                 Expanded(flex: 1,
                                   child: IconText(
                                     icon: Icons.description,
-                                    text: formatNumber(detail.words),
+                                    text: formatWordNumber(detail.words),
                                     size: 18.0,
                                     fittedText: true,
                                   ),
