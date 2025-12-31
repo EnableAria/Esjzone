@@ -1,6 +1,8 @@
-# esjzone
+# Esjzone
 
-一款基于 Flutter 开发的 EsjZone 第三方应用
+一款基于 Flutter 开发的 [Esjzone](https://www.esjzone.one/) 第三方应用
+
+欢迎提交 [issues](https://github.com/EnableAria/Esjzone/issues) 以协助开发
 
 ## 软件截图
 
