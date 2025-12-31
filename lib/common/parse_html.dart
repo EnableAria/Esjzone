@@ -1,7 +1,9 @@
 import 'package:html/dom.dart' hide Comment;
 import 'package:html/parser.dart' as html_parser;
 import 'package:flutter/material.dart' hide Element;
+import '../common/global.dart';
 import '../common/network.dart';
+import '../common/custom_html.dart';
 import '../models/user.dart';
 import '../models/book.dart';
 import '../models/page.dart';
@@ -12,8 +14,6 @@ import '../models/contents.dart';
 import '../models/favorite.dart';
 import '../models/chapter_content.dart';
 import '../widgets/network_image.dart';
-import 'custom_html.dart';
-import 'global.dart';
 String _unknown = "<unknown>";
 
 /// 解析 书籍列表Html 为 ListPage\<Book>
@@ -132,27 +132,36 @@ Detail parseHTMLFormDetail(String htmlStr, int id) {
 
   Document document = html_parser.parse(htmlStr);
   Element content = document.querySelector(".container>.row")!;
-  List<Element> listItem = content.querySelectorAll("ul.book-detail li");
+  Map<String, String> listItem = {
+    for (var item in content.querySelectorAll("ul.book-detail li").map((e) => e.text))
+      if (item.contains(":"))
+      item.substring(0, item.indexOf(":")).trim() : item.substring(item.indexOf(":")+1, item.length).trim()
+  };
   List<Element> label = content.querySelectorAll(".book-detail label");
+  List<String> tags = (content.querySelector(".widget-tags")?.querySelectorAll("a") ?? []).map((e) => e.text.trim()).toList();
+  List<Element> outLink = content.querySelectorAll(".out-link a");
   result = Detail(
     id: id,
     title: (content.querySelector("h2")?.text ?? _unknown).trim(),
-    type: _extractColon(listItem[0].text) ?? _unknown,
+    type: listItem["類型"] ?? _unknown,
     author: content.querySelector("ul.book-detail li>a")?.text ?? _unknown,
-    updateDate: _extractColon(listItem.last.text) ?? _unknown,
+    updateDate: listItem["更新日期"] ?? _unknown,
     rating: double.parse(content.querySelector(".text-center>div")?.text ?? "0"),
     words: int.tryParse(label[2].text.replaceAll(',', '')) ?? 0,
     views: int.tryParse(label[0].text) ?? 0,
     favorite: int.tryParse(label[1].text) ?? 0,
     imgSrc: _extractSrc(content.querySelector(".product-gallery img")?.attributes["src"]),
-    nsfw: document.querySelector("#ticrf") != null,
-    tags: (content.querySelector(".widget-tags")?.querySelectorAll("a") ?? []).map((e) => e.text.trim()).toList(),
+    nsfw: tags.contains("R18") || document.querySelector("#ticrf") != null,
+    tags: tags,
     description: CustomHtml(data: content.querySelector(".description")?.innerHtml, defaultData: "无简介",),
     contents: _extractContents(content.querySelector("#chapterList")),
     isFavorite: content.querySelector(".btn-favorite")?.text.trim() == "已收藏",
     lastWatched: _extractHref(content.querySelector("p.active")?.parent?.attributes["href"]),
     comments: document.querySelector("#comments") == null ? null
         : parseHTMLFormComment(document.querySelectorAll("#comments>.comment")),
+    sourceTitle: listItem["其他書名"],
+    sourceUrl: listItem["Web生肉"],
+    outLink: [for (var item in outLink) (item.text, item.attributes["href"] ?? "")],
   );
   return result;
 }
@@ -218,7 +227,7 @@ int _extractUserId(String? str) {
   int.parse(str.substring(index + 1, str.length - 1)));
 }
 
-/// 解析[冒号] 书籍类型 | 更新日期
+/// 解析[冒号] 最新章节 | 更新日期 | 最后观看
 String? _extractColon(String? str) {
   if (str == null || str.isEmpty) return null;
   int index = str.indexOf(RegExp(r'[：:]'));

@@ -27,6 +27,9 @@ class Detail {
     required this.isFavorite,
     this.lastWatched,
     this.comments,
+    this.sourceTitle,
+    this.sourceUrl,
+    this.outLink,
   }): type = _bookGenre[type] ?? type;
   final int id; // 书籍id
   final String title; // 标题
@@ -48,6 +51,11 @@ class Detail {
   final int? lastWatched; // 最后观看章节的id
 
   final List<Comment>? comments; // 评论
+
+  // 附加信息
+  final String? sourceTitle; // 别名
+  final String? sourceUrl; // 原文链接
+  final List<(String, String)>? outLink; // 外部链接
 
   Detail copyWith({
     int? id,

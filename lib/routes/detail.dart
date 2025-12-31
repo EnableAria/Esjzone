@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'image.dart';
-import '../common/custom_html.dart';
 import '../common/format.dart';
 import '../common/network.dart';
+import '../common/custom_html.dart';
 import '../models/detail.dart';
+import '../routes/info.dart';
+import '../routes/image.dart';
 import '../widgets/icon_text.dart';
 import '../widgets/mask_image.dart';
+import '../widgets/icon_button.dart';
 import '../widgets/ratio_image.dart';
 import '../widgets/chapter_list.dart';
 import '../widgets/comment_list.dart';
@@ -117,6 +119,16 @@ class _DetailPageState extends State<DetailPage> {
                               builder: (context, showHeaderBg, _) {
                                 return SliverAppBar( // 自适应透明标题栏
                                   title: showHeaderBg ? Text(detail.title) : null,
+                                  actions: [
+                                    CustomIconButton(
+                                      icon: Icons.more_horiz, tooltip: "详情",
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(builder: (_) => InfoPage(detail: detail))
+                                        );
+                                        },
+                                    )
+                                  ],
                                   pinned: true,
                                   backgroundColor: Colors.transparent,
                                   flexibleSpace: AnimatedOpacity(
