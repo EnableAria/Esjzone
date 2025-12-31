@@ -38,6 +38,9 @@ class ChapterList extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            collapsedBackgroundColor: subContents.chapter.any((chapter) => chapter.id == lastWatched)
+                ? Theme.of(context).colorScheme.secondaryContainer
+                : null,
             children: subContents.chapter.map((chapter) =>
                 _wChapter(chapter: chapter)
             ).toList(),
