@@ -3,7 +3,7 @@ description: "第三方EsjZone应用"
 
 publish_to: 'none'
 
-version: 1.0.5+16
+version: 1.0.5+17
 
 environment:
   sdk: ^3.9.0

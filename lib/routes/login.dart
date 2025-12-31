@@ -101,9 +101,9 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: ValueListenableBuilder<bool>(
                           valueListenable: isLoading,
-                          builder: (context, value, _) {
+                          builder: (context, isLoading, _) {
                             return Text(
-                              isLoading.value ? "正在登录" : "登录",
+                              isLoading ? "正在登录" : "登录",
                             );
                           },
                         ),
