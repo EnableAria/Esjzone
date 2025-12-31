@@ -117,29 +117,35 @@ class _ReaderPageState extends State<ReaderPage> {
                               _showControl.value = !_showControl.value;
                               FocusScope.of(context).unfocus(); // 清除选择焦点
                             },
-                            child: LoadIndicator( // 上拉加载下一章
-                              idleTitle: "继续上拉",
-                              canLoadTitle: "松开加载下一章",
-                              loadingTitle: "加载中",
-                              noDataTitle: "已无下一章",
-                              onLoad: (content.nextChapterId == null || content.nextChapterId! < 0) ? null
-                                  : () async => _toNewChapter(id: content.nextChapterId!),
-                              child: CustomScrollView(
-                                key: ValueKey(content.id),
-                                controller: _controller,
-                                slivers: [
-                                  wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
-                                  SliverList( // 章节正文
-                                    delegate: SliverChildBuilderDelegate(
+                            child: ScrollConfiguration(
+                              behavior: ScrollConfiguration.of(context).copyWith(
+                                overscroll: false, // 禁用拉伸效果
+                              ),
+                              child: LoadIndicator( // 上拉加载下一章
+                                idleTitle: "继续上拉",
+                                canLoadTitle: "松开加载下一章",
+                                loadingTitle: "加载中",
+                                noDataTitle: "已无下一章",
+                                onLoad: (content.nextChapterId == null || content.nextChapterId! < 0) ? null
+                                    : () async => _toNewChapter(id: content.nextChapterId!),
+                                child: CustomScrollView(
+                                  key: ValueKey(content.id),
+                                  controller: _controller,
+                                  physics: const AlwaysScrollableScrollPhysics(), // 始终可滚动 保证少量内容可上拉换章
+                                  slivers: [
+                                    wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
+                                    SliverList( // 章节正文
+                                      delegate: SliverChildBuilderDelegate(
                                         childCount: content.contents.length,
-                                            (_, index) => content.contents[index]
+                                            (_, index) => content.contents[index],
+                                      ),
                                     ),
-                                  ),
-                                  wFooter(like: content.like, words: content.words), // 底部信息
-                                ].map((e) => SliverPadding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                                  sliver: e,
-                                )).toList(),
+                                    wFooter(like: content.like, words: content.words), // 底部信息
+                                  ].map((e) => SliverPadding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                                    sliver: e,
+                                  )).toList(),
+                                ),
                               ),
                             ),
                           );

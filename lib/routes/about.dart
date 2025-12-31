@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../widgets/settings_item.dart';
 
-const String version = "1.0.5+15"; // 软件版本
+const String version = "1.0.5+16"; // 软件版本
 const String repositoryUrl = "https://github.com/EnableAria/Esjzone"; // 仓库地址
 const String websiteUrl = "https://www.esjzone.one"; // 网站主页
 
