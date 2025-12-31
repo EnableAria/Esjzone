@@ -5,8 +5,8 @@ import '../states/profile_change_notifier.dart';
 import '../widgets/settings_item.dart';
 
 // 设置路由页
-class SettingsRoute extends StatelessWidget {
-  SettingsRoute({super.key});
+class SettingsPage extends StatelessWidget {
+  SettingsPage({super.key});
   final Map<bool?, String> _themeMode = {
     null: "跟随系统",
     false: "日间模式",

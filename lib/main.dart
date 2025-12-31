@@ -35,8 +35,8 @@ class EsjzoneApp extends StatelessWidget {
           initialRoute: "/",
           routes: {
             "/": (context) => AppPage(),
-            "settings": (context) => SettingsRoute(),
-            "about": (context) => AboutRoute(),
+            "settings": (context) => SettingsPage(),
+            "about": (context) => AboutPage(),
             "search": (context) => SearchPage(),
             "detail": (context) {
               final int id = int.tryParse("${ModalRoute.of(context)!.settings.arguments}") ?? 0;

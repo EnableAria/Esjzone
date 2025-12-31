@@ -6,8 +6,8 @@ const String version = "1.0.4+13"; // 软件版本
 const String repositoryUrl = "https://github.com/EnableAria/Esjzone"; // 仓库地址
 const String websiteUrl = "https://www.esjzone.one"; // 网站主页
 
-class AboutRoute extends StatelessWidget {
-  const AboutRoute({super.key});
+class AboutPage extends StatelessWidget {
+  const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
