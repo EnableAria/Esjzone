@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart' show parse;
 import '../common/network.dart';
+import '../common/parse_html.dart';
+import '../models/chapter_content.dart';
 import '../widgets/icon_text.dart';
 import '../widgets/icon_button.dart';
 import '../widgets/comment_list.dart';
-import '../models/chapter_content.dart';
 import '../widgets/load_indicator.dart';
+import '../widgets/encrypted_content.dart';
 
 // 阅读器路由页
 class ReaderPage extends StatefulWidget {
@@ -136,8 +139,23 @@ class _ReaderPageState extends State<ReaderPage> {
                                     wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
                                     SliverList( // 章节正文
                                       delegate: SliverChildBuilderDelegate(
-                                        childCount: content.contents.length,
-                                            (_, index) => content.contents[index],
+                                        childCount: content.isEncrypted ? 1 : content.contents.length,
+                                            (_, index) => content.isEncrypted
+                                            ? EncryptedContent(
+                                          bookId: widget.bookId,
+                                          chapterId: chapterId,
+                                          onSuccess: (html, words) {
+                                            // 更新章节内容为解密后文章
+                                            content = content.copyWith(
+                                              contents: extractChapterText(parse("<div>$html</div>").body),
+                                              words: words,
+                                            );
+                                            setState(() {
+                                              _future = _updateContent(request: false);
+                                            });
+                                          },
+                                        )
+                                            : content.contents[index],
                                       ),
                                     ),
                                     wFooter(like: content.like, words: content.words), // 底部信息

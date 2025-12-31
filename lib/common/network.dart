@@ -16,6 +16,7 @@ import '../models/user_cookie.dart';
 import '../models/like_response.dart';
 import '../models/login_response.dart';
 import '../models/chapter_content.dart';
+import '../models/decrypt_response.dart';
 import '../models/favorite_response.dart';
 
 // 网络请求封装
@@ -290,5 +291,15 @@ class Esjzone {
       on DioException catch (_) {}
     }
     return result;
+  }
+
+  /// 解密章节
+  Future<(String, int)> chapterDecrypt(int bookId, int chapterId, String password) async {
+    String html = ""; // 章节内容或报错信息
+    int text = -1; // 章节字数
+
+    html = "该功能开发中！\n前往网页解锁章节后即可在软件内正常阅读";
+
+    return (html, text);
   }
 }

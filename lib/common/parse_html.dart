@@ -178,7 +178,7 @@ ChapterContent parseHTMLFormChapter(String htmlStr, int id) {
   result = ChapterContent(
     id: id,
     title: (content.querySelector("h2")?.text ?? _unknown).trim(),
-    contents: _extractChapterText(contents),
+    contents: extractChapterText(contents),
     author: (info[0].querySelector("a")?.text ?? _unknown).trim(),
     updateDate: info[1].text.trim(),
     like: int.tryParse(content.querySelector(".btn-likes")?.text ?? "0") ?? 0,
@@ -186,6 +186,7 @@ ChapterContent parseHTMLFormChapter(String htmlStr, int id) {
     prevChapterId: _extractHref(content.querySelector(".btn-prev")?.attributes["href"]),
     nextChapterId: _extractHref(content.querySelector(".btn-next")?.attributes["href"]),
     isLike: content.querySelector(".btn-likes.btn-warning") != null,
+    isEncrypted: contents.id == "oops",
     comments: document.querySelector("#comments") == null ? null
         : parseHTMLFormComment(document.querySelectorAll("#comments>.comment")),
   );
@@ -315,7 +316,7 @@ Contents _extractContents(Element? contents) {
 }
 
 /// 解析文章
-List<CustomHtml> _extractChapterText(Element? contents) {
+List<CustomHtml> extractChapterText(Element? contents) {
   List<CustomHtml> children = [];
   if (contents != null) {
     for (Node node in contents.nodes){

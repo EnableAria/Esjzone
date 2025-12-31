@@ -1,5 +1,5 @@
-import 'comment.dart';
-import '../common/custom_html.dart';
+import 'package:flutter/material.dart';
+import '../models/comment.dart';
 
 class ChapterContent {
   ChapterContent({
@@ -13,11 +13,13 @@ class ChapterContent {
     this.prevChapterId,
     this.nextChapterId,
     required this.isLike,
+    this.isEncrypted = false,
     this.comments,
+
   });
   final int id; // 章节id
   final String title; // 章节标题
-  final List<CustomHtml> contents; // 章节内容
+  final List<Widget> contents; // 章节内容
   final String author; // 作者
   final String updateDate; // 更新日期
   final int like; // 点赞数
@@ -27,13 +29,14 @@ class ChapterContent {
 
   // 与用户有关的信息
   final bool isLike; // 是否喜欢
+  final bool isEncrypted; // 是否加密
 
   final List<Comment>? comments; // 评论
 
   ChapterContent copyWith({
     int? id,
     String? title,
-    List<CustomHtml>? contents,
+    List<Widget>? contents,
     String? author,
     String? updateDate,
     int? like,
