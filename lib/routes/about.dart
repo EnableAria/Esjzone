@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../widgets/settings_item.dart';
 
-const String version = "1.0.4+13"; // 软件版本
+const String version = "1.0.5+14"; // 软件版本
 const String repositoryUrl = "https://github.com/EnableAria/Esjzone"; // 仓库地址
 const String websiteUrl = "https://www.esjzone.one"; // 网站主页
 
@@ -18,7 +18,7 @@ class AboutPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Center(child: Image.asset("assets/icon/icon_foreground.png", width: 200)),
+          Center(child: SizedBox.square(dimension: 200, child: Image.asset("assets/icon/icon_foreground.png"))),
           SettingItem(
             icon: Icons.tag,
             title: "当前版本",
