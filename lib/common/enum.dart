@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum BookType {
   all(0, "全部"),
   japan(1, "日轻"),
@@ -8,6 +10,19 @@ enum BookType {
   final String description;
 
   const BookType(this.code, this.description);
+
+  static String getText(BookType type) {
+    switch (type) {
+      case BookType.all:
+        return "";
+      case BookType.japan:
+        return "日";
+      case BookType.original:
+        return "原";
+      case BookType.korea:
+        return "韩";
+    }
+  }
 }
 
 enum BookSort {
@@ -24,6 +39,27 @@ enum BookSort {
   final String description;
 
   const BookSort(this.code, this.description);
+
+  static IconData getIcon(BookSort sort) {
+    switch (sort) {
+      case BookSort.latestUpdate:
+        return Icons.update;
+      case BookSort.latestRelease:
+        return Icons.upload;
+      case BookSort.highestRating:
+        return Icons.star;
+      case BookSort.mostViews:
+        return Icons.visibility;
+      case BookSort.mostArticles:
+        return Icons.article;
+      case BookSort.mostDiscussions:
+        return Icons.message;
+      case BookSort.mostFavorites:
+        return Icons.favorite;
+      case BookSort.mostWords:
+        return Icons.description;
+    }
+  }
 }
 
 enum FavoriteSort {
@@ -34,4 +70,13 @@ enum FavoriteSort {
   final String description;
 
   const FavoriteSort(this.code, this.description);
+
+  static IconData getIcon(FavoriteSort sort) {
+    switch (sort) {
+      case FavoriteSort.latestFavorite:
+        return Icons.playlist_add;
+      case FavoriteSort.latestUpdate:
+        return Icons.update;
+    }
+  }
 }

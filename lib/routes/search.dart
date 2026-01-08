@@ -4,8 +4,7 @@ import '../common/network.dart';
 import '../models/book.dart';
 import '../widgets/book_card.dart';
 import '../widgets/data_view.dart';
-import '../widgets/dropdown_menu.dart';
-import '../widgets/custom_button.dart' show CustomIconButton;
+import '../widgets/custom_button.dart' show Options, FilterIconButton, CustomIconButton;
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -80,57 +79,42 @@ class _SearchPageState extends State<SearchPage> {
           decoration: InputDecoration(
             hintText: "搜索",
             border: InputBorder.none,
-            suffixIcon: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // 清空按钮
-                ValueListenableBuilder(
-                  valueListenable: _hasData,
-                  builder: (context, hasData, child) {
-                    return hasData ? child! : Container();
-                  },
-                  child: CustomIconButton.icon(icon: Icons.clear, onPressed: () { _searchController.text = ""; },),
-                ),
-                // 搜索按钮
-                CustomIconButton.icon(icon: Icons.search, onPressed: _search),
-              ],
-            ),
           ),
           onEditingComplete: _search,
         ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(48.0),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // 类型筛选下拉选框
-                CustomDropdownMenu<BookType>(
-                  initialValue: _type,
-                  values: BookType.values,
-                  onChanged: (value) {
-                    setState(() {
-                      _type = value ?? BookType.all;
-                      _refreshKey();
-                    });
-                  },
-                ),
-                // 排序方式下拉选框
-                CustomDropdownMenu<BookSort>(
-                  initialValue: _sort,
-                  values: BookSort.values,
-                  onChanged: (value) {
-                    setState(() {
-                      _sort = value ?? BookSort.latestUpdate;
-                      _refreshKey();
-                    });
-                  },
-                ),
-              ],
-            ),
+        actions: [
+          // 清空按钮
+          ValueListenableBuilder(
+            valueListenable: _hasData,
+            builder: (context, hasData, child) {
+              return hasData ? child! : Container();
+            },
+            child: CustomIconButton.icon(icon: Icons.clear, onPressed: () { _searchController.text = ""; },),
           ),
-        ),
+          // 搜索按钮
+          CustomIconButton.icon(icon: Icons.search, onPressed: _search),
+          // 筛选按钮
+          FilterIconButton(
+            primaryOptions: Options(title: "排序", options: BookSort.values, initialValue: _sort),
+            primaryDelegate: (sort) {
+              return Icon(BookSort.getIcon(sort as BookSort));
+            },
+            secondaryOptions: Options(title: "类型", options: BookType.values, initialValue: _type),
+            secondaryDelegate: (type) {
+              return Text(
+                BookType.getText(type as BookType),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              );
+            },
+            onChanged: (index, value) {
+              setState(() {
+                if (index <= 0) { _type = (value as BookType?) ?? BookType.all; }
+                else { _sort = (value as BookSort?) ?? BookSort.latestUpdate; }
+                _refreshKey();
+              });
+            },
+          ),
+        ],
       ),
       // 搜索结果列表
       body: ValueListenableBuilder(

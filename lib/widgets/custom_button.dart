@@ -285,3 +285,100 @@ class FilterIconButtonState extends State<FilterIconButton> {
     );
   }
 }
+
+/// 筛选按钮(文本)
+class FilterTextButton extends StatefulWidget {
+  const FilterTextButton({super.key, required this.options, required this.onChanged});
+  final List<Options<Enum>> options;
+  final void Function(int, Enum?)? onChanged;
+
+  @override
+  State<FilterTextButton> createState() => FilterTextButtonState();
+}
+
+class FilterTextButtonState extends State<FilterTextButton> {
+  late List<int> chooses; // 选择状态
+
+  @override
+  void initState() {
+    chooses = widget.options.map((e) => e.options.indexOf(e.initialValue)).toList(); // 初始化选择状态
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomIconButton(
+      onPressed: () async {
+        _showFilterDialog(
+          context: context,
+          options: widget.options,
+          onChanged: widget.onChanged,
+        );
+      },
+      child: FittedBox(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Icon(Icons.filter_alt),
+            if (widget.options.isNotEmpty) Text(widget.options.asMap().entries.map((e) {
+              return (e.value.options[chooses[e.key]] as dynamic).description;
+            }).join(", ")),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void _showFilterDialog({
+  required BuildContext context,
+  required List<Options<Enum>> options,
+  required void Function(int, Enum?)? onChanged,
+  double fontSize = 14.0,
+}) async {
+  await showDialog<int>(
+    context: context,
+    builder: (_) {
+      return Dialog(
+        child: ListView(
+          padding: EdgeInsets.symmetric(vertical: 24),
+          shrinkWrap: true,
+          children: options.asMap().entries.fold([], (result, entry) {
+            int index = entry.key;
+            Options<Enum> e = entry.value;
+            return result..addAll([
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Text(e.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize + 1),
+                ),
+              ),
+              ...e.options.map((value) => InkWell(
+                onTap: () {
+                  if (onChanged != null) onChanged(index, value);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    (value as dynamic).description,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      decoration: value == e.initialValue
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
+                      decorationThickness: 2.0,
+                    ),
+                  ),
+                ),
+              )),
+            ]);
+          }),
+        ),
+      );
+    },
+  );
+}

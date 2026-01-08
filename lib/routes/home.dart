@@ -4,8 +4,7 @@ import '../common/network.dart';
 import '../models/book.dart';
 import '../widgets/book_card.dart';
 import '../widgets/data_view.dart';
-import '../widgets/dropdown_menu.dart';
-import '../widgets/custom_button.dart' show CustomIconButton;
+import '../widgets/custom_button.dart' show Options, FilterIconButton, CustomIconButton;
 
 // 首页路由页
 class HomePage extends StatefulWidget {
@@ -44,40 +43,33 @@ class _HomePageState extends State<HomePage> {
         )),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         actions: [
-          // 搜索按钮
           Align(
             alignment: Alignment.bottomRight,
-            child: CustomIconButton.icon(
-              icon: Icons.search,
-              onPressed: () => Navigator.of(context).pushNamed("search"),
-            ),
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(48.0),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                // 类型筛选下拉选框
-                CustomDropdownMenu<BookType>(
-                  initialValue: _type,
-                  values: BookType.values,
-                  onChanged: (value) {
-                    setState(() {
-                      _type = value ?? BookType.all;
-                      _refreshKey();
-                    });
-                  },
+                // 搜索按钮
+                CustomIconButton.icon(
+                  icon: Icons.search,
+                  onPressed: () => Navigator.of(context).pushNamed("search"),
                 ),
-                // 排序方式下拉选框
-                CustomDropdownMenu<BookSort>(
-                  initialValue: _sort,
-                  values: BookSort.values,
-                  onChanged: (value) {
+                // 筛选按钮
+                FilterIconButton(
+                  primaryOptions: Options(title: "排序", options: BookSort.values, initialValue: _sort),
+                  primaryDelegate: (sort) {
+                    return Icon(BookSort.getIcon(sort as BookSort));
+                  },
+                  secondaryOptions: Options(title: "类型", options: BookType.values, initialValue: _type),
+                  secondaryDelegate: (type) {
+                    return Text(
+                      BookType.getText(type as BookType),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    );
+                  },
+                  onChanged: (index, value) {
                     setState(() {
-                      _sort = value ?? BookSort.latestUpdate;
+                      if (index <= 0) { _type = (value as BookType?) ?? BookType.all; }
+                      else { _sort = (value as BookSort?) ?? BookSort.latestUpdate; }
                       _refreshKey();
                     });
                   },
@@ -85,7 +77,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-        ),
+        ],
       ),
       // 书籍列表
       body: DataView<Book>(

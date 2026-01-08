@@ -3,8 +3,8 @@ import '../common/enum.dart';
 import '../common/network.dart';
 import '../models/favorite.dart';
 import '../widgets/data_view.dart';
-import '../widgets/dropdown_menu.dart';
 import '../widgets/favorite_card.dart';
+import '../widgets/custom_button.dart' show Options, FilterIconButton;
 
 // 收藏路由页
 class FavoritePage extends StatefulWidget {
@@ -41,19 +41,21 @@ class _FavoritePageState extends State<FavoritePage> {
         )),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         actions: [
-          // 排序类型下拉选框
+          // 筛选按钮
           Align(
-            alignment: Alignment.bottomRight,
-            child: CustomDropdownMenu<FavoriteSort>(
-              initialValue: _sort,
-              values: FavoriteSort.values,
-              onChanged: (value) {
-                setState(() {
-                  _sort = value ?? FavoriteSort.latestFavorite;
-                  _refreshKey();
-                });
-              },
-            ),
+              alignment: Alignment.bottomRight,
+              child: FilterIconButton(
+                primaryOptions: Options(title: "排序", options: FavoriteSort.values, initialValue: _sort),
+                primaryDelegate: (sort) {
+                  return Icon(FavoriteSort.getIcon(sort as FavoriteSort));
+                },
+                onChanged: (index, value) {
+                  setState(() {
+                    _sort = (value as FavoriteSort?) ?? FavoriteSort.latestFavorite;
+                    _refreshKey();
+                  });
+                },
+              ),
           ),
         ],
       ),
