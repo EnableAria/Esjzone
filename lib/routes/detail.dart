@@ -8,13 +8,11 @@ import '../routes/info.dart';
 import '../routes/image.dart';
 import '../widgets/icon_text.dart';
 import '../widgets/mask_image.dart';
-import '../widgets/icon_button.dart';
 import '../widgets/ratio_image.dart';
 import '../widgets/chapter_list.dart';
 import '../widgets/comment_list.dart';
-import '../widgets/tooltip_button.dart';
 import '../widgets/expandable_text.dart';
-import '../widgets/controller_button.dart';
+import '../widgets/custom_button.dart' show CustomIconButton, TooltipButton, ControllerButton;
 
 // 书籍详情路由页
 class DetailPage extends StatefulWidget {
@@ -120,7 +118,7 @@ class _DetailPageState extends State<DetailPage> {
                                 return SliverAppBar( // 自适应透明标题栏
                                   title: showHeaderBg ? Text(detail.title) : null,
                                   actions: [
-                                    CustomIconButton(
+                                    CustomIconButton.icon(
                                       icon: Icons.more_horiz, tooltip: "详情",
                                       onPressed: () {
                                         Navigator.of(context).push(

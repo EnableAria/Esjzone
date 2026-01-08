@@ -5,7 +5,7 @@ import '../models/book.dart';
 import '../widgets/book_card.dart';
 import '../widgets/data_view.dart';
 import '../widgets/dropdown_menu.dart';
-import '../widgets/icon_button.dart';
+import '../widgets/custom_button.dart' show CustomIconButton;
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -89,10 +89,10 @@ class _SearchPageState extends State<SearchPage> {
                   builder: (context, hasData, child) {
                     return hasData ? child! : Container();
                   },
-                  child: CustomIconButton(icon: Icons.clear, onPressed: () { _searchController.text = ""; },),
+                  child: CustomIconButton.icon(icon: Icons.clear, onPressed: () { _searchController.text = ""; },),
                 ),
                 // 搜索按钮
-                CustomIconButton(icon: Icons.search, onPressed: _search,),
+                CustomIconButton.icon(icon: Icons.search, onPressed: _search),
               ],
             ),
           ),

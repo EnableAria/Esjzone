@@ -4,10 +4,10 @@ import '../common/network.dart';
 import '../common/parse_html.dart';
 import '../models/chapter_content.dart';
 import '../widgets/icon_text.dart';
-import '../widgets/icon_button.dart';
 import '../widgets/comment_list.dart';
 import '../widgets/load_indicator.dart';
 import '../widgets/encrypted_content.dart';
+import '../widgets/custom_button.dart' show CustomIconButton;
 
 // 阅读器路由页
 class ReaderPage extends StatefulWidget {
@@ -277,7 +277,7 @@ class _ReaderPageState extends State<ReaderPage> {
         child: Row(
           children: [
             // 返回按钮
-            CustomIconButton(
+            CustomIconButton.icon(
               icon: Icons.arrow_back,
               onPressed: () => _backDetail(),
             ),
@@ -308,7 +308,7 @@ class _ReaderPageState extends State<ReaderPage> {
           child: Row(
             spacing: 10.0,
             children: [
-              CustomIconButton(
+              CustomIconButton.icon(
                 icon: Icons.skip_previous,
                 tooltip: "上一章",
                 size: Size(48.0, 48.0),
@@ -337,7 +337,7 @@ class _ReaderPageState extends State<ReaderPage> {
                   ),
                 ),
               ),
-              CustomIconButton(
+              CustomIconButton.icon(
                 icon: Icons.skip_next,
                 tooltip: "下一章",
                 size: Size(48.0, 48.0),
@@ -357,7 +357,7 @@ class _ReaderPageState extends State<ReaderPage> {
                 child: ValueListenableBuilder(
                   valueListenable: _likeBtnLoading,
                   builder: (context, loading, _) {
-                    return CustomIconButton(
+                    return CustomIconButton.icon(
                       isLoading: loading,
                       icon: isLike ? Icons.thumb_up : Icons.thumb_up_outlined,
                       tooltip: isLike ? "取消点赞" : "点赞",
@@ -382,7 +382,7 @@ class _ReaderPageState extends State<ReaderPage> {
                   },
                 ),
               ),
-              Expanded(child: CustomIconButton(
+              Expanded(child: CustomIconButton.icon(
                 icon: Icons.message,
                 tooltip: "章节评论",
                 size: Size(64, 64),
@@ -391,7 +391,7 @@ class _ReaderPageState extends State<ReaderPage> {
                   if (content.comments != null) showCommentList(context, content.comments!);
                 },
               )),
-              Expanded(child: CustomIconButton(
+              Expanded(child: CustomIconButton.icon(
                 icon: Icons.settings,
                 tooltip: "设置",
                 size: Size(64, 64),

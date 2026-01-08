@@ -5,7 +5,7 @@ import '../models/book.dart';
 import '../widgets/book_card.dart';
 import '../widgets/data_view.dart';
 import '../widgets/dropdown_menu.dart';
-import '../widgets/icon_button.dart';
+import '../widgets/custom_button.dart' show CustomIconButton;
 
 // 首页路由页
 class HomePage extends StatefulWidget {
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           // 搜索按钮
           Align(
             alignment: Alignment.bottomRight,
-            child: CustomIconButton(
+            child: CustomIconButton.icon(
               icon: Icons.search,
               onPressed: () => Navigator.of(context).pushNamed("search"),
             ),

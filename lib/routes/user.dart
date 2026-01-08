@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import '../common/network.dart';
 import '../models/user.dart';
 import '../widgets/network_image.dart';
-import '../widgets/setting_button.dart';
 import '../states/profile_change_notifier.dart';
+import '../widgets/custom_button.dart' show SettingButton;
 
 // 用户路由页
 class UserPage extends StatefulWidget {
