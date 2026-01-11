@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../common/pubspec.dart';
 import '../widgets/settings_item.dart';
 
-const String version = "1.0.5+17"; // 软件版本
 const String repositoryUrl = "https://github.com/EnableAria/Esjzone"; // 仓库地址
 const String websiteUrl = "https://www.esjzone.one"; // 网站主页
 
-class AboutPage extends StatelessWidget {
+class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
+
+  @override
+  State<AboutPage> createState() => AboutPageState();
+}
+
+class AboutPageState extends State<AboutPage> {
+  String version = "获取中..."; // 软件版本
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  /// 获取软件版本
+  Future<void> _loadVersion() async {
+    final ver = await getVersion();
+    setState(() {
+      version = ver ?? "未知";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

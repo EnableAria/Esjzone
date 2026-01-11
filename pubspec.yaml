@@ -3,7 +3,7 @@ description: "第三方EsjZone应用"
 
 publish_to: 'none'
 
-version: 1.0.5+17
+version: 1.0.5+18
 
 environment:
   sdk: ^3.9.0
@@ -35,6 +35,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - pubspec.yaml
     - assets/icon/icon_foreground.png
 
 
