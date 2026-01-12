@@ -281,6 +281,7 @@ class _DetailPageState extends State<DetailPage> {
                               ),
                             ),
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // 作者
                                 Expanded(flex: 2,
@@ -289,7 +290,7 @@ class _DetailPageState extends State<DetailPage> {
                                       icon: Icons.create,
                                       text: detail.author,
                                       size: 18.0,
-                                      ellipsis: true,
+                                      flex: true,
                                     ),
                                   ),
                                 ),
