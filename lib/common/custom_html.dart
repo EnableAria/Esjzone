@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../routes/image.dart';
+import '../widgets/ruby_text.dart';
 import '../widgets/network_image.dart';
 
 // 定制Html解析
@@ -39,25 +40,11 @@ class CustomHtml extends StatelessWidget {
             final baseText = context.element?.nodes[0].text ?? "";
             final rubyText = context.element?.querySelector("rt")?.text;
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (rubyText != null) DefaultTextStyle.merge(
-                    style: TextStyle(
-                      fontSize: fontSize * 0.6,
-                      height: 0.8,
-                    ),
-                    child: Text(rubyText),
-                  ),
-                  DefaultTextStyle.merge(
-                    style: context.style?.generateTextStyle(),
-                    child: Text(baseText),
-                  ),
-                ],
-              ),
+            return RubyText(
+              text: baseText,
+              ruby: rubyText ?? "",
+              textStyle: context.style!.generateTextStyle(),
+              rubyStyle: TextStyle(fontSize: fontSize * 0.6, height: 0.8),
             );
           },
         ),
