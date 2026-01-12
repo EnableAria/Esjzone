@@ -50,10 +50,13 @@ Widget _commentCard(Comment comment) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(comment.commentator.name, style: TextStyle(fontSize: 15.0)), // 用户昵称
-                  Text("#${comment.number}", style: TextStyle(fontSize: 12.0)), // 评论序号
+                  Expanded(child: Text(comment.commentator.name, style: TextStyle(fontSize: 15.0))), // 用户昵称
+                  Padding( // 评论序号
+                    padding: EdgeInsets.only(top: 2.0, left: 4.0),
+                    child: Text("#${comment.number}", style: TextStyle(fontSize: 12.0)),
+                  ),
                 ],
               ),
               Text(comment.date, style: TextStyle(fontSize: 12.0)), // 评论时间
