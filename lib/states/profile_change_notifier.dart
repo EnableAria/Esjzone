@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:quiver/core.dart';
 import '../models/index.dart';
 import '../common/global.dart';
@@ -28,6 +28,11 @@ class UserCookieModel extends ProfileChangeNotifier {
       );
       notifyListeners();
     }
+  }
+
+  /// 手动更新
+  void updateProfile() {
+    notifyListeners();
   }
 }
 

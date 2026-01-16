@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:quiver/core.dart';
 import '../common/enum.dart';
 import '../common/cookie.dart';
 import '../common/global.dart';
@@ -34,6 +35,22 @@ class Esjzone {
     sendTimeout: Duration(seconds: 30),
     receiveTimeout: Duration(seconds: 30),
     connectTimeout: Duration(seconds: 30),
+  ))..interceptors.add(InterceptorsWrapper(
+    onResponse: (response, handler) { // 响应拦截器
+      Map<String, String> cookie = cookieDecode(response.headers["set-cookie"] ?? []);
+      if (cookie["ews_key"] != null && cookie["ews_token"] != null) {
+        String ewsKey = cookie["ews_key"]!;
+        String ewsToken = cookie["ews_token"]!;
+        Global.profile = Global.profile.copyWith(
+          userCookie: Optional.fromNullable(UserCookie(
+            ewsKey: ewsKey,
+            ewsToken: ewsToken,
+          )),
+        );
+        dio.options.headers["Cookie"] = "ews_key=$ewsKey; ews_token=$ewsToken";
+      }
+      return handler.next(response);
+    },
   ));
 
   static void init() {
@@ -66,12 +83,11 @@ class Esjzone {
   }
 
   /// 登录
-  Future<(UserCookie?, int, String?)> login({
+  Future<(int, String?)> login({
     required String email,
     required String pwd,
     bool rememberMe = true,
   }) async {
-    UserCookie? userCookie;
     int statusCode = 0;
     String? message;
 
@@ -95,18 +111,6 @@ class Esjzone {
           LoginResponse loginResponse = LoginResponse.fromJson(jsonDecode(response.data));
           statusCode = loginResponse.status;
           message = loginResponse.msg;
-
-          // 登录成功
-          if (loginResponse.status == 200) {
-            // 解析 cookie
-            Map<String, String> cookie = cookieDecode(response.headers["set-cookie"] ?? []);
-
-            // CookieMap 中存在需要的 cookie
-            if (cookie.containsKey("ews_key") && cookie.containsKey("ews_token")) {
-              userCookie = UserCookie(ewsKey: cookie["ews_key"]!, ewsToken: cookie["ews_token"]!);
-              dio.options.headers["Cookie"] = "ews_key=${userCookie.ewsKey}; ews_token=${userCookie.ewsToken}";
-            }
-          }
         }
       }
       on DioException catch (_) {
@@ -114,7 +118,7 @@ class Esjzone {
       }
     }
     else { message = token; }
-    return (userCookie, statusCode, message);
+    return (statusCode, message);
   }
 
   /// 登出
