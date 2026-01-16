@@ -96,7 +96,7 @@ List<Comment> parseHTMLFormComment(List<Element> comments) {
       number: int.tryParse(metas[0].text.substring(1, metas[0].text.length)) ?? -1,
       date: metas[1].text,
       commentator: Commentator(
-        id: _extractUserId(element.querySelector(".comment-title>a")?.attributes["href"]),
+        id: _extractEqual(element.querySelector(".comment-title>a")?.attributes["href"]),
         name: (element.querySelector(".comment-title")?.text ?? _unknown).trim(),
         profileSrc: _extractSrc(element.querySelector(".lazyload-author-ava")?.attributes["data-src"]),
       ),
@@ -115,7 +115,7 @@ User parseHTMLFormUser(String htmlStr) {
   Element content = document.querySelector(".member-info")!;
   (String, int, int) levelInfo = _extractLevel(content.querySelector(".info-label")?.attributes["data-original-title"]);
   result = User(
-    id: _extractUserId(content.querySelector(".url")?.text),
+    id: _extractEqual(content.querySelector(".url")?.text),
     name: (content.querySelector("h4")?.text ?? _unknown).trim(),
     profileSrc: _extractSrc(content.querySelector(".avatar-photo")?.attributes["src"]),
     level: levelInfo.$1,
@@ -212,8 +212,8 @@ int _extractLine(String str) {
   return int.parse(str.substring(index + 1, str.length));
 }
 
-/// 解析[等号] 用户id
-int _extractUserId(String? str) {
+/// 解析[等号] 用户id | 贴文总数
+int _extractEqual(String? str) {
   if (str == null) return -1;
   int index = str.indexOf('=');
   if (index < 0) return -1;
@@ -253,6 +253,12 @@ String _extractSrc(String? src) {
   else { // 绝对路径
     return src;
   }
+}
+
+/// 解析评论图片
+String _extractCommentSrc(String? style) {
+  if (style == null) return "";
+  return _extractSrc(RegExp(r'url\((.*?)\);').firstMatch(style)?.group(1));
 }
 
 /// 解析用户等级
@@ -368,10 +374,4 @@ TextSpan _extractCommentText(Element? comment) {
     }
   }
   return TextSpan(children: children);
-}
-
-/// 解析评论图片
-String _extractCommentSrc(String? style) {
-  if (style == null) return "";
-  return _extractSrc(RegExp(r'url\((.*?)\);').firstMatch(style)?.group(1));
 }
