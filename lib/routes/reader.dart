@@ -236,8 +236,6 @@ class _ReaderPageState extends State<ReaderPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // IconText(icon: Icons.create, text: author, size: 18.0),
-                // IconText(icon: Icons.access_time, text: updateDate, size: 18.0),
                 Expanded(flex: 1, child: IconText(icon: Icons.create, text: author, size: 18.0, flex: true)), // 编辑者
                 Expanded(flex: 1, child: Align(
                   alignment: Alignment.centerRight,

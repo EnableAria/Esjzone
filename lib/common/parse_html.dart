@@ -166,7 +166,7 @@ Detail parseHTMLFormDetail(String htmlStr, int id) {
   return result;
 }
 
-/// 解析 章节内容Html 为 Html
+/// 解析 章节内容Html 为 ChapterContent
 ChapterContent parseHTMLFormChapter(String htmlStr, int id) {
   ChapterContent result;
 

@@ -62,7 +62,6 @@ class Esjzone {
     on DioException catch (_) {
       result = "超时";
     }
-
     return result;
   }
 
