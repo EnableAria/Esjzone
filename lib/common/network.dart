@@ -341,8 +341,29 @@ class Esjzone {
     String html = ""; // 章节内容或报错信息
     int text = -1; // 章节字数
 
-    html = "该功能开发中！\n前往网页解锁章节后即可在软件内正常阅读";
-
+    String? token = await getToken(path: "/forum/$bookId/$chapterId.html"); // 获取 token
+    if (token != null) {
+      try {
+        var response = await dio.post(
+          "/inc/forum_pw.php",
+          options: Options(
+            headers: {
+              "Authorization": token
+            },
+            // contentType: Headers.formUrlEncodedContentType,
+          ),
+          data: FormData.fromMap({
+              "pw": password,
+          }),
+        );
+        if (response.statusCode == 200) {
+          DecryptResponse decrypt = DecryptResponse.fromJson(jsonDecode(response.data));
+          text = int.tryParse(decrypt.text) ?? -1;
+          html = decrypt.status == 200 ? decrypt.html : decrypt.msg;
+        }
+      }
+      on DioException catch (_) {}
+    }
     return (html, text);
   }
 }
