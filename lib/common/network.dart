@@ -16,6 +16,7 @@ import '../models/favorite.dart';
 import '../models/user_cookie.dart';
 import '../models/like_response.dart';
 import '../models/login_response.dart';
+import '../models/forum_response.dart';
 import '../models/chapter_content.dart';
 import '../models/decrypt_response.dart';
 import '../models/favorite_response.dart';
@@ -228,6 +229,45 @@ class Esjzone {
       );
       if (response.statusCode == 200) {
         result = parseHTMLFormChapter(response.data, chapterId);
+      }
+    }
+    on DioException catch (_) {}
+    return result;
+  }
+
+  /// 获取章节更新时间
+  Future<Map<int, String>> chapterUpdate(int bookId, int forumId) async {
+    Map<int, String> result = {};
+
+    try {
+      var pageResponse = await dio.get("/forum/$forumId/$bookId/"); // 访问页面 更新cookie | 获取总数
+      int total = parseTotalFormForum(pageResponse.data); // 贴文总数
+
+      String? token = await getToken(path: "/forum/$forumId/$bookId/"); // 获取 token
+      if (token != null) {
+        var response = await dio.get(
+          "/inc/forum_list_data.php",
+          options: Options(
+            headers: {
+              "Authorization": token,
+            },
+            responseType: ResponseType.plain, // 禁用dio自动转换
+          ),
+          queryParameters: {
+            "totalRows" : total, // 总量
+            "sort" : "last_reply", // 发文时间
+            "order": "desc", // 降序
+            "offset": 0, // 位移
+            "limit": total // 数量
+          },
+        );
+
+        if (response.statusCode == 200) {
+          ForumResponse forum = ForumResponse.fromJson(jsonDecode(response.data));
+          if (forum.status == 200) {
+            result = parseHTMLFormForum(forum.rows);
+          }
+        }
       }
     }
     on DioException catch (_) {}

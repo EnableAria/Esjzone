@@ -25,7 +25,7 @@ class ChapterList extends StatelessWidget {
           return subContents.contentsTitle == null
               ? Column( // 普通章节
             children: subContents.chapter.map((chapter) =>
-                _wChapter(chapter: chapter)
+                _wChapter(chapter)
             ).toList(),
           )
               : ExpansionTile( // 二级章节
@@ -42,7 +42,7 @@ class ChapterList extends StatelessWidget {
                 ? Theme.of(context).colorScheme.secondaryContainer
                 : null,
             children: subContents.chapter.map((chapter) =>
-                _wChapter(chapter: chapter)
+                _wChapter(chapter)
             ).toList(),
           );
         },
@@ -51,8 +51,15 @@ class ChapterList extends StatelessWidget {
   }
 
   // 章节按钮封装
-  Widget _wChapter({required Chapter chapter}){
+  Widget _wChapter(Chapter chapter){
     return Builder(builder: (context) {
+      Widget title = Text(
+        chapter.title,
+        style: TextStyle(
+          fontSize: 14.0,
+          color: Theme.of(context).textTheme.bodyLarge?.color,
+        ),
+      );
       return TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // 方形
@@ -64,13 +71,21 @@ class ChapterList extends StatelessWidget {
               : null,
         ),
         onPressed: () => onPressed(bookId: bookId, chapterId: chapter.id),
-        child: Text(
-          chapter.title,
-          style: TextStyle(
-            fontSize: 14.0,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
-          ),
-        ),
+        child: chapter.updateDate != null
+            ? Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            title,
+            Text(
+              chapter.updateDate!,
+              style: TextStyle(
+                fontSize: 12.0,
+                color: Theme.of(context).hintColor,
+              ),
+            ),
+          ],
+        ) : title,
       );
     });
   }

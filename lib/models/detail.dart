@@ -11,6 +11,7 @@ Map<String, String> _bookGenre = {
 class Detail {
   Detail({
     required this.id,
+    required this.forumId,
     required this.title,
     required String type,
     required this.author,
@@ -32,6 +33,7 @@ class Detail {
     this.outLink,
   }): type = _bookGenre[type] ?? type;
   final int id; // 书籍id
+  final int forumId; // 论坛板块id
   final String title; // 标题
   late final String type; // 类型
   final String author; // 作者
@@ -59,6 +61,7 @@ class Detail {
 
   Detail copyWith({
     int? id,
+    int? forumId,
     String? title,
     String? type,
     String? author,
@@ -77,6 +80,7 @@ class Detail {
     List<Comment>? comments,
   }) => Detail(
     id: id ?? this.id,
+    forumId: forumId ?? this.forumId,
     title: title ?? this.title,
     type: type ?? this.type,
     author: author ?? this.author,

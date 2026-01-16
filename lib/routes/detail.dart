@@ -4,6 +4,7 @@ import '../common/format.dart';
 import '../common/network.dart';
 import '../common/custom_html.dart';
 import '../models/detail.dart';
+import '../models/contents.dart';
 import '../routes/info.dart';
 import '../routes/image.dart';
 import '../widgets/icon_text.dart';
@@ -43,9 +44,19 @@ class _DetailPageState extends State<DetailPage> {
     return Future.value(detail);
   }
 
+  // 更新 detail.contents (获取章节更新日期)
+  Future<void> _updateContents({bool reload = true}) async {
+    detail.copyWith(contents: updateChapterDate(
+      contents: detail.contents,
+      updateDate: await Esjzone().chapterUpdate(detail.id, detail.forumId),
+    ));
+    if (reload) setState(() { _future = _updateDetail(request: false); });
+  }
+
   // 刷新详情
   Future<void> _refreshDetail() async {
     detail = await Esjzone().bookDetail(widget.id) ?? detail;
+    await _updateContents(reload: false);
     setState(() { _future = _updateDetail(request: false); });
   }
 
@@ -102,6 +113,7 @@ class _DetailPageState extends State<DetailPage> {
               if (!_isInInitialized && !snapshot.hasError && snapshot.data != null) { // 获得首批数据
                 detail = snapshot.data!;
                 _isInInitialized = true;
+                _updateContents(); // 获取章节更新日期
               }
               if (_isInInitialized) { // 展示内容
                 return Stack(

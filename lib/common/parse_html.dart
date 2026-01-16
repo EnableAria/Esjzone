@@ -12,6 +12,7 @@ import '../models/comment.dart';
 import '../models/history.dart';
 import '../models/contents.dart';
 import '../models/favorite.dart';
+import '../models/forum_row.dart';
 import '../models/chapter_content.dart';
 import '../widgets/network_image.dart';
 String _unknown = "<unknown>";
@@ -142,6 +143,7 @@ Detail parseHTMLFormDetail(String htmlStr, int id) {
   List<Element> outLink = content.querySelectorAll(".out-link a");
   result = Detail(
     id: id,
+    forumId: _extractForumHref(content.querySelector(".btn-forum")?.attributes["href"]),
     title: (content.querySelector("h2")?.text ?? _unknown).trim(),
     type: listItem["類型"] ?? _unknown,
     author: content.querySelector("ul.book-detail li>a")?.text ?? _unknown,
@@ -190,8 +192,24 @@ ChapterContent parseHTMLFormChapter(String htmlStr, int id) {
     comments: document.querySelector("#comments") == null ? null
         : parseHTMLFormComment(document.querySelectorAll("#comments>.comment")),
   );
-
   return result;
+}
+
+/// 解析 论坛分页列表Html 为 List\<String>
+Map<int, String> parseHTMLFormForum(List<ForumRow> rows) {
+  Map<int, String> result = {};
+
+  for (ForumRow row in rows) {
+    int id = _extractHref(row.subject);
+    String? data = _extractForumDate(row.cdate);
+    if (data != null) result[id] = data;
+  }
+  return result;
+}
+
+/// 解析 论坛分页列表总长 为 int
+int parseTotalFormForum(String htmlStr) {
+  return _extractEqual(html_parser.parse(htmlStr).querySelector("#dataTable")?.attributes["data-url"]);
 }
 
 /// 解析最大页码
@@ -203,6 +221,12 @@ int _extractPageCount(String script) {
 int _extractHref(String? href) {
   if (href == null || href.isEmpty) return -1;
   return int.parse(RegExp(r'/(\d*?)\.html').firstMatch(href)?.group(1) ?? "-1");
+}
+
+/// 解析 论坛板块id
+int _extractForumHref(String? href) {
+  if (href == null || href.isEmpty) return -1;
+  return int.parse(RegExp(r'forum/(\d*?)/').firstMatch(href)?.group(1) ?? "-1");
 }
 
 /// 解析[横线] 历史记录id | 评论id
@@ -259,6 +283,11 @@ String _extractSrc(String? src) {
 String _extractCommentSrc(String? style) {
   if (style == null) return "";
   return _extractSrc(RegExp(r'url\((.*?)\);').firstMatch(style)?.group(1));
+}
+
+/// 解析 论坛贴文更新日期
+String? _extractForumDate(String str) {
+  return RegExp(">(.*?)<").firstMatch(str)?.group(1)?.replaceAll("-", "/");
 }
 
 /// 解析用户等级

@@ -1,5 +1,7 @@
 export 'decrypt_response.dart';
 export 'favorite_response.dart';
+export 'forum_response.dart';
+export 'forum_row.dart';
 export 'like_response.dart';
 export 'login_response.dart';
 export 'profile.dart';
