@@ -99,7 +99,7 @@ class _DetailPageState extends State<DetailPage> {
         return Material(
           child: Builder(builder: (context) {
             if (_isInInitialized || snapshot.connectionState == ConnectionState.done) { // 请求结束
-              if (!snapshot.hasError && snapshot.data != null) { // 获得首批数据
+              if (!_isInInitialized && !snapshot.hasError && snapshot.data != null) { // 获得首批数据
                 detail = snapshot.data!;
                 _isInInitialized = true;
               }
