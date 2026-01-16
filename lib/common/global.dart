@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../common/network.dart';
+import '../common/debug_tools.dart';
 import '../models/profile.dart';
-import 'debug_tools.dart';
 
 const _themes = <Color>[
   Colors.blue,
@@ -30,10 +30,10 @@ class Global {
   static Future init() async {
     WidgetsFlutterBinding.ensureInitialized();
     _prefs = await SharedPreferences.getInstance();
-    var _profile = _prefs.getString("profile");
-    if (_profile != null) {
+    var profileForFile = _prefs.getString("profile");
+    if (profileForFile != null) {
       try {
-        profile = Profile.fromJson(jsonDecode(_profile));
+        profile = Profile.fromJson(jsonDecode(profileForFile));
       }
       catch (e) { dPrint(e); }
     }
@@ -46,5 +46,5 @@ class Global {
   }
 
   // 持久化 Profile 信息
-  static saveProfile() => _prefs.setString("profile", jsonEncode(profile.toJson()));
+  static Future<bool> saveProfile() => _prefs.setString("profile", jsonEncode(profile.toJson()));
 }
