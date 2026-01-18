@@ -29,6 +29,7 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   bool _isInInitialized = false; // 初始化标记
+  bool _isDateLoading = false; // 章节更新日期加载标记
   late Detail detail;
   late Future<Detail?> _future;
   late ScrollController _controller;
@@ -46,11 +47,15 @@ class _DetailPageState extends State<DetailPage> {
 
   // 更新 detail.contents (获取章节更新日期)
   Future<void> _updateContents({bool reload = true}) async {
-    detail.copyWith(contents: updateChapterDate(
-      contents: detail.contents,
-      updateDate: await Esjzone().chapterUpdate(detail.id, detail.forumId),
-    ));
-    if (reload) setState(() { _future = _updateDetail(request: false); });
+    if (!_isDateLoading) {
+      _isDateLoading = true;
+      detail.copyWith(contents: updateChapterDate(
+        contents: detail.contents,
+        updateDate: await Esjzone().chapterUpdate(detail.id, detail.forumId),
+      ));
+      if (reload) setState(() { _future = _updateDetail(request: false); });
+      _isDateLoading = false;
+    }
   }
 
   // 刷新详情
