@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../common/pubspec.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../widgets/settings_item.dart';
 
 const String repositoryUrl = "https://github.com/EnableAria/Esjzone"; // 仓库地址
@@ -49,23 +49,13 @@ class AboutPageState extends State<AboutPage> {
             icon: Icons.public,
             title: "项目地址",
             subtitle: repositoryUrl,
-            onTap: () {
-              Clipboard.setData(ClipboardData(text: repositoryUrl));
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('链接已复制')),
-              );
-            },
+            onTap: () => launchUrl(Uri.parse(repositoryUrl), mode: LaunchMode.externalApplication),
           ),
           wSettingTile(
             icon: Icons.home,
             title: "网站主页",
             subtitle: websiteUrl,
-            onTap: () {
-              Clipboard.setData(ClipboardData(text: websiteUrl));
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('链接已复制')),
-              );
-            },
+            onTap: () => launchUrl(Uri.parse(websiteUrl), mode: LaunchMode.externalApplication),
           ),
         ],
       ),

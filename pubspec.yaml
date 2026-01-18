@@ -19,6 +19,7 @@ dependencies:
   provider: ^6.1.5+1
   flutter_svg: ^2.2.3
   flutter_html: ^3.0.0
+  url_launcher: ^6.3.2
   shared_preferences: ^2.5.3
   cached_network_image: ^3.4.1
   flutter_cache_manager: ^3.4.1
