@@ -17,9 +17,6 @@ void main() {
 class EsjzoneApp extends StatelessWidget {
   const EsjzoneApp({super.key});
 
-  void refresh() {
-
-  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

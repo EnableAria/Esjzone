@@ -66,13 +66,13 @@ class Esjzone {
   /// 获取 AuthToken
   Future<String?> getToken({required String path}) async {
     String? result;
-    FormData formData = FormData.fromMap({
-      "plxf": "getAuthToken"
-    });
+
     try {
       var response = await dio.post(
         path,
-        data: formData,
+        data: FormData.fromMap({
+          "plxf": "getAuthToken"
+        }),
       );
       if (response.statusCode == 200) {
         result = RegExp(r'<JinJing>(.*?)</JinJing>').firstMatch(response.data)?.group(1);
@@ -351,7 +351,6 @@ class Esjzone {
             headers: {
               "Authorization": token
             },
-            // contentType: Headers.formUrlEncodedContentType,
           ),
           data: FormData.fromMap({
               "pw": password,

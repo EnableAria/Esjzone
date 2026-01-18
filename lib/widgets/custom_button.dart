@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// 图标按钮(标题栏和工具菜单)
+/// 图标按钮(标题栏和工具菜单)
 class CustomIconButton extends StatelessWidget {
   const CustomIconButton({
     super.key,
@@ -96,7 +96,7 @@ class CustomIconButton extends StatelessWidget {
   }
 }
 
-// 控件按钮(书籍详情)
+/// 控件按钮(书籍详情)
 class ControllerButton extends StatelessWidget {
   const ControllerButton({
     super.key,
@@ -132,7 +132,7 @@ class ControllerButton extends StatelessWidget {
   }
 }
 
-// 设置按钮
+/// 设置按钮
 class SettingButton extends StatelessWidget {
   const SettingButton({
     super.key,
@@ -174,7 +174,7 @@ class SettingButton extends StatelessWidget {
   }
 }
 
-// 提示按钮(仿FloatingActionButton)(书籍详情浮动按钮)
+/// 提示按钮(仿FloatingActionButton)(书籍详情浮动按钮)
 class TooltipButton extends StatelessWidget {
   const TooltipButton({
     super.key,

@@ -72,6 +72,7 @@ class AboutPageState extends State<AboutPage> {
     );
   }
 
+  // 标题按钮封装
   Widget wSettingTile({
     required String title,
     required void Function()? onTap,

@@ -31,9 +31,7 @@ class UserCookieModel extends ProfileChangeNotifier {
   }
 
   /// 手动更新
-  void updateProfile() {
-    notifyListeners();
-  }
+  void updateProfile() => notifyListeners();
 }
 
 // 主题模式

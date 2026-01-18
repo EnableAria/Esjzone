@@ -19,21 +19,20 @@ const _themes = <Color>[
 ];
 
 class Global {
-  static late SharedPreferences _prefs;
+  static late SharedPreferences _shared;
   static Profile profile = Profile();
-
-  static List<Color> get themes => _themes;
-
+  static List<Color> get themes => _themes; // 主题列表
   static bool get isRelease => bool.fromEnvironment("dart.vm.product");
 
   // 初始化全局信息
   static Future init() async {
     WidgetsFlutterBinding.ensureInitialized();
-    _prefs = await SharedPreferences.getInstance();
-    var profileForFile = _prefs.getString("profile");
-    if (profileForFile != null) {
+
+    _shared = await SharedPreferences.getInstance();
+    var profileForShared = _shared.getString("profile"); // 获取内部 Profile
+    if (profileForShared != null) {
       try {
-        profile = Profile.fromJson(jsonDecode(profileForFile));
+        profile = Profile.fromJson(jsonDecode(profileForShared));
       }
       catch (e) { dPrint(e); }
     }
@@ -41,10 +40,9 @@ class Global {
       profile = Profile(theme: 0, showNSFW: true);
     }
 
-    // 初始化网络请求相关配置
-    Esjzone.init();
+    Esjzone.init(); // 初始化网络请求相关配置
   }
 
   // 持久化 Profile 信息
-  static Future<bool> saveProfile() => _prefs.setString("profile", jsonEncode(profile.toJson()));
+  static Future<bool> saveProfile() => _shared.setString("profile", jsonEncode(profile.toJson()));
 }
