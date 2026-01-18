@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../common/network.dart';
+import '../common/pubspec.dart';
 import '../common/debug_tools.dart';
 import '../models/profile.dart';
+import '../models/releases_response.dart';
 
 const _themes = <Color>[
   Colors.blue,
@@ -20,8 +22,11 @@ const _themes = <Color>[
 
 class Global {
   static late SharedPreferences _shared;
+  static late String? _version;
   static Profile profile = Profile();
+  static ReleasesResponse? latestReleases; // 最新发行版
   static List<Color> get themes => _themes; // 主题列表
+  static String get version => _version ?? "unknown"; // 应用版本
   static bool get isRelease => bool.fromEnvironment("dart.vm.product");
 
   // 初始化全局信息
@@ -41,6 +46,7 @@ class Global {
     }
 
     Esjzone.init(); // 初始化网络请求相关配置
+    _version = await getVersion(); // 获取应用版本
   }
 
   // 持久化 Profile 信息

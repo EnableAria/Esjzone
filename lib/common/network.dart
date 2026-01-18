@@ -20,6 +20,7 @@ import '../models/forum_response.dart';
 import '../models/chapter_content.dart';
 import '../models/decrypt_response.dart';
 import '../models/favorite_response.dart';
+import '../models/releases_response.dart';
 
 // 网络请求封装
 class Esjzone {
@@ -365,5 +366,24 @@ class Esjzone {
       on DioException catch (_) {}
     }
     return (html, text);
+  }
+
+  /// 检查更新
+  Future<ReleasesResponse?> checkUpdate() async {
+    ReleasesResponse? result;
+    try {
+      var response = await dio.get(
+        "https://api.github.com/repos/EnableAria/Esjzone/releases/latest",
+        options: Options(
+          headers: { "Cookie": "" },
+          responseType: ResponseType.plain, // 禁用dio自动转换
+        ),
+      );
+      if (response.statusCode == 200) {
+        result = ReleasesResponse.fromJson(jsonDecode(response.data));
+      }
+    }
+    on DioException catch (_) {}
+    return result;
   }
 }
