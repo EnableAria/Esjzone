@@ -49,6 +49,7 @@ class Esjzone {
           )),
         );
         dio.options.headers["Cookie"] = "ews_key=$ewsKey; ews_token=$ewsToken";
+        Global.saveProfile(); // 保存
       }
       return handler.next(response);
     },
