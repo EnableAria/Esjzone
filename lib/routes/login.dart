@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                             // 验证通过提交数据
                             isLoading.value = true; // 防止重复请求
                             var response = await Esjzone().login(email: _emailController.text, pwd: _pwdController.text);
-                            if (response.$1 == 200) {
+                            if (response.$1 == 200 && context.mounted) {
                               Provider.of<UserCookieModel>(context, listen: false).updateProfile();
                             }
                             else {
