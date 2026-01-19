@@ -22,16 +22,15 @@ class ReaderPage extends StatefulWidget {
 class _ReaderPageState extends State<ReaderPage> {
   bool _isInInitialized = false; // 初始化标记
   bool _changeChapter = false; // 更换章节标记
+  bool _isSliding = false; // 滑动标记
   late int chapterId; // 目前章节id
-  late double toolbarHeight;
+  late double toolbarHeight; // 工具栏高度
   late ChapterContent content;
   late Future<ChapterContent?> _future;
   late ScrollController _controller;
   final ValueNotifier<bool> _showControl = ValueNotifier(false); // 浮动工具栏显示标记
   final ValueNotifier<bool> _likeBtnLoading = ValueNotifier(false); // 点赞按钮加载标记
-
-  bool _isSliding = false; // 滑动标记
-  final ValueNotifier<double> _sliderValue = ValueNotifier(0.0);
+  final ValueNotifier<double> _sliderValue = ValueNotifier(0.0); // 滑条滑动位置
 
   // 更新 content (request 为 false 时不请求)
   Future<ChapterContent?> _updateContent({bool request = true}) {
