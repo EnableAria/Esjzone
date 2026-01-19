@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:quiver/core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../common/network.dart';
 import '../common/pubspec.dart';
@@ -37,13 +38,18 @@ class Global {
     var profileForShared = _shared.getString("profile"); // 获取内部 Profile
     if (profileForShared != null) {
       try {
-        profile = Profile.fromJson(jsonDecode(profileForShared));
+        Profile profileFromJson = Profile.fromJson(jsonDecode(profileForShared));
+        profile = profileFromJson.copyWith(
+          theme: Optional.fromNullable(profileFromJson.theme ?? 0),
+          showNSFW: Optional.fromNullable(profileFromJson.showNSFW ?? true),
+        );
       }
       catch (e) { dPrint(e); }
     }
     else {
       profile = Profile(theme: 0, showNSFW: true);
     }
+    saveProfile();
 
     Esjzone.init(); // 初始化网络请求相关配置
     _version = await getVersion(); // 获取应用版本
