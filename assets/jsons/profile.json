@@ -3,6 +3,7 @@
   "theme?": 0,
   "darkMode?": false,
   "showNSFW?": false,
+  "volumeKeyPaging?": false,
   "locale?": "",
   "lastLogin?": ""
 }

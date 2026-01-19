@@ -25,6 +25,7 @@ class EsjzoneApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ThemeModeModel()), // 主题模式
         ChangeNotifierProvider(create: (_) => ThemeColorModel()), // 主题颜色
         ChangeNotifierProvider(create: (_) => ShowNSFWModel()), // 成人内容
+        ChangeNotifierProvider(create: (_) => VolumeKeyPagingModel()), // 音量键翻页
       ],
       child: Builder(builder: (context) {
         return MaterialApp(

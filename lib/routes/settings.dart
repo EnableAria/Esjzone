@@ -38,6 +38,17 @@ class SettingsPage extends StatelessWidget {
             onTap: () { showThemeColorDialog(context: context); },
           ),
           SettingSwitch(
+            icon: (Provider.of<VolumeKeyPagingModel>(context).volumeKeyPaging ?? true)
+                ? Icons.volume_off
+                : Icons.volume_up,
+            title: "音量键翻页",
+            subtitle: ["阅读页音量键调整音量", "阅读页音量键滚动内容"],
+            initValue: Provider.of<VolumeKeyPagingModel>(context, listen: false).volumeKeyPaging ?? true,
+            onChanged: (value) {
+              Provider.of<VolumeKeyPagingModel>(context, listen: false).volumeKeyPaging = value;
+            },
+          ),
+          SettingSwitch(
             icon: Icons.eighteen_up_rating,
             title: "成人内容",
             subtitle: ["不展示成人内容", "展示成人内容"],

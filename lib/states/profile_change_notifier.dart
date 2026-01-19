@@ -76,3 +76,16 @@ class ShowNSFWModel extends ProfileChangeNotifier {
   }
 }
 
+// 音量键翻页
+class VolumeKeyPagingModel extends ProfileChangeNotifier {
+  bool? get volumeKeyPaging => _profile.volumeKeyPaging;
+
+  set volumeKeyPaging(bool? volumeKeyPaging) {
+    if (volumeKeyPaging != _profile.volumeKeyPaging) {
+      Global.profile = _profile.copyWith(
+        volumeKeyPaging: Optional.fromNullable(volumeKeyPaging),
+      );
+      notifyListeners();
+    }
+  }
+}

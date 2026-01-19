@@ -42,12 +42,13 @@ class Global {
         profile = profileFromJson.copyWith(
           theme: Optional.fromNullable(profileFromJson.theme ?? 0),
           showNSFW: Optional.fromNullable(profileFromJson.showNSFW ?? true),
+          volumeKeyPaging: Optional.fromNullable(profileFromJson.volumeKeyPaging ?? true),
         );
       }
       catch (e) { dPrint(e); }
     }
     else {
-      profile = Profile(theme: 0, showNSFW: true);
+      profile = Profile(theme: 0, showNSFW: true, volumeKeyPaging: true);
     }
     saveProfile();
 

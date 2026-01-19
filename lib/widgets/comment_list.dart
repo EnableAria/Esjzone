@@ -3,8 +3,8 @@ import '../models/comment.dart';
 import '../widgets/network_image.dart';
 
 // 评论列表对话框组件
-void showCommentList(BuildContext context, List<Comment> comments) {
-  showModalBottomSheet(
+Future<void> showCommentList(BuildContext context, List<Comment> comments) async {
+  await showModalBottomSheet(
     context: context,
     isScrollControlled: true, // 允许控制高度
     backgroundColor: Theme.of(context).canvasColor,

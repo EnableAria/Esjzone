@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' show parse;
+import '../common/global.dart';
+import '../common/channel.dart';
 import '../common/network.dart';
 import '../common/parse_html.dart';
 import '../models/chapter_content.dart';
@@ -23,7 +25,9 @@ class _ReaderPageState extends State<ReaderPage> {
   bool _isInInitialized = false; // 初始化标记
   bool _changeChapter = false; // 更换章节标记
   bool _isSliding = false; // 滑动标记
+  DateTime? _lastTrigger; // 监听触发时间戳
   late int chapterId; // 目前章节id
+  late double screenHeight; // 屏幕高度
   late double toolbarHeight; // 工具栏高度
   late ChapterContent content;
   late Future<ChapterContent?> _future;
@@ -40,10 +44,47 @@ class _ReaderPageState extends State<ReaderPage> {
     return Future.value(content);
   }
 
+  // 判断监听触发条件(防止短时间多次触发)
+  bool _canTrigger() {
+    final now = DateTime.now();
+    if (_lastTrigger == null
+        || now.difference(_lastTrigger!).inMilliseconds > 250
+    ) {
+      _lastTrigger = now; // 更新时间戳
+      return true;
+    }
+    return false;
+  }
+
+  // 初始化音量监听
+  void _volumeKeyChannelInit(){
+    if (Global.profile.volumeKeyPaging ?? true) {
+      VolumeKeyChannel.attach(
+        onVolumeUp: () { if (_canTrigger()) _scrollTo(false); },
+        onVolumeDown: () { if (_canTrigger()) _scrollTo(true); },
+      );
+    }
+  }
+
   // 滑条滑动回调
   void _onSliderChanged(double value) {
     _sliderValue.value = value;
     _controller.jumpTo(value * _controller.position.maxScrollExtent);
+  }
+
+  // 内容滚动
+  void _scrollTo(bool down) {
+    double offset = screenHeight * (down ? 0.6 : -0.6); // 60% 屏幕高度
+    if (_controller.position.pixels < _controller.position.maxScrollExtent - 1 || !down) {
+      _controller.animateTo(
+        _controller.offset + offset,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+    }
+    else if (down && content.nextChapterId != null && content.nextChapterId! >= 0) {
+      _toNewChapter(id: content.nextChapterId!); // 跳转至下一章
+    }
   }
 
   // 章节跳转
@@ -72,6 +113,7 @@ class _ReaderPageState extends State<ReaderPage> {
         _sliderValue.value = (_controller.offset / _controller.position.maxScrollExtent).clamp(0.0, 1.0);
       }
     });
+    _volumeKeyChannelInit();
     super.initState();
   }
 
@@ -81,11 +123,13 @@ class _ReaderPageState extends State<ReaderPage> {
     _showControl.dispose();
     _sliderValue.dispose();
     _likeBtnLoading.dispose();
+    VolumeKeyChannel.detach();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
     toolbarHeight = kToolbarHeight + MediaQuery.of(context).padding.top;
     return FutureBuilder<ChapterContent?>(
       future: _future,
@@ -384,8 +428,12 @@ class _ReaderPageState extends State<ReaderPage> {
                 tooltip: "章节评论",
                 size: Size(64, 64),
                 superscript: content.comments?.length,
-                onPressed: () {
-                  if (content.comments != null) showCommentList(context, content.comments!);
+                onPressed: () async {
+                  if (content.comments != null) {
+                    VolumeKeyChannel.detach();
+                    await showCommentList(context, content.comments!);
+                    _volumeKeyChannelInit();
+                  }
                 },
               )),
               Expanded(child: CustomIconButton.icon(
