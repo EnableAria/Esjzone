@@ -19,7 +19,7 @@ class ChapterContent {
   });
   final int id; // 章节id
   final String title; // 章节标题
-  final List<Widget> contents; // 章节内容
+  final List<String> contents; // 章节内容
   final String author; // 作者
   final String updateDate; // 更新日期
   final int like; // 点赞数
@@ -36,7 +36,7 @@ class ChapterContent {
   ChapterContent copyWith({
     int? id,
     String? title,
-    List<Widget>? contents,
+    List<String>? contents,
     String? author,
     String? updateDate,
     int? like,

@@ -4,6 +4,7 @@ import '../common/global.dart';
 import '../common/channel.dart';
 import '../common/network.dart';
 import '../common/parse_html.dart';
+import '../common/custom_html.dart';
 import '../models/chapter_content.dart';
 import '../widgets/icon_text.dart';
 import '../widgets/comment_list.dart';
@@ -198,7 +199,10 @@ class _ReaderPageState extends State<ReaderPage> {
                                             });
                                           },
                                         )
-                                            : content.contents[index],
+                                            : CustomHtml(
+                                              data: content.contents[index],
+                                              fontSize: 18.0,
+                                            ),
                                       ),
                                     ),
                                     wFooter(like: content.like, words: content.words), // 底部信息

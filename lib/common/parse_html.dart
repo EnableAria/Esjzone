@@ -351,17 +351,17 @@ Contents _extractContents(Element? contents) {
 }
 
 /// 解析文章
-List<CustomHtml> extractChapterText(Element? contents) {
-  List<CustomHtml> children = [];
+List<String> extractChapterText(Element? contents) {
+  List<String> children = [];
   if (contents != null) {
     for (Node node in contents.nodes){
       if (node.nodeType == Node.ELEMENT_NODE) { // 元素节点
         Element element = node as Element;
-        children.add(CustomHtml(data: element.outerHtml, fontSize: 18.0));
+        children.add(element.outerHtml);
       }
       else {  // 非元素节点
         if (node.text!.trim().isNotEmpty) {
-          children.add(CustomHtml(data: node.text, fontSize: 18.0));
+          children.add(node.text!);
         }
       }
     }

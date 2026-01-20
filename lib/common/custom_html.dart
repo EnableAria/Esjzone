@@ -11,10 +11,12 @@ class CustomHtml extends StatelessWidget {
     required this.data,
     this.defaultData = "",
     this.fontSize = 13.0,
+    this.showBr = true,
   });
   final String? data;
   final String defaultData;
   final double fontSize;
+  final bool showBr;
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +28,14 @@ class CustomHtml extends StatelessWidget {
           margin: Margins.zero,
           padding: HtmlPaddings.zero,
           lineHeight: LineHeight(1.4), // 行高倍数，1.0为最小
-        ),
-        "br": Style(
-          display: Display.none,
+          display: (!showBr && (data ?? defaultData).contains(r'<p><br></p>')) ? Display.none : null,
         ),
       },
       extensions: [
+        TagExtension(
+          tagsToExtend: {"br"},
+          builder: (context) => SizedBox(height: fontSize),
+        ),
         TagExtension(
           tagsToExtend: {"img"},
           builder: (context) {
