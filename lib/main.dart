@@ -22,6 +22,7 @@ class EsjzoneApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserCookieModel()), // 用户信息
+        ChangeNotifierProvider(create: (_) => ReaderSettingsModel()), // 阅读设置
         ChangeNotifierProvider(create: (_) => ThemeModeModel()), // 主题模式
         ChangeNotifierProvider(create: (_) => ThemeColorModel()), // 主题颜色
         ChangeNotifierProvider(create: (_) => ShowNSFWModel()), // 成人内容

@@ -1,5 +1,6 @@
 {
   "userCookie?": "$user_cookie",
+  "readerSettings?": "$reader_settings",
   "theme?": 0,
   "darkMode?": false,
   "showNSFW?": false,

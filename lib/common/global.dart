@@ -43,6 +43,12 @@ class Global {
           theme: Optional.fromNullable(profileFromJson.theme ?? 0),
           showNSFW: Optional.fromNullable(profileFromJson.showNSFW ?? true),
           volumeKeyPaging: Optional.fromNullable(profileFromJson.volumeKeyPaging ?? true),
+          readerSettings: Optional.fromNullable(
+            (profileFromJson.readerSettings ?? ReaderSettings()).copyWith(
+              fontSize: Optional.fromNullable(profileFromJson.readerSettings?.fontSize ?? 18.0),
+              hiddenSpacing: Optional.fromNullable(profileFromJson.readerSettings?.hiddenSpacing ?? false),
+            ),
+          ),
         );
       }
       catch (e) { dPrint(e); }
@@ -53,6 +59,10 @@ class Global {
         theme: 0,
         showNSFW: true,
         volumeKeyPaging: true,
+        readerSettings: ReaderSettings(
+          fontSize: 18.0,
+          hiddenSpacing: false,
+        ),
       );
     }
     saveProfile();

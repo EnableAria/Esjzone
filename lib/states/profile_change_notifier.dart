@@ -34,6 +34,31 @@ class UserCookieModel extends ProfileChangeNotifier {
   void updateProfile() => notifyListeners();
 }
 
+// 阅读设置
+class ReaderSettingsModel extends ProfileChangeNotifier {
+  ReaderSettings get readerSettings => _profile.readerSettings
+      ?? ReaderSettings(fontSize: 18.0, hiddenSpacing: false);
+
+  set readerSettings(ReaderSettings? readerSettings) {
+    if (readerSettings != _profile.readerSettings) {
+      Global.profile = _profile.copyWith(
+        readerSettings: Optional.fromNullable(readerSettings),
+      );
+      notifyListeners();
+    }
+  }
+
+  void update({
+    double? fontSize,
+    bool? hiddenSpacing,
+  }) {
+    readerSettings = readerSettings.copyWith(
+      fontSize: Optional.fromNullable(fontSize ?? readerSettings.fontSize),
+      hiddenSpacing: Optional.fromNullable(hiddenSpacing ?? readerSettings.hiddenSpacing),
+    );
+  }
+}
+
 // 主题模式
 class ThemeModeModel extends ProfileChangeNotifier {
   bool? get darkMode => _profile.darkMode;

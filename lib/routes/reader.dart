@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' show parse;
+import 'package:provider/provider.dart';
 import '../common/global.dart';
 import '../common/channel.dart';
 import '../common/network.dart';
 import '../common/parse_html.dart';
 import '../common/custom_html.dart';
 import '../models/chapter_content.dart';
+import '../states/profile_change_notifier.dart';
 import '../widgets/icon_text.dart';
 import '../widgets/comment_list.dart';
 import '../widgets/load_indicator.dart';
+import '../widgets/reader_settings.dart';
 import '../widgets/encrypted_content.dart';
 import '../widgets/custom_button.dart' show CustomIconButton;
 
@@ -201,7 +204,8 @@ class _ReaderPageState extends State<ReaderPage> {
                                         )
                                             : CustomHtml(
                                               data: content.contents[index],
-                                              fontSize: 18.0,
+                                              fontSize: Provider.of<ReaderSettingsModel>(context).readerSettings.fontSize!,
+                                              showBr: !Provider.of<ReaderSettingsModel>(context).readerSettings.hiddenSpacing!,
                                             ),
                                       ),
                                     ),
@@ -444,7 +448,11 @@ class _ReaderPageState extends State<ReaderPage> {
                 icon: Icons.settings,
                 tooltip: "设置",
                 size: Size(64, 64),
-                onPressed: () {},
+                onPressed: () async {
+                  VolumeKeyChannel.detach();
+                  await showReaderSettings(context);
+                  _volumeKeyChannelInit();
+                },
               )),
             ],
           ),
