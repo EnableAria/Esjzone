@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:quiver/core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/index.dart';
 import '../common/network.dart';
 import '../common/pubspec.dart';
 import '../common/debug_tools.dart';
-import '../models/profile.dart';
-import '../models/releases_response.dart';
 
 const _themes = <Color>[
   Colors.blue,
@@ -39,6 +38,7 @@ class Global {
     if (profileForShared != null) {
       try {
         Profile profileFromJson = Profile.fromJson(jsonDecode(profileForShared));
+        // 部分初始化
         profile = profileFromJson.copyWith(
           theme: Optional.fromNullable(profileFromJson.theme ?? 0),
           showNSFW: Optional.fromNullable(profileFromJson.showNSFW ?? true),
@@ -48,7 +48,12 @@ class Global {
       catch (e) { dPrint(e); }
     }
     else {
-      profile = Profile(theme: 0, showNSFW: true, volumeKeyPaging: true);
+      // 完全初始化
+      profile = Profile(
+        theme: 0,
+        showNSFW: true,
+        volumeKeyPaging: true,
+      );
     }
     saveProfile();
 

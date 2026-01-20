@@ -6,7 +6,12 @@ import '../widgets/network_image.dart';
 
 // 定制Html解析
 class CustomHtml extends StatelessWidget {
-  const CustomHtml({super.key, required this.data, this.defaultData = "", this.fontSize = 13.0});
+  const CustomHtml({
+    super.key,
+    required this.data,
+    this.defaultData = "",
+    this.fontSize = 13.0,
+  });
   final String? data;
   final String defaultData;
   final double fontSize;
@@ -51,9 +56,7 @@ class CustomHtml extends StatelessWidget {
         TagExtension(
           // 避免错误格式导致解析错误
           tagsToExtend: {"rt", "rp"},
-          builder: (context) {
-            return SizedBox();
-          },
+          builder: (context) => SizedBox(),
         ),
       ],
     );

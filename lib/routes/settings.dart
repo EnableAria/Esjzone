@@ -52,7 +52,7 @@ class SettingsPage extends StatelessWidget {
             icon: Icons.eighteen_up_rating,
             title: "成人内容",
             subtitle: ["不展示成人内容", "展示成人内容"],
-            initValue: Provider.of<ShowNSFWModel>(context, listen: false).showNSFW ?? true,
+            initValue: Provider.of<ShowNSFWModel>(context, listen: false).showNSFW!,
             onChanged: (value) {
               Provider.of<ShowNSFWModel>(context, listen: false).showNSFW = value;
             },
