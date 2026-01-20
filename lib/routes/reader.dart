@@ -43,7 +43,11 @@ class _ReaderPageState extends State<ReaderPage> {
   // 更新 content (request 为 false 时不请求)
   Future<ChapterContent?> _updateContent({bool request = true}) {
     if (request) {
-      return Esjzone().chapterContent(widget.bookId, chapterId);
+      bool autoLike = Provider.of<ReaderSettingsModel>(context, listen: false).readerSettings.autoLike!;
+      return Esjzone().chapterContent(widget.bookId, chapterId).then((content) {
+        if (content?.isLike == false && autoLike) { _likeChapter(); }
+        return content;
+      });
     }
     return Future.value(content);
   }
@@ -99,6 +103,24 @@ class _ReaderPageState extends State<ReaderPage> {
         chapterId = id;
         _future = _updateContent();
       });
+    }
+  }
+
+  // 点赞章节
+  void _likeChapter() async {
+    if (!_likeBtnLoading.value) {
+      _likeBtnLoading.value = true;
+      int? result = await Esjzone().chapterLike(widget.bookId, chapterId);
+      if (result != null) {
+        content = content.copyWith(
+          isLike: !content.isLike,
+          like: result,
+        );
+      }
+      setState(() {
+        _future = _updateContent(request: false);
+      });
+      _likeBtnLoading.value = false;
     }
   }
 
@@ -411,22 +433,7 @@ class _ReaderPageState extends State<ReaderPage> {
                       icon: isLike ? Icons.thumb_up : Icons.thumb_up_outlined,
                       tooltip: isLike ? "取消点赞" : "点赞",
                       size: Size(64, 64),
-                      onPressed: () async {
-                        if (!loading) {
-                          _likeBtnLoading.value = true;
-                          int? result = await Esjzone().chapterLike(widget.bookId, chapterId);
-                          if (result != null) {
-                            content = content.copyWith(
-                              isLike: !content.isLike,
-                              like: result,
-                            );
-                          }
-                          _likeBtnLoading.value = false;
-                          setState(() {
-                            _future = _updateContent(request: false);
-                          });
-                        }
-                      },
+                      onPressed: _likeChapter,
                     );
                   },
                 ),

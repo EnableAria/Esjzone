@@ -47,6 +47,7 @@ class Global {
             (profileFromJson.readerSettings ?? ReaderSettings()).copyWith(
               fontSize: Optional.fromNullable(profileFromJson.readerSettings?.fontSize ?? 18.0),
               hiddenSpacing: Optional.fromNullable(profileFromJson.readerSettings?.hiddenSpacing ?? false),
+              autoLike: Optional.fromNullable(profileFromJson.readerSettings?.autoLike ?? false),
             ),
           ),
         );
@@ -62,6 +63,7 @@ class Global {
         readerSettings: ReaderSettings(
           fontSize: 18.0,
           hiddenSpacing: false,
+          autoLike: false,
         ),
       );
     }

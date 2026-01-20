@@ -37,7 +37,7 @@ class UserCookieModel extends ProfileChangeNotifier {
 // 阅读设置
 class ReaderSettingsModel extends ProfileChangeNotifier {
   ReaderSettings get readerSettings => _profile.readerSettings
-      ?? ReaderSettings(fontSize: 18.0, hiddenSpacing: false);
+      ?? ReaderSettings(fontSize: 18.0, hiddenSpacing: false, autoLike: false);
 
   set readerSettings(ReaderSettings? readerSettings) {
     if (readerSettings != _profile.readerSettings) {
@@ -51,10 +51,12 @@ class ReaderSettingsModel extends ProfileChangeNotifier {
   void update({
     double? fontSize,
     bool? hiddenSpacing,
+    bool? autoLike,
   }) {
     readerSettings = readerSettings.copyWith(
       fontSize: Optional.fromNullable(fontSize ?? readerSettings.fontSize),
       hiddenSpacing: Optional.fromNullable(hiddenSpacing ?? readerSettings.hiddenSpacing),
+      autoLike: Optional.fromNullable(autoLike ?? readerSettings.autoLike),
     );
   }
 }
