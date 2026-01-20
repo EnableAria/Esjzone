@@ -11,6 +11,7 @@ class CustomNetImage extends StatelessWidget {
     this.height,
     this.fit,
     this.small = false,
+    this.cache = true,
   });
   final String src;
   final double? width;
@@ -18,6 +19,7 @@ class CustomNetImage extends StatelessWidget {
   final BoxFit? fit;
   final bool small;
   final double smallDimension = 28;
+  final bool cache;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,8 @@ class CustomNetImage extends StatelessWidget {
     }
     else {
       // 栅格图像格式
-      return CachedNetworkImage(
+      return cache
+          ? CachedNetworkImage(
         imageUrl: src,
         width: small ? smallDimension : width,
         height: small ? smallDimension : height,
@@ -42,6 +45,17 @@ class CustomNetImage extends StatelessWidget {
         cacheManager: CustomCacheManager.instance,
         placeholder: (_, _) => small ? wProgressIndicator() : Center(child: wProgressIndicator()), // 加载展示圆形进度条
         errorWidget: (_, _, _) => small ? Icon(Icons.error) : Center(child: Icon(Icons.error)), // 错误展示错误图标
+      )
+          : Image.network(
+        src,
+        width: small ? smallDimension : width,
+        height: small ? smallDimension : height,
+        fit: fit,
+        loadingBuilder: (_, child, loading) {
+          if (loading != null) return small ? wProgressIndicator() : Center(child: wProgressIndicator());
+          return child;
+        },
+        errorBuilder: (_, _, _) => small ? Icon(Icons.error) : Center(child: Icon(Icons.error)), // 错误展示错误图标
       );
     }
   }
