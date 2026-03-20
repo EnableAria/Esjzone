@@ -257,10 +257,10 @@ class Esjzone {
           ),
           queryParameters: {
             "totalRows" : total, // 总量
-            "sort" : "last_reply", // 发文时间
-            "order": "desc", // 降序
+            "sort" : "cdate", // 发文时间
+            "order": "asc", // 降序
             "offset": 0, // 位移
-            "limit": total // 数量
+            "limit": total > 20 ? total : 20 // 数量
           },
         );
 
