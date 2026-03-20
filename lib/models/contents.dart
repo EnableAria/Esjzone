@@ -54,8 +54,8 @@ Contents updateChapterDate({
 }) {
   updateDate.forEach((id, date) {
     for (SubContents sub in contents.contents) {
-      if (sub.chapter.contains(Chapter(id: id, title: ""))) {
-        int index = sub.chapter.indexWhere((c) => c.id == id);
+      int index = sub.chapter.indexWhere((c) => c.id == id);
+      if (index != -1) {
         sub.chapter[index] = sub.chapter[index].copyWith(updateDate: date);
         break;
       }
