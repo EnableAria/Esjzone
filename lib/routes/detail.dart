@@ -167,9 +167,9 @@ class _DetailPageState extends State<DetailPage> {
                           controller: _controller,
                           slivers: [
                             wBasicCard(), // 书籍基础信息
-                            wPadding(size: 8.0),
+                            wPadding(size: 10.0),
                             wController(), // 书籍控件(收藏|评论)
-                            wPadding(size: 4.0),
+                            wPadding(size: 6.0),
                             wDescription(detail.description), // 书籍简介
                             wPadding(),
                             wTags(detail.tags), // 书籍标签
