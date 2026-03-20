@@ -22,10 +22,7 @@ class AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("关于"),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-      ),
+      appBar: AppBar(title: Text("关于")),
       body: ListView(
         children: [
           Center(child: SizedBox.square(dimension: 200, child: Image.asset("assets/icon/icon_foreground.png"))),

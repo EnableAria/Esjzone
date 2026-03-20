@@ -66,11 +66,6 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shape: Border(bottom: BorderSide(
-          color: Theme.of(context).colorScheme.outlineVariant,
-          width: 1.0,
-        )),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         title: TextField(
           controller: _searchController,
           autofocus: true,

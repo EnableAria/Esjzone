@@ -58,7 +58,6 @@ class _MainPageState extends State<MainPage> {
             type: BottomNavigationBarType.fixed,
             fixedColor: Theme.of(context).colorScheme.primary,
             unselectedItemColor: Theme.of(context).colorScheme.inverseSurface,
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
             currentIndex: value,
             iconSize: 28.0,
             onTap: _onItemTapped,

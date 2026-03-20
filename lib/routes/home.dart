@@ -37,11 +37,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("首页"),
-        shape: Border(bottom: BorderSide(
-          color: Theme.of(context).colorScheme.outlineVariant,
-          width: 1.0,
-        )),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         actions: [
           Align(
             alignment: Alignment.bottomRight,

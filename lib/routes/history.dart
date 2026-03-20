@@ -23,11 +23,6 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("历史"),
-        shape: Border(bottom: BorderSide(
-          color: Theme.of(context).colorScheme.outlineVariant,
-          width: 1.0,
-        )),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       ),
       // 历史列表
       body: DataView<History>(

@@ -149,7 +149,7 @@ class _DetailPageState extends State<DetailPage> {
                                   flexibleSpace: AnimatedOpacity(
                                     duration: Duration(milliseconds: 300),
                                     opacity: showHeaderBg ? 1 : 0,
-                                    child: Container(color: Theme.of(context).colorScheme.secondaryContainer),
+                                    child: Container(color: Theme.of(context).appBarTheme.backgroundColor),
                                   ),
                                   systemOverlayStyle: SystemUiOverlayStyle(
                                     systemStatusBarContrastEnforced: false, // 禁用自动调整状态栏颜色

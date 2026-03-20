@@ -35,11 +35,6 @@ class _FavoritePageState extends State<FavoritePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("收藏"),
-        shape: Border(bottom: BorderSide(
-          color: Theme.of(context).colorScheme.outlineVariant,
-          width: 1.0,
-        )),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         actions: [
           // 筛选按钮
           Align(

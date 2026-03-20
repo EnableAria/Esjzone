@@ -16,10 +16,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("设置"),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-      ),
+      appBar: AppBar(title: Text("设置")),
       body: ListView(
         children: [
           SettingTile(
