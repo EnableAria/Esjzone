@@ -89,8 +89,8 @@ class DataViewState<T> extends State<DataView<T>> {
                 )
                     : SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 9 / 16,
+                    crossAxisCount: 3,
+                    childAspectRatio: 0.57,
                   ),
                   delegate: SliverChildBuilderDelegate(
                     childCount: _data.length,

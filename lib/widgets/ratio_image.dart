@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../widgets/network_image.dart';
 
@@ -6,7 +7,7 @@ class RatioImage extends StatelessWidget {
   const RatioImage({
     super.key,
     this.imgSrc,
-    this.aspectRatio = 1 / 1.45,
+    this.aspectRatio = 1 / sqrt2,
   });
   final String? imgSrc;
   final double aspectRatio;
