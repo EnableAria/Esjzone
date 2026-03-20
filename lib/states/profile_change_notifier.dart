@@ -63,12 +63,12 @@ class ReaderSettingsModel extends ProfileChangeNotifier {
 
 // 主题模式
 class ThemeModeModel extends ProfileChangeNotifier {
-  bool? get darkMode => _profile.darkMode;
+  int? get themeMode => _profile.themeMode;
 
-  set darkMode(bool? darkMode) {
-    if (darkMode != _profile.darkMode) {
+  set themeMode(int? darkMode) {
+    if (darkMode != _profile.themeMode) {
       Global.profile = _profile.copyWith(
-        darkMode: Optional.fromNullable(darkMode),
+        themeMode: Optional.fromNullable(darkMode),
       );
       notifyListeners();
     }

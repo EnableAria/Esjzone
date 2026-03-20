@@ -41,6 +41,7 @@ class Global {
         // 部分初始化
         profile = profileFromJson.copyWith(
           theme: Optional.fromNullable(profileFromJson.theme ?? 0),
+          themeMode: Optional.fromNullable(profileFromJson.themeMode ?? 0),
           showNSFW: Optional.fromNullable(profileFromJson.showNSFW ?? true),
           volumeKeyPaging: Optional.fromNullable(profileFromJson.volumeKeyPaging ?? true),
           readerSettings: Optional.fromNullable(
@@ -58,6 +59,7 @@ class Global {
       // 完全初始化
       profile = Profile(
         theme: 0,
+        themeMode: 0,
         showNSFW: true,
         volumeKeyPaging: true,
         readerSettings: ReaderSettings(

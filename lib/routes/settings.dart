@@ -7,10 +7,11 @@ import '../widgets/settings_item.dart';
 // 设置路由页
 class SettingsPage extends StatelessWidget {
   SettingsPage({super.key});
-  final Map<bool?, String> _themeMode = {
-    null: "跟随系统",
-    false: "日间模式",
-    true: "夜间模式",
+  final Map<int?, String> _themeMode = {
+    0: "跟随系统",
+    1: "日间模式",
+    2: "夜间模式",
+    3: "暗黑模式",
   };
 
   @override
@@ -20,13 +21,14 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         children: [
           SettingTile(
-            icon: Provider.of<ThemeModeModel>(context).darkMode == null
-                ? Icons.brightness_auto
-                : Provider.of<ThemeModeModel>(context, listen: false).darkMode!
-                ? Icons.dark_mode
-                : Icons.light_mode,
+            icon: [
+              Icons.brightness_auto,
+              Icons.light_mode,
+              Icons.dark_mode,
+              Icons.nights_stay
+            ][Provider.of<ThemeModeModel>(context).themeMode ?? 0],
             title: "主题模式",
-            subtitle: _themeMode[Provider.of<ThemeModeModel>(context, listen: false).darkMode],
+            subtitle: _themeMode[Provider.of<ThemeModeModel>(context, listen: false).themeMode],
             onTap: () { showThemeModeDialog(context: context); },
           ),
           SettingTile(
@@ -68,7 +70,7 @@ class SettingsPage extends StatelessWidget {
           children: _themeMode.entries.map((e) {
             return SimpleDialogOption(
               onPressed: () {
-                Provider.of<ThemeModeModel>(context, listen: false).darkMode = e.key;
+                Provider.of<ThemeModeModel>(context, listen: false).themeMode = e.key;
                 Navigator.pop(context);
               },
               child: Container(

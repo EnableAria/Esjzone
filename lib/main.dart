@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../common/theme.dart';
 import '../common/global.dart';
 import '../routes/main.dart';
 import '../routes/login.dart';
@@ -47,18 +48,15 @@ class EsjzoneApp extends StatelessWidget {
             },
           },
           // 主题模式
-          themeMode: Provider.of<ThemeModeModel>(context).darkMode == null ? ThemeMode.system
-              : Provider.of<ThemeModeModel>(context).darkMode! ? ThemeMode.dark : ThemeMode.light,
+          themeMode: Provider.of<ThemeModeModel>(context).themeMode == 0 ? ThemeMode.system
+              : Provider.of<ThemeModeModel>(context, listen: false).themeMode == 1 ? ThemeMode.light : ThemeMode.dark,
           // 主题颜色
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Global.themes[Provider.of<ThemeColorModel>(context).theme ?? 0]),
-          ),
+          theme: CustomTheme.fromSeedColor(seedColor: Global.themes[Provider.of<ThemeColorModel>(context).theme ?? 0]),
           // 夜间模式主题颜色
-          darkTheme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Global.themes[Global.profile.theme ?? 0],
-              brightness: Brightness.dark,
-            ),
+          darkTheme: CustomTheme.fromSeedColor(
+            seedColor: Global.themes[Global.profile.theme ?? 0],
+            brightness: Brightness.dark,
+            darkMode: Provider.of<ThemeModeModel>(context, listen: false).themeMode == 3,
           ),
         );
       }),
