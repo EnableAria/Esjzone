@@ -26,7 +26,7 @@ class BookCard extends DataCard<Book> {
                       borderRadius: BorderRadius.circular(8.0),
                       child: Container(
                         color: Theme.of(context).colorScheme.surfaceContainer,
-                        child: RatioImage(imgSrc: data.imgSrc),
+                        child: RatioImage.network(src: data.imgSrc, cacheKey: "${data.id}"),
                       ),
                     ),
                     // 成人内容标签

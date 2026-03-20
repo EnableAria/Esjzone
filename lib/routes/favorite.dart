@@ -41,19 +41,19 @@ class _FavoritePageState extends State<FavoritePage> {
         actions: [
           // 筛选按钮
           Align(
-              alignment: Alignment.bottomRight,
-              child: FilterIconButton(
-                primaryOptions: Options(title: "排序", options: FavoriteSort.values, initialValue: _sort),
-                primaryDelegate: (sort) {
-                  return Icon(FavoriteSort.getIcon(sort as FavoriteSort));
-                },
-                onChanged: (index, value) {
-                  setState(() {
-                    _sort = (value as FavoriteSort?) ?? FavoriteSort.latestFavorite;
-                    _refreshKey();
-                  });
-                },
-              ),
+            alignment: Alignment.bottomRight,
+            child: FilterIconButton(
+              primaryOptions: Options(title: "排序", options: FavoriteSort.values, initialValue: _sort),
+              primaryDelegate: (sort) {
+                return Icon(FavoriteSort.getIcon(sort as FavoriteSort));
+              },
+              onChanged: (index, value) {
+                setState(() {
+                  _sort = (value as FavoriteSort?) ?? FavoriteSort.latestFavorite;
+                  _refreshKey();
+                });
+              },
+            ),
           ),
         ],
       ),
@@ -62,7 +62,7 @@ class _FavoritePageState extends State<FavoritePage> {
         key: ValueKey(_key),
         useLine: true,
         onUpdate: (index) => Esjzone().favoriteList(_sort, index),
-        itemBuilder: (data, useLine) => FavoriteCard(data: data, useLine: useLine),
+        itemBuilder: (data, useLine) => FavoriteCard(key: ValueKey(data.id), data: data, useLine: useLine),
       ),
     );
   }

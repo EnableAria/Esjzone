@@ -10,6 +10,7 @@ class CustomNetImage extends StatelessWidget {
     this.width,
     this.height,
     this.fit,
+    this.cacheKey,
     this.small = false,
     this.cache = true,
   });
@@ -17,9 +18,10 @@ class CustomNetImage extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit? fit;
+  final String? cacheKey;
   final bool small;
   final double smallDimension = 28;
-  final bool cache;
+  final bool cache; // 启用缓存
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,9 @@ class CustomNetImage extends StatelessWidget {
         width: small ? smallDimension : width,
         height: small ? smallDimension : height,
         fit: fit,
-        cacheManager: CustomCacheManager.instance,
+        cacheKey: cacheKey,
+        cacheManager: CustomCacheManager.tempCache,
+        memCacheWidth: small ? smallDimension.round() : (width ?? 256).round(),
         placeholder: (_, _) => small ? wProgressIndicator() : Center(child: wProgressIndicator()), // 加载展示圆形进度条
         errorWidget: (_, _, _) => small ? Icon(Icons.error) : Center(child: Icon(Icons.error)), // 错误展示错误图标
       )

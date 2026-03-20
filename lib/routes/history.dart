@@ -31,7 +31,7 @@ class _HistoryPageState extends State<HistoryPage> {
       body: DataView<History>(
         useLine: true,
         onUpdate: (index) => Esjzone().historyList(),
-        itemBuilder: (data, useLine) => HistoryCard(data: data, useLine: useLine),
+        itemBuilder: (data, useLine) => HistoryCard(key: ValueKey(data.bookId), data: data, useLine: useLine),
       ),
     );
   }

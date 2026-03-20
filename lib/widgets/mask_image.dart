@@ -34,6 +34,7 @@ class MaskImage extends StatelessWidget {
         width: width,
         height: height,
         fit: BoxFit.cover,
+        cache: false,
       ),
     );
   }

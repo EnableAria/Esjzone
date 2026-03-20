@@ -6,22 +6,31 @@ import '../widgets/network_image.dart';
 class RatioImage extends StatelessWidget {
   const RatioImage({
     super.key,
-    this.imgSrc,
+    required this.child,
     this.aspectRatio = 1 / sqrt2,
   });
-  final String? imgSrc;
+  RatioImage.network({
+    super.key,
+    String? src,
+    String? cacheKey,
+    bool cache = true,
+    this.aspectRatio = 1 / sqrt2,
+  }) : child = (src == null
+      ? SizedBox()
+      : CustomNetImage(
+    src,
+    fit: BoxFit.cover,
+    cacheKey: cacheKey,
+    cache: cache,
+  ));
+  final Widget child;
   final double aspectRatio;
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: aspectRatio, // 固定宽高比
-      child: imgSrc == null
-          ? SizedBox()
-          : CustomNetImage(
-        imgSrc!,
-        fit: BoxFit.cover,
-      ),
+      child: child,
     );
   }
 }

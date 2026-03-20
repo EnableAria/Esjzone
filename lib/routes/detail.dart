@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../common/format.dart';
+import '../common/manager.dart';
 import '../common/network.dart';
 import '../common/custom_html.dart';
 import '../models/detail.dart';
@@ -12,6 +13,7 @@ import '../widgets/mask_image.dart';
 import '../widgets/ratio_image.dart';
 import '../widgets/chapter_list.dart';
 import '../widgets/comment_list.dart';
+import '../widgets/network_image.dart';
 import '../widgets/expandable_text.dart';
 import '../widgets/custom_button.dart' show CustomIconButton, TooltipButton, ControllerButton;
 
@@ -40,7 +42,16 @@ class _DetailPageState extends State<DetailPage> {
   // 更新 detail (request 为 false 时不请求)
   Future<Detail?> _updateDetail({bool request = true}) {
     if (request) {
-      return Esjzone().bookDetail(widget.id);
+      return Esjzone().bookDetail(widget.id).then((content) {
+        // 缓存封面
+        cacheCover(
+          localKey: "${content!.id}",
+          src: content.imgSrc,
+          isFavorite: content.isFavorite,
+          lastWatched: content.lastWatched,
+        );
+        return content;
+      });
     }
     return Future.value(detail);
   }
@@ -60,9 +71,37 @@ class _DetailPageState extends State<DetailPage> {
 
   // 刷新详情
   Future<void> _refreshDetail() async {
-    detail = await Esjzone().bookDetail(widget.id) ?? detail;
+    detail = await Esjzone().bookDetail(widget.id).then((content) {
+      // 缓存封面
+      cacheCover(
+        localKey: "${content!.id}",
+        src: content.imgSrc,
+        isFavorite: content.isFavorite,
+        lastWatched: content.lastWatched,
+        update: true,
+      );
+      return content;
+    }) ?? detail;
     await _updateContents(reload: false);
     setState(() { _future = _updateDetail(request: false); });
+  }
+
+  // 缓存封面
+  void cacheCover({
+    required String localKey,
+    required String src,
+    required bool? isFavorite,
+    required int? lastWatched,
+    bool update = false,
+  }) {
+    // 缓存封面
+    if (isFavorite == true || (lastWatched != null && lastWatched >= 0)) {
+      CoverCacheManager.saveCache(
+        localKey: localKey,
+        src: src,
+        update: true,
+      );
+    }
   }
 
   // 跳转阅读页
@@ -273,7 +312,10 @@ class _DetailPageState extends State<DetailPage> {
                   children: [
                     Expanded(flex: 1,
                       child: HeroImagePage(
-                        child: RatioImage(imgSrc: detail.imgSrc),
+                        child: RatioImage.network(
+                          src: detail.imgSrc,
+                          cache: false,
+                        ),
                       ),
                     ),
                     Expanded(flex: 2, child: SizedBox()), // 信息留空
@@ -281,7 +323,7 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 Row(
                   children: [
-                    Expanded(flex: 1, child: RatioImage()), // 封面留空
+                    Expanded(flex: 1, child: RatioImage.network()), // 封面留空
                     Expanded(flex: 2,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0),
