@@ -8,6 +8,7 @@ class CustomIconButton extends StatelessWidget {
     required this.onPressed,
     this.tooltip,
     this.size,
+    this.color,
     this.iconSize = 24.0,
     this.enableBackground = false,
     this.isLoading = false,
@@ -21,6 +22,7 @@ class CustomIconButton extends StatelessWidget {
     this.tooltip,
     this.size,
     this.iconSize = 24.0,
+    this.color,
     this.enableBackground = false,
     this.isLoading = false,
     this.superscript,
@@ -30,6 +32,7 @@ class CustomIconButton extends StatelessWidget {
   final double iconSize; // 图标大小
   final String? tooltip; // 提示
   final Size? size; // 按钮大小
+  final Color? color; // 图标颜色
   final bool enableBackground; // 启用背景
   final bool isLoading; // 显示加载条
   final int? superscript; // 数字角标
@@ -45,10 +48,10 @@ class CustomIconButton extends StatelessWidget {
         minimumSize: size,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
         backgroundColor: enableBackground
-            ? Theme.of(context).colorScheme.secondaryContainer
+            ? color ?? Theme.of(context).colorScheme.secondaryContainer
             : null,
         disabledBackgroundColor: enableBackground
-            ? Theme.of(context).colorScheme.secondaryContainer
+            ? color ?? Theme.of(context).colorScheme.secondaryContainer
             : null,
         iconSize: iconSize,
       ),

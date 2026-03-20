@@ -340,9 +340,14 @@ class _ReaderPageState extends State<ReaderPage> {
 
   // 浮动头部工具栏
   Widget wFloatingTopBar({required String title}) {
+    Color barColor = Color.alphaBlend(
+      Theme.of(context).colorScheme.surface.withAlpha(150),
+      Theme.of(context).colorScheme.secondaryContainer,
+    );
+
     return Container(
       height: toolbarHeight,
-      color: Theme.of(context).colorScheme.secondaryContainer,
+      color: barColor,
       child: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: Row(
@@ -371,6 +376,11 @@ class _ReaderPageState extends State<ReaderPage> {
     required int? nextChapterId,
     required bool isLike,
   }) {
+    Color barColor = Color.alphaBlend(
+      Theme.of(context).colorScheme.surface.withAlpha(150),
+      Theme.of(context).colorScheme.secondaryContainer,
+    );
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -383,6 +393,7 @@ class _ReaderPageState extends State<ReaderPage> {
                 icon: Icons.skip_previous,
                 tooltip: "上一章",
                 size: Size(48.0, 48.0),
+                color: barColor,
                 enableBackground: true,
                 onPressed: (prevChapterId == null || prevChapterId < 0) ? null
                     : () => _toNewChapter(id: prevChapterId),
@@ -393,7 +404,7 @@ class _ReaderPageState extends State<ReaderPage> {
                   height: 48.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
-                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    color: barColor,
                   ),
                   child: ValueListenableBuilder(
                     valueListenable: _sliderValue,
@@ -412,6 +423,7 @@ class _ReaderPageState extends State<ReaderPage> {
                 icon: Icons.skip_next,
                 tooltip: "下一章",
                 size: Size(48.0, 48.0),
+                color: barColor,
                 enableBackground: true,
                 onPressed: (nextChapterId == null || nextChapterId < 0) ? null
                     : () => _toNewChapter(id: nextChapterId),
@@ -421,7 +433,7 @@ class _ReaderPageState extends State<ReaderPage> {
         ),
         Container(
           height: kToolbarHeight,
-          color: Theme.of(context).colorScheme.secondaryContainer,
+          color: barColor,
           child: Row(
             children: [
               Expanded(
