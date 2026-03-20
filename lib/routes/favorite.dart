@@ -34,7 +34,10 @@ class _FavoritePageState extends State<FavoritePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("收藏"),
+        toolbarHeight: 70,
+        title: Padding(padding: EdgeInsets.only(top: 10),
+          child: Text("收藏", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        ),
         actions: [
           // 筛选按钮
           Align(

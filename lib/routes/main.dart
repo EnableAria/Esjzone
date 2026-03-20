@@ -62,7 +62,10 @@ class _MainPageState extends State<MainPage> {
             iconSize: 28.0,
             onTap: _onItemTapped,
             items: _pageNavItem.map((e) =>
-                BottomNavigationBarItem(icon: Icon(e.$1), label: e.$2, tooltip: e.$2)
+                BottomNavigationBarItem(
+                  icon: Padding(padding: const EdgeInsets.only(top: 4), child: Icon(e.$1)),
+                  label: e.$2, tooltip: e.$2,
+                )
             ).toList(),
           );
         },

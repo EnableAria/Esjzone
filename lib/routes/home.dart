@@ -36,7 +36,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("首页"),
+        toolbarHeight: 70,
+        title: Padding(padding: EdgeInsets.only(top: 10),
+          child: Text("首页", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        ),
         actions: [
           Align(
             alignment: Alignment.bottomRight,

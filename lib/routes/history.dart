@@ -22,7 +22,10 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("历史"),
+        toolbarHeight: 70,
+        title: Padding(padding: EdgeInsets.only(top: 10),
+          child: Text("历史", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        ),
       ),
       // 历史列表
       body: DataView<History>(
