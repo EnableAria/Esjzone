@@ -311,10 +311,13 @@ class _DetailPageState extends State<DetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(flex: 1,
-                      child: HeroImagePage(
-                        child: RatioImage.network(
-                          src: detail.imgSrc,
-                          cache: false,
+                      child: RatioImage(
+                        child: HeroImagePage(
+                          child: CustomNetImage(
+                            detail.imgSrc,
+                            fit: BoxFit.cover,
+                            cache: false,
+                          ),
                         ),
                       ),
                     ),
