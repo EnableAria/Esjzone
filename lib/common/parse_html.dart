@@ -282,7 +282,7 @@ String _extractSrc(String? src) {
 /// 解析评论图片
 String _extractCommentSrc(String? style) {
   if (style == null) return "";
-  return _extractSrc(RegExp(r'url\((.*?)\);').firstMatch(style)?.group(1));
+  return _extractSrc(RegExp("url\\(([\"']?)(.*?)\\1\\)").firstMatch(style)?.group(2));
 }
 
 /// 解析 论坛贴文更新日期
