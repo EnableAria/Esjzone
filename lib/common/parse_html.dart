@@ -188,7 +188,7 @@ ChapterContent parseHTMLFormChapter(String htmlStr, int id) {
     prevChapterId: _extractHref(content.querySelector(".btn-prev")?.attributes["href"]),
     nextChapterId: _extractHref(content.querySelector(".btn-next")?.attributes["href"]),
     isLike: content.querySelector(".btn-likes.btn-warning") != null,
-    isEncrypted: contents.id == "oops",
+    isEncrypted: contents.id == "oops" && contents.querySelector(".form-control") != null,
     comments: document.querySelector("#comments") == null ? null
         : parseHTMLFormComment(document.querySelectorAll("#comments>.comment")),
   );
@@ -278,6 +278,9 @@ String _extractSrc(String? src) {
     return src;
   }
 }
+
+/// 解析图片路径
+String extractSrc(String? src) => _extractSrc(src);
 
 /// 解析评论图片
 String _extractCommentSrc(String? style) {

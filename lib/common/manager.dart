@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import '../common/parse_html.dart';
 
 // 图片缓存管理器
 class CustomCacheManager {
@@ -38,7 +39,7 @@ class CoverCacheManager {
       if (!update && await file.exists()) return; // 跳过缓存更新
 
       final response = await Dio().get(
-        src,
+        extractSrc(src),
         options: Options(responseType: ResponseType.bytes),
       );
       Uint8List bytes = Uint8List.fromList(response.data); // 图像字节流

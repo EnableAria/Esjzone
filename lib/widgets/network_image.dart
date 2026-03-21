@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../common/manager.dart';
+import '../common/parse_html.dart';
 
 // 网络图片组件封装
 class CustomNetImage extends StatelessWidget {
-  const CustomNetImage(this.src, {
+  CustomNetImage(String src, {
     super.key,
     this.width,
     this.height,
@@ -13,7 +14,7 @@ class CustomNetImage extends StatelessWidget {
     this.cacheKey,
     this.small = false,
     this.cache = true,
-  });
+  }) : src = extractSrc(src);
   final String src;
   final double? width;
   final double? height;
