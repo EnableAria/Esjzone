@@ -44,6 +44,7 @@ class ChapterContent {
     int? prevChapterId,
     int? nextChapterId,
     bool? isLike,
+    bool? isEncrypted,
     List<Comment>? comments,
   }) {
     return ChapterContent(
@@ -57,6 +58,7 @@ class ChapterContent {
       prevChapterId: prevChapterId ?? this.prevChapterId,
       nextChapterId: nextChapterId ?? this.nextChapterId,
       isLike: isLike ?? this.isLike,
+      isEncrypted: isEncrypted ?? this.isEncrypted,
       comments: comments ?? this.comments,
     );
   }

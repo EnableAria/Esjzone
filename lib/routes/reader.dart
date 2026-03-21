@@ -218,6 +218,7 @@ class _ReaderPageState extends State<ReaderPage> {
                                             content = content.copyWith(
                                               contents: extractChapterText(parse("<div>$html</div>").body),
                                               words: words,
+                                              isEncrypted: false,
                                             );
                                             setState(() {
                                               _future = _updateContent(request: false);
