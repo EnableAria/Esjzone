@@ -80,8 +80,6 @@ class DataViewState<T> extends State<DataView<T>> {
               slivers: [
                 widget.useLine
                     ? SliverList(
-                  //   ? SliverFixedExtentList(
-                  // itemExtent: 130,
                   delegate: SliverChildBuilderDelegate(
                     childCount: _data.length,
                         (_, index) => _returnListItem(index, widget.useLine),

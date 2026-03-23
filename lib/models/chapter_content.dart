@@ -15,7 +15,6 @@ class ChapterContent {
     required this.isLike,
     this.isEncrypted = false,
     this.comments,
-
   });
   final int id; // 章节id
   final String title; // 章节标题

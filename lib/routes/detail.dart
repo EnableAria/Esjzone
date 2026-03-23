@@ -178,9 +178,9 @@ class _DetailPageState extends State<DetailPage> {
                                       icon: Icons.more_horiz, tooltip: "详情",
                                       onPressed: () {
                                         Navigator.of(context).push(
-                                            MaterialPageRoute(builder: (_) => InfoPage(detail: detail))
+                                          MaterialPageRoute(builder: (_) => InfoPage(detail: detail))
                                         );
-                                        },
+                                      },
                                     )
                                   ],
                                   pinned: true,

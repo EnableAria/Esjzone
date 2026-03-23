@@ -55,8 +55,7 @@ class CoverCacheManager {
         await file.parent.create(recursive: true);
         await file.writeAsBytes(cacheBytes);
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// 加载缓存图片
