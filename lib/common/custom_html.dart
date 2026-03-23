@@ -30,7 +30,7 @@ class CustomHtml extends StatelessWidget {
           margin: Margins.zero,
           padding: HtmlPaddings.zero,
           lineHeight: LineHeight(1.4), // 行高倍数，1.0为最小
-          display: (!showBr && (data ?? defaultData).contains(r'<p><br></p>')) ? Display.none : null,
+          display: (!showBr && RegExp('<p[^>]*>\n*<br>\n*</p>').hasMatch(data ?? defaultData)) ? Display.none : null,
         ),
       },
       extensions: [
