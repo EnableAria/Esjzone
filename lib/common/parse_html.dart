@@ -338,9 +338,11 @@ Contents _extractContents(Element? contents) {
         // for 循环处理内层章节
         for (Element a in element.querySelectorAll("a")) {
           total++;
+          final chapterId = _extractHref(a.attributes["href"]);
           tempInner.chapter.add(Chapter(
-            id: _extractHref(a.attributes["href"]),
+            id: chapterId,
             title: a.attributes["data-title"] ?? _unknown,
+            externalLink: chapterId == -1 ? a.attributes["href"] : null,
           ));
         }
 

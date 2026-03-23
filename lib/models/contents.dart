@@ -23,19 +23,23 @@ class Chapter {
     required this.id,
     required this.title,
     this.updateDate,
+    this.externalLink,
   });
   final int id; // 章节id
   final String title; // 标题
   final String? updateDate; // 更新日期
+  final String? externalLink; // 站外链接
 
   Chapter copyWith({
     int? id,
     String? title,
     String? updateDate,
+    String? externalLink,
   }) => Chapter(
     id: id ?? this.id,
     title: title ?? this.title,
     updateDate: updateDate ?? this.updateDate,
+    externalLink: externalLink ?? this.externalLink,
   );
 
   @override

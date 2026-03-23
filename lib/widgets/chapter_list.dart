@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/contents.dart';
 
 // 章节列表组件
@@ -70,7 +71,9 @@ class ChapterList extends StatelessWidget {
               ? Theme.of(context).colorScheme.secondaryContainer
               : null,
         ),
-        onPressed: () => onPressed(bookId: bookId, chapterId: chapter.id),
+        onPressed: (chapter.externalLink != null && chapter.id == -1)
+            ? () => launchUrl(Uri.parse(chapter.externalLink!), mode: LaunchMode.externalApplication)
+            : () => onPressed(bookId: bookId, chapterId: chapter.id),
         child: chapter.updateDate != null
             ? Column(
           mainAxisSize: MainAxisSize.min,
