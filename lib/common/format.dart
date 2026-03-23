@@ -14,3 +14,11 @@ String formatWordNumber(int number) {
   List<String> unit = ["", "k", "m", "b"];
   return "${number ~/ pow(1000, index)}${unit[index]}";
 }
+
+/// 格式化存储(空间占用)
+String formatBytes(int number) {
+  if (number <= 0) return "0 B";
+  int index = max(0, (log(number) / log(1024)).floor());
+  List<String> unit = ["B", "KB", "MB", "GB", "TB"];
+  return "${(number / pow(1024, index)).toStringAsFixed(2)} ${unit[index]}";
+}

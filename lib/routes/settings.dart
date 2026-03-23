@@ -1,3 +1,4 @@
+import 'package:esjzone/routes/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../common/global.dart';
@@ -35,6 +36,13 @@ class SettingsPage extends StatelessWidget {
             icon:Icons.palette,
             title: "主题颜色",
             onTap: () { showThemeColorDialog(context: context); },
+          ),
+          SettingTile(
+            icon:Icons.storage,
+            title: "存储管理",
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => StoragePage()));
+            },
           ),
           SettingSwitch(
             icon: (Provider.of<VolumeKeyPagingModel>(context).volumeKeyPaging ?? true)

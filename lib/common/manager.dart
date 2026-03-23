@@ -5,6 +5,7 @@ import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import '../common/parse_html.dart';
+import 'format.dart';
 
 // 图片缓存管理器
 class CustomCacheManager {
@@ -69,5 +70,41 @@ class CoverCacheManager {
   }) async {
     final file = File('${await dirPath}/cover_cache/$localKey.jpg');
     if (await file.exists()) await file.delete();
+  }
+
+  /// 获取缓存占用
+  static Future<String> getCacheSize({required String key}) async {
+    return formatBytes(await _getDirectorySize(Directory("${await dirPath}/$key")));
+  }
+
+  /// 计算目录空间
+  static Future<int> _getDirectorySize(Directory directory) async {
+    int totalSize = 0;
+
+    try {
+      final List<FileSystemEntity> entities = await directory.list().toList();
+
+      for (final entity in entities) {
+        if (entity is File) { // 获取文件大小
+          totalSize += await entity.length();
+        } else if (entity is Directory) { // 递归子目录
+          totalSize += await _getDirectorySize(entity);
+        }
+      }
+    } catch (_) { }
+
+    return totalSize;
+  }
+
+  /// 清空目录缓存
+  static Future<String> clearCache({required String key}) async {
+    try {
+      final directory = Directory("${await dirPath}/$key");
+
+      if (await directory.exists()) await directory.delete(recursive: true);
+      await directory.create(recursive: true); // 重建目录
+    } catch (_) { }
+
+    return await getCacheSize(key: key);
   }
 }
