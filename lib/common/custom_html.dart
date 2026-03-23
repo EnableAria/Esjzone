@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../routes/image.dart';
 import '../widgets/ruby_text.dart';
 import '../widgets/network_image.dart';
@@ -22,6 +23,7 @@ class CustomHtml extends StatelessWidget {
   Widget build(BuildContext context) {
     return Html(
       data: data ?? defaultData,
+      onLinkTap: (url, _, _) { if (url != null) launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication); },
       style: {
         "*": Style(
           fontSize: FontSize(fontSize),
