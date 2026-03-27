@@ -1,6 +1,6 @@
 /// 版本比较
 int versionCompare(String ver_1, String ver_2) {
-  RegExp versionRegex = RegExp(r'^v?(\d).(\d).(\d)');
+  RegExp versionRegex = RegExp(r'^v?(\d+).(\d+).(\d+)');
   Match? match_1 = versionRegex.firstMatch(ver_1);
   Match? match_2 = versionRegex.firstMatch(ver_2);
   if (match_1 != null && match_2 != null) {
