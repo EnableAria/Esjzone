@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../common/enum.dart';
 import '../models/contents.dart';
 
 // 章节列表组件
@@ -10,11 +11,13 @@ class ChapterList extends StatelessWidget {
     required this.lastWatched,
     required this.contents,
     required this.onPressed,
+    this.order = Order.asc,
   });
   final int bookId; // 书籍id
   final int? lastWatched; // 最后观看章节id
   final Contents contents;
   final void Function({required int bookId, required int chapterId}) onPressed;
+  final Order order; // 排序
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +25,14 @@ class ChapterList extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         childCount: contents.contents.length,
             (context, index) {
+          if (order == Order.desc) index = contents.contents.length - index - 1; // 倒序
           SubContents subContents = contents.contents[index];
           return subContents.contentsTitle == null
               ? Column( // 普通章节
-            children: subContents.chapter.map((chapter) =>
-                _wChapter(chapter)
+            children: (order == Order.asc
+                ? subContents.chapter
+                : subContents.chapter.reversed)
+                .map((chapter) => _wChapter(chapter)
             ).toList(),
           )
               : ExpansionTile( // 二级章节
@@ -42,7 +48,10 @@ class ChapterList extends StatelessWidget {
             collapsedBackgroundColor: subContents.chapter.any((chapter) => chapter.id == lastWatched)
                 ? Theme.of(context).colorScheme.secondaryContainer
                 : null,
-            children: subContents.chapter.map((chapter) =>
+            children: (order == Order.asc
+                ? subContents.chapter
+                : subContents.chapter.reversed)
+                .map((chapter) =>
                 _wChapter(chapter)
             ).toList(),
           );

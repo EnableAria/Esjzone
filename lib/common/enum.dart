@@ -80,3 +80,11 @@ enum FavoriteSort {
     }
   }
 }
+
+enum Order {
+  asc("升序"),
+  desc("降序");
+
+  final String description;
+  const Order(this.description);
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../common/enum.dart';
 import '../common/format.dart';
 import '../common/manager.dart';
 import '../common/network.dart';
@@ -38,6 +39,7 @@ class _DetailPageState extends State<DetailPage> {
   final ValueNotifier<bool> _showTopBarBg = ValueNotifier(false); // 显示工具栏
   final ValueNotifier<bool> _showToTopBtn = ValueNotifier(false); // 显示返回顶部按钮
   final ValueNotifier<bool> _favBtnLoading = ValueNotifier(false); // 收藏按钮加载标记
+  final ValueNotifier<Order> _chapterOrder = ValueNotifier(Order.asc); // 章节列表排序
 
   // 更新 detail (request 为 false 时不请求)
   Future<Detail?> _updateDetail({bool request = true}) {
@@ -142,6 +144,7 @@ class _DetailPageState extends State<DetailPage> {
     _controller.dispose();
     _showTopBarBg.dispose();
     _showToTopBtn.dispose();
+    _chapterOrder.dispose();
     _favBtnLoading.dispose();
     super.dispose();
   }
@@ -214,11 +217,15 @@ class _DetailPageState extends State<DetailPage> {
                             wTags(detail.tags), // 书籍标签
                             wPadding(),
                             wTotal(detail.contents.total), // 章节数
-                            ChapterList( // 章节列表
-                              bookId: detail.id,
-                              lastWatched: detail.lastWatched,
-                              contents: detail.contents,
-                              onPressed: toReader,
+                            ValueListenableBuilder(
+                              valueListenable: _chapterOrder,
+                              builder: (_, chapterOrder, _) => ChapterList( // 章节列表
+                                bookId: detail.id,
+                                lastWatched: detail.lastWatched,
+                                contents: detail.contents,
+                                onPressed: toReader,
+                                order: chapterOrder,
+                              ),
                             ),
                           ],
                         ),
@@ -464,10 +471,31 @@ class _DetailPageState extends State<DetailPage> {
   Widget wTotal(int total) {
     return sliverWidget(
       child: Padding(
-        padding: const EdgeInsets.only(left: 4.0),
-        child: Text(
-          "共 $total 章",
-          style: TextStyle(fontSize: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: Row(
+          children: [
+            Text("共 $total 章", style: TextStyle(fontSize: 16.0)),
+            Spacer(),
+            SizedBox.square(
+              dimension: 32.0,
+              child: ValueListenableBuilder(
+                valueListenable: _chapterOrder,
+                builder: (context, chapterOrder, _) {
+                  return CustomIconButton.icon(
+                    iconSize: 16.0,
+                    icon: chapterOrder == Order.asc
+                        ? Icons.south
+                        : Icons.north,
+                    onPressed: () {
+                      _chapterOrder.value = chapterOrder == Order.asc
+                          ? Order.desc
+                          : Order.asc;
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
