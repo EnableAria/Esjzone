@@ -40,6 +40,7 @@ class _DetailPageState extends State<DetailPage> {
   final ValueNotifier<bool> _showToTopBtn = ValueNotifier(false); // 显示返回顶部按钮
   final ValueNotifier<bool> _favBtnLoading = ValueNotifier(false); // 收藏按钮加载标记
   final ValueNotifier<Order> _chapterOrder = ValueNotifier(Order.asc); // 章节列表排序
+  final ValueNotifier<bool> _updateHighlight = ValueNotifier(false); // 高亮更新章节
 
   // 更新 detail (request 为 false 时不请求)
   Future<Detail?> _updateDetail({bool request = true}) {
@@ -146,6 +147,7 @@ class _DetailPageState extends State<DetailPage> {
     _showToTopBtn.dispose();
     _chapterOrder.dispose();
     _favBtnLoading.dispose();
+    _updateHighlight.dispose();
     super.dispose();
   }
 
@@ -219,12 +221,16 @@ class _DetailPageState extends State<DetailPage> {
                             wTotal(detail.contents.total), // 章节数
                             ValueListenableBuilder(
                               valueListenable: _chapterOrder,
-                              builder: (_, chapterOrder, _) => ChapterList( // 章节列表
-                                bookId: detail.id,
-                                lastWatched: detail.lastWatched,
-                                contents: detail.contents,
-                                onPressed: toReader,
-                                order: chapterOrder,
+                              builder: (_, chapterOrder, _) => ValueListenableBuilder(
+                                valueListenable: _updateHighlight,
+                                builder: (_, updateHighlight, _) => ChapterList( // 章节列表
+                                  bookId: detail.id,
+                                  lastWatched: detail.lastWatched,
+                                  contents: detail.contents,
+                                  onPressed: toReader,
+                                  order: chapterOrder,
+                                  highlight: updateHighlight,
+                                ),
                               ),
                             ),
                           ],
@@ -323,7 +329,6 @@ class _DetailPageState extends State<DetailPage> {
                           child: CustomNetImage(
                             detail.imgSrc,
                             fit: BoxFit.cover,
-                            cache: false,
                           ),
                         ),
                       ),
@@ -476,6 +481,21 @@ class _DetailPageState extends State<DetailPage> {
           children: [
             Text("共 $total 章", style: TextStyle(fontSize: 16.0)),
             Spacer(),
+            SizedBox.square(
+              dimension: 32.0,
+              child: ValueListenableBuilder(
+                valueListenable: _updateHighlight,
+                builder: (context, updateHighlight, _) {
+                  return CustomIconButton.icon(
+                    iconSize: 16.0,
+                    icon: updateHighlight
+                        ? Icons.update
+                        : Icons.update_disabled,
+                    onPressed: () { _updateHighlight.value = !_updateHighlight.value; },
+                  );
+                },
+              ),
+            ),
             SizedBox.square(
               dimension: 32.0,
               child: ValueListenableBuilder(

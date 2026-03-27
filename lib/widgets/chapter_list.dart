@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../common/enum.dart';
+import '../common/compare.dart';
 import '../models/contents.dart';
 
 // 章节列表组件
 class ChapterList extends StatelessWidget {
-  const ChapterList({
+  ChapterList({
     super.key,
     required this.bookId,
     required this.lastWatched,
     required this.contents,
     required this.onPressed,
     this.order = Order.asc,
-  });
+    this.highlight = false,
+  }) : lastWatchedDate = highlight
+      ? contents.contents.expand((subContent) => subContent.chapter)
+      .firstWhere((chapter) => chapter.id == lastWatched)
+      .updateDate
+      : null;
   final int bookId; // 书籍id
   final int? lastWatched; // 最后观看章节id
   final Contents contents;
   final void Function({required int bookId, required int chapterId}) onPressed;
   final Order order; // 排序
+  final bool highlight; // 高亮新章节
+  final String? lastWatchedDate; // 最后观看日期
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +71,16 @@ class ChapterList extends StatelessWidget {
   // 章节按钮封装
   Widget _wChapter(Chapter chapter){
     return Builder(builder: (context) {
+      bool isUpdate = (lastWatchedDate != null && chapter.updateDate != null)
+          ? isNewChapter(chapter.updateDate!, lastWatchedDate!)
+          : true;
       Widget title = Text(
         chapter.title,
         style: TextStyle(
           fontSize: 14.0,
-          color: Theme.of(context).textTheme.bodyLarge?.color,
+          color: isUpdate
+              ? Theme.of(context).textTheme.bodyLarge?.color
+              : Theme.of(context).dividerColor,
         ),
       );
       return TextButton(
@@ -93,7 +106,9 @@ class ChapterList extends StatelessWidget {
               chapter.updateDate!,
               style: TextStyle(
                 fontSize: 12.0,
-                color: Theme.of(context).hintColor,
+                color: isUpdate
+                    ? Theme.of(context).hintColor
+                    : Theme.of(context).dividerColor,
               ),
             ),
           ],
