@@ -104,7 +104,7 @@ class _DetailPageState extends State<DetailPage> {
     required int? lastWatched,
     bool update = false,
   }) async {
-    // 缓存封面
+    // 缓存封面(收藏或阅读过)
     if (isFavorite == true || (lastWatched != null && lastWatched >= 0)) {
       CoverCacheManager.saveCache(
         localKey: localKey,
@@ -112,6 +112,8 @@ class _DetailPageState extends State<DetailPage> {
         update: true,
       );
     }
+    // 删除缓存
+    else { CoverCacheManager.deleteCache(localKey: localKey); }
   }
 
   // 跳转阅读页
@@ -456,6 +458,12 @@ class _DetailPageState extends State<DetailPage> {
                         favorite: result,
                       );
                     }
+                    cacheCover( // 缓存封面
+                      localKey: "${detail.id}",
+                      src: detail.imgSrc,
+                      isFavorite: detail.isFavorite,
+                      lastWatched: detail.lastWatched,
+                    );
                     _favBtnLoading.value = false;
                     setState(() => _future = _updateDetail(request: false));
                   }
