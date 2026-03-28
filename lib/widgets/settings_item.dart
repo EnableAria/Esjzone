@@ -16,38 +16,43 @@ class SettingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      constraints: BoxConstraints(minHeight: 60),
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              if (icon != null) Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: Icon(icon, size: 28.0,
-                  color: Theme.of(context).colorScheme.primary,
+          Flexible(
+            child: Row(
+              children: [
+                if (icon != null) Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: Icon(icon, size: 28.0,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
-                    ),
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Theme.of(context).colorScheme.onSecondaryContainer,
+                        ),
+                      ),
+                      if (subtitle != null) Text(subtitle!,
+                        // overflow: Ov,
+                        style: TextStyle(
+                          fontSize: 13.0,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
                   ),
-                  if (subtitle != null) Text(subtitle!,
-                    style: TextStyle(
-                      fontSize: 13.0,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
           if (action != null) action!,
         ],
