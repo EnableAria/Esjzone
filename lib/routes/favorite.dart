@@ -62,7 +62,7 @@ class _FavoritePageState extends State<FavoritePage> {
         key: ValueKey(_key),
         useLine: true,
         onUpdate: (index) => Esjzone().favoriteList(_sort, index),
-        itemBuilder: (data, useLine) => FavoriteCard(key: ValueKey(data.id), data: data, useLine: useLine),
+        itemBuilder: (data, useLine) => FavoriteCard(key: ValueKey("favorite-${data.id}"), data: data, useLine: useLine),
       ),
     );
   }

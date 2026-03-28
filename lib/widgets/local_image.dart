@@ -28,8 +28,11 @@ class LocalImageState extends State<LocalImage> {
 
   @override
   void didUpdateWidget(covariant LocalImage oldWidget) {
-    oldWidget.refreshFlag.dispose();
-    widget.refreshFlag.addListener(reload); // 重新绑定回调
+    if (oldWidget.refreshFlag != widget.refreshFlag) {
+      oldWidget.refreshFlag.removeListener(reload);
+      oldWidget.refreshFlag.dispose();
+      widget.refreshFlag.addListener(reload); // 重新绑定回调
+    }
     super.didUpdateWidget(oldWidget);
   }
 
