@@ -13,7 +13,7 @@ class CustomNetImage extends StatelessWidget {
     this.fit,
     this.cacheKey,
     this.small = false,
-    this.cache = true,
+    this.cache = false,
   }) : src = extractSrc(src);
   final String src;
   final double? width;

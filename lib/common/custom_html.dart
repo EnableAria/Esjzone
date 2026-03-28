@@ -42,7 +42,7 @@ class CustomHtml extends StatelessWidget {
           tagsToExtend: {"img"},
           builder: (context) {
             final src = context.attributes['src'] ?? '';
-            return HeroImagePage(child: Center(child: CustomNetImage(src, fit: BoxFit.contain, cache: false)));
+            return HeroImagePage(child: Center(child: CustomNetImage(src, fit: BoxFit.contain)));
           },
         ),
         TagExtension(

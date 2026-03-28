@@ -13,7 +13,7 @@ class RatioImage extends StatelessWidget {
     super.key,
     String? src,
     String? cacheKey,
-    bool cache = true,
+    bool cache = false,
     this.aspectRatio = 1 / sqrt2,
   }) : child = (src == null
       ? SizedBox()
