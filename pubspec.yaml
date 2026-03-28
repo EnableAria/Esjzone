@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  collection: ^1.18.0
   cupertino_icons: ^1.0.8
   dio: ^5.9.0
   html: ^0.15.6

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../common/enum.dart';
 import '../common/compare.dart';
@@ -16,8 +17,8 @@ class ChapterList extends StatelessWidget {
     this.highlight = false,
   }) : lastWatchedDate = highlight
       ? contents.contents.expand((subContent) => subContent.chapter)
-      .firstWhere((chapter) => chapter.id == lastWatched)
-      .updateDate
+      .firstWhereOrNull((chapter) => chapter.id == lastWatched)
+      ?.updateDate
       : null;
   final int bookId; // 书籍id
   final int? lastWatched; // 最后观看章节id
