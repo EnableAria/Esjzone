@@ -28,9 +28,6 @@ class ReaderSettings extends StatelessWidget {
           ),
           SettingGroup(title: "阅读器"),
           SettingSwitch(
-            // icon: (Provider.of<VolumeKeyPagingModel>(context).volumeKeyPaging ?? true)
-            //     ? Icons.volume_off
-            //     : Icons.volume_up,
             title: "音量键翻页",
             subtitle: ["阅读页音量键调整音量", "阅读页音量键滚动内容"],
             initValue: Provider.of<ReadingPreferencesModel>(context, listen: false).readingPreferences.volumeKeyPaging ?? true,
@@ -38,7 +35,6 @@ class ReaderSettings extends StatelessWidget {
           ),
           SettingGroup(title: "其他"),
           SettingSwitch(
-            // icon: Icons.eighteen_up_rating,
             title: "成人内容",
             subtitle: ["首页不展示成人内容", "首页展示成人内容"],
             initValue: Provider.of<ReadingPreferencesModel>(context, listen: false).readingPreferences.showNSFW ?? true,
