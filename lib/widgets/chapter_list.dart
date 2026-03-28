@@ -81,7 +81,7 @@ class ChapterList extends StatelessWidget {
           fontSize: 14.0,
           color: isUpdate
               ? Theme.of(context).textTheme.bodyLarge?.color
-              : Theme.of(context).dividerColor,
+              : Theme.of(context).disabledColor,
         ),
       );
       return TextButton(
@@ -109,7 +109,7 @@ class ChapterList extends StatelessWidget {
                 fontSize: 12.0,
                 color: isUpdate
                     ? Theme.of(context).hintColor
-                    : Theme.of(context).dividerColor,
+                    : Theme.of(context).disabledColor,
               ),
             ),
           ],
