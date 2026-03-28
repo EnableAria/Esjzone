@@ -47,7 +47,7 @@ class CustomNetImage extends StatelessWidget {
         fit: fit,
         cacheKey: cacheKey,
         cacheManager: CustomCacheManager.tempCache,
-        memCacheWidth: small ? smallDimension.round() : (width ?? 256).round(),
+        memCacheWidth: 320, // 内存缓存宽度限制
         placeholder: (_, _) => small ? wProgressIndicator() : Center(child: wProgressIndicator()), // 加载展示圆形进度条
         errorWidget: (_, _, _) => small ? Icon(Icons.error) : Center(child: Icon(Icons.error)), // 错误展示错误图标
       )

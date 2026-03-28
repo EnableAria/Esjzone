@@ -12,12 +12,11 @@ class CustomCacheManager {
   static final BaseCacheManager _tempCache = CacheManager(
     Config(
       'custom_cache_key',
-      maxNrOfCacheObjects: 200, // 最大缓存文件数
+      maxNrOfCacheObjects: 20, // 最大缓存文件数
       stalePeriod: Duration(days: 1), // 缓存过期时间
       repo: JsonCacheInfoRepository(databaseName: 'temp_image_cache'),
     ),
   );
-
   static BaseCacheManager get tempCache => _tempCache;
 }
 
