@@ -16,7 +16,7 @@ class ReaderSettings extends StatelessWidget {
           SettingGroup(title: "书籍详情"),
           SettingSwitch(
             title: "反转章节列表",
-            subtitle: ["章节列表升序展示", "章节列表倒序展示"],
+            subtitle: ["章节列表升序展示", "章节列表降序展示"],
             initValue: Provider.of<ReadingPreferencesModel>(context, listen: false).readingPreferences.reverseChapterList ?? false,
             onChanged: (value) => Provider.of<ReadingPreferencesModel>(context, listen: false).update(reverseChapterList: value),
           ),
