@@ -52,7 +52,7 @@ class Global {
           readingPreferences: Optional.fromNullable(
             (profileFromJson.readingPreferences ?? ReadingPreferences()).copyWith(
               reverseChapterList: Optional.fromNullable(profileFromJson.readingPreferences?.reverseChapterList ?? false),
-              highlightUpdate: Optional.fromNullable(profileFromJson.readingPreferences?.showNSFW ?? false),
+              highlightUpdate: Optional.fromNullable(profileFromJson.readingPreferences?.highlightUpdate ?? false),
               volumeKeyPaging: Optional.fromNullable(profileFromJson.readingPreferences?.volumeKeyPaging ?? true),
               showNSFW: Optional.fromNullable(profileFromJson.readingPreferences?.showNSFW ?? true),
             ),
