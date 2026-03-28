@@ -61,6 +61,40 @@ class ReaderSettingsModel extends ProfileChangeNotifier {
   }
 }
 
+// 阅读偏好
+class ReadingPreferencesModel extends ProfileChangeNotifier {
+  ReadingPreferences get readingPreferences => _profile.readingPreferences
+      ?? ReadingPreferences(
+        reverseChapterList: false,
+        highlightUpdate: false,
+        volumeKeyPaging: true,
+        showNSFW: true,
+      );
+
+  set readingPreferences(ReadingPreferences? readingPreferences) {
+    if (readingPreferences != _profile.readingPreferences) {
+      Global.profile = _profile.copyWith(
+        readingPreferences: Optional.fromNullable(readingPreferences),
+      );
+      notifyListeners();
+    }
+  }
+
+  void update({
+    bool? reverseChapterList,
+    bool? highlightUpdate,
+    bool? volumeKeyPaging,
+    bool? showNSFW,
+  }) {
+    readingPreferences = readingPreferences.copyWith(
+      reverseChapterList: Optional.fromNullable(reverseChapterList ?? readingPreferences.reverseChapterList),
+      highlightUpdate: Optional.fromNullable(highlightUpdate ?? readingPreferences.highlightUpdate),
+      volumeKeyPaging: Optional.fromNullable(volumeKeyPaging ?? readingPreferences.volumeKeyPaging),
+      showNSFW: Optional.fromNullable(showNSFW ?? readingPreferences.showNSFW),
+    );
+  }
+}
+
 // 主题模式
 class ThemeModeModel extends ProfileChangeNotifier {
   int? get themeMode => _profile.themeMode;
@@ -83,34 +117,6 @@ class ThemeColorModel extends ProfileChangeNotifier {
     if (theme != _profile.theme) {
       Global.profile = _profile.copyWith(
         theme: Optional.fromNullable(theme),
-      );
-      notifyListeners();
-    }
-  }
-}
-
-// 成人内容
-class ShowNSFWModel extends ProfileChangeNotifier {
-  bool? get showNSFW => _profile.showNSFW;
-
-  set showNSFW(bool? showNSFW) {
-    if (showNSFW != _profile.showNSFW) {
-      Global.profile = _profile.copyWith(
-        showNSFW: Optional.fromNullable(showNSFW),
-      );
-      notifyListeners();
-    }
-  }
-}
-
-// 音量键翻页
-class VolumeKeyPagingModel extends ProfileChangeNotifier {
-  bool? get volumeKeyPaging => _profile.volumeKeyPaging;
-
-  set volumeKeyPaging(bool? volumeKeyPaging) {
-    if (volumeKeyPaging != _profile.volumeKeyPaging) {
-      Global.profile = _profile.copyWith(
-        volumeKeyPaging: Optional.fromNullable(volumeKeyPaging),
       );
       notifyListeners();
     }

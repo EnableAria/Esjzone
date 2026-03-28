@@ -26,12 +26,12 @@ Future<void> showReaderSettings(BuildContext context) async {
                 _fontSizeSetting(),
                 _textSwitch(
                   title: "隐藏换行",
-                  initValue: Provider.of<ReaderSettingsModel>(context, listen: false).readerSettings.hiddenSpacing!,
+                  initValue: Provider.of<ReaderSettingsModel>(context, listen: false).readerSettings.hiddenSpacing ?? false,
                   onChanged: (value) => Provider.of<ReaderSettingsModel>(context, listen: false).update(hiddenSpacing: value),
                 ),
                 _textSwitch(
                   title: "自动点赞",
-                  initValue: Provider.of<ReaderSettingsModel>(context, listen: false).readerSettings.autoLike!,
+                  initValue: Provider.of<ReaderSettingsModel>(context, listen: false).readerSettings.autoLike ?? false,
                   onChanged: (value) => Provider.of<ReaderSettingsModel>(context, listen: false).update(autoLike: value),
                 ),
               ],

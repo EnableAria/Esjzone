@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../common/enum.dart';
 import '../common/format.dart';
+import '../common/global.dart';
 import '../common/manager.dart';
 import '../common/network.dart';
 import '../common/custom_html.dart';
@@ -39,8 +40,14 @@ class _DetailPageState extends State<DetailPage> {
   final ValueNotifier<bool> _showTopBarBg = ValueNotifier(false); // 显示工具栏
   final ValueNotifier<bool> _showToTopBtn = ValueNotifier(false); // 显示返回顶部按钮
   final ValueNotifier<bool> _favBtnLoading = ValueNotifier(false); // 收藏按钮加载标记
-  final ValueNotifier<Order> _chapterOrder = ValueNotifier(Order.asc); // 章节列表排序
-  final ValueNotifier<bool> _updateHighlight = ValueNotifier(false); // 高亮更新章节
+  final ValueNotifier<Order> _chapterOrder = ValueNotifier( // 章节列表排序
+      (Global.profile.readingPreferences?.reverseChapterList ?? false)
+          ? Order.desc
+          : Order.asc
+  );
+  final ValueNotifier<bool> _updateHighlight = ValueNotifier( // 高亮更新章节
+      Global.profile.readingPreferences?.highlightUpdate ?? false
+  );
 
   // 更新 detail (request 为 false 时不请求)
   Future<Detail?> _updateDetail({bool request = true}) {

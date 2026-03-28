@@ -56,6 +56,23 @@ class SettingItem extends StatelessWidget {
   }
 }
 
+/// 设置项组标题
+class SettingGroup extends StatelessWidget {
+  const SettingGroup({super.key, required this.title});
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 30, bottom: 4, left: 20, right: 20),
+      child: Text(title, style: TextStyle(
+        fontSize: 14.0,
+        color: Theme.of(context).colorScheme.primary,
+      )),
+    );
+  }
+}
+
 /// 标题按钮设置项
 class SettingTile extends StatelessWidget {
   const SettingTile({

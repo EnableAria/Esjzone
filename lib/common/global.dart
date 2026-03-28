@@ -42,13 +42,19 @@ class Global {
         profile = profileFromJson.copyWith(
           theme: Optional.fromNullable(profileFromJson.theme ?? 0),
           themeMode: Optional.fromNullable(profileFromJson.themeMode ?? 0),
-          showNSFW: Optional.fromNullable(profileFromJson.showNSFW ?? true),
-          volumeKeyPaging: Optional.fromNullable(profileFromJson.volumeKeyPaging ?? true),
           readerSettings: Optional.fromNullable(
             (profileFromJson.readerSettings ?? ReaderSettings()).copyWith(
               fontSize: Optional.fromNullable(profileFromJson.readerSettings?.fontSize ?? 18.0),
               hiddenSpacing: Optional.fromNullable(profileFromJson.readerSettings?.hiddenSpacing ?? false),
               autoLike: Optional.fromNullable(profileFromJson.readerSettings?.autoLike ?? false),
+            ),
+          ),
+          readingPreferences: Optional.fromNullable(
+            (profileFromJson.readingPreferences ?? ReadingPreferences()).copyWith(
+              reverseChapterList: Optional.fromNullable(profileFromJson.readingPreferences?.reverseChapterList ?? false),
+              highlightUpdate: Optional.fromNullable(profileFromJson.readingPreferences?.showNSFW ?? false),
+              volumeKeyPaging: Optional.fromNullable(profileFromJson.readingPreferences?.volumeKeyPaging ?? true),
+              showNSFW: Optional.fromNullable(profileFromJson.readingPreferences?.showNSFW ?? true),
             ),
           ),
         );
@@ -60,13 +66,17 @@ class Global {
       profile = Profile(
         theme: 0,
         themeMode: 0,
-        showNSFW: true,
-        volumeKeyPaging: true,
         readerSettings: ReaderSettings(
           fontSize: 18.0,
           hiddenSpacing: false,
           autoLike: false,
         ),
+        readingPreferences: ReadingPreferences(
+          reverseChapterList: false,
+          highlightUpdate: false,
+          volumeKeyPaging: true,
+          showNSFW: true,
+        )
       );
     }
     saveProfile();

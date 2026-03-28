@@ -1,7 +1,8 @@
-import 'package:esjzone/routes/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../common/global.dart';
+import '../routes/setting/reader.dart';
+import '../routes/setting/storage.dart';
 import '../states/profile_change_notifier.dart';
 import '../widgets/settings_item.dart';
 
@@ -38,30 +39,17 @@ class SettingsPage extends StatelessWidget {
             onTap: () { showThemeColorDialog(context: context); },
           ),
           SettingTile(
+            icon:Icons.menu_book,
+            title: "阅读偏好",
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => ReaderSettings()));
+            },
+          ),
+          SettingTile(
             icon:Icons.storage,
             title: "存储管理",
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => StoragePage()));
-            },
-          ),
-          SettingSwitch(
-            icon: (Provider.of<VolumeKeyPagingModel>(context).volumeKeyPaging ?? true)
-                ? Icons.volume_off
-                : Icons.volume_up,
-            title: "音量键翻页",
-            subtitle: ["阅读页音量键调整音量", "阅读页音量键滚动内容"],
-            initValue: Provider.of<VolumeKeyPagingModel>(context, listen: false).volumeKeyPaging ?? true,
-            onChanged: (value) {
-              Provider.of<VolumeKeyPagingModel>(context, listen: false).volumeKeyPaging = value;
-            },
-          ),
-          SettingSwitch(
-            icon: Icons.eighteen_up_rating,
-            title: "成人内容",
-            subtitle: ["不展示成人内容", "展示成人内容"],
-            initValue: Provider.of<ShowNSFWModel>(context, listen: false).showNSFW!,
-            onChanged: (value) {
-              Provider.of<ShowNSFWModel>(context, listen: false).showNSFW = value;
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => StorageSettings()));
             },
           ),
         ],

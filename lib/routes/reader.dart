@@ -66,7 +66,7 @@ class _ReaderPageState extends State<ReaderPage> {
 
   // 初始化音量监听
   void _volumeKeyChannelInit(){
-    if (Global.profile.volumeKeyPaging ?? true) {
+    if (Global.profile.readingPreferences?.volumeKeyPaging ?? true) {
       VolumeKeyChannel.attach(
         onVolumeUp: () { if (_canTrigger()) _scrollTo(false); },
         onVolumeDown: () { if (_canTrigger()) _scrollTo(true); },

@@ -1,10 +1,9 @@
 {
   "userCookie?": "$user_cookie",
   "readerSettings?": "$reader_settings",
+  "readingPreferences?": "$reading_preferences",
   "theme?": 0,
   "themeMode?": 0,
-  "showNSFW?": false,
-  "volumeKeyPaging?": false,
   "locale?": "",
   "lastLogin?": ""
 }

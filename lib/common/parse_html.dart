@@ -25,7 +25,7 @@ ListPage<Book> parseHTMLFormList(String htmlStr) {
   List<Element> books = document.querySelectorAll(".offcanvas-wrapper .row .row>div");
   result.pageCount = _extractPageCount(document.querySelectorAll("script:not([src])").last.innerHtml);
   for (Element element in books) {
-    if (Global.profile.showNSFW == false && element.querySelector(".product-badge") != null) continue; // 不展示R18时跳过
+    if (Global.profile.readingPreferences?.showNSFW == false && element.querySelector(".product-badge") != null) continue; // 不展示R18时跳过
     List<Element> columns = element.querySelectorAll(".card-other>.column");
     (double, int) ratingData = _extractRating(columns[0].text);
     result.dataList.add(Book(

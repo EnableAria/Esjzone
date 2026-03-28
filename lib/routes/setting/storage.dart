@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../common/manager.dart';
+import '../../common/manager.dart';
 
 // 设置路由页
-class StoragePage extends StatefulWidget {
-  const StoragePage({super.key});
+class StorageSettings extends StatefulWidget {
+  const StorageSettings({super.key});
 
   @override
-  State<StatefulWidget> createState() => StoragePageState();
+  State<StatefulWidget> createState() => StorageSettingsState();
 }
 
-class StoragePageState extends State<StoragePage> {
+class StorageSettingsState extends State<StorageSettings> {
   String? coverCache;
 
   @override
@@ -30,6 +30,7 @@ class StoragePageState extends State<StoragePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true, // 标题栏不占空间
       appBar: AppBar(),
       body: Center(
         child: Column(

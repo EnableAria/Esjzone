@@ -6,6 +6,7 @@ export 'like_response.dart';
 export 'login_response.dart';
 export 'profile.dart';
 export 'reader_settings.dart';
+export 'reading_preferences.dart';
 export 'releases_response.dart';
 export 'user_cookie.dart';
 import 'package:quiver/core.dart';
