@@ -96,7 +96,7 @@ class _DetailPageState extends State<DetailPage> {
     required bool? isFavorite,
     required int? lastWatched,
     bool update = false,
-  }) {
+  }) async {
     // 缓存封面
     if (isFavorite == true || (lastWatched != null && lastWatched >= 0)) {
       CoverCacheManager.saveCache(
