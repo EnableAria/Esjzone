@@ -174,114 +174,117 @@ class _DetailPageState extends State<DetailPage> {
                 _updateContents(); // 获取章节更新日期
               }
               if (_isInInitialized) { // 展示内容
-                return Stack(
-                  children: [
-                    NestedScrollView(
-                      // 标题栏
-                      headerSliverBuilder: (context, _) {
-                        return [
-                          SliverOverlapAbsorber(
-                            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                            sliver: ValueListenableBuilder(
-                              valueListenable: _showTopBarBg,
-                              builder: (context, showHeaderBg, _) {
-                                return SliverAppBar( // 自适应透明标题栏
-                                  title: showHeaderBg ? Text(detail.title) : null,
-                                  actions: [
-                                    CustomIconButton.icon(
-                                      icon: Icons.more_horiz, tooltip: "详情",
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (_) => InfoPage(detail: detail))
-                                        );
-                                      },
-                                    )
-                                  ],
-                                  pinned: true,
-                                  backgroundColor: Colors.transparent,
-                                  flexibleSpace: AnimatedOpacity(
-                                    duration: Duration(milliseconds: 300),
-                                    opacity: showHeaderBg ? 1 : 0,
-                                    child: Container(color: Theme.of(context).appBarTheme.backgroundColor),
-                                  ),
-                                  systemOverlayStyle: SystemUiOverlayStyle(
-                                    systemStatusBarContrastEnforced: false, // 禁用自动调整状态栏颜色
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ];
-                      },
-                      body: RefreshIndicator( // 下拉刷新组件
-                        onRefresh: _refreshDetail,
-                        // 可滚动主要内容
-                        child: CustomScrollView(
-                          controller: _controller,
-                          slivers: [
-                            wBasicCard(), // 书籍基础信息
-                            wPadding(size: 10.0),
-                            wController(), // 书籍控件(收藏|评论)
-                            wPadding(size: 6.0),
-                            wDescription(detail.description), // 书籍简介
-                            wPadding(),
-                            wTags(detail.tags), // 书籍标签
-                            wPadding(),
-                            wTotal(detail.contents.total), // 章节数
-                            ValueListenableBuilder(
-                              valueListenable: _chapterOrder,
-                              builder: (_, chapterOrder, _) => ValueListenableBuilder(
-                                valueListenable: _updateHighlight,
-                                builder: (_, updateHighlight, _) => ChapterList( // 章节列表
-                                  bookId: detail.id,
-                                  lastWatched: detail.lastWatched,
-                                  contents: detail.contents,
-                                  onPressed: toReader,
-                                  order: chapterOrder,
-                                  highlight: updateHighlight,
-                                ),
+                return SafeArea(
+                  top: false,
+                  child: Stack(
+                    children: [
+                      NestedScrollView(
+                        // 标题栏
+                        headerSliverBuilder: (context, _) {
+                          return [
+                            SliverOverlapAbsorber(
+                              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                              sliver: ValueListenableBuilder(
+                                valueListenable: _showTopBarBg,
+                                builder: (context, showHeaderBg, _) {
+                                  return SliverAppBar( // 自适应透明标题栏
+                                    title: showHeaderBg ? Text(detail.title) : null,
+                                    actions: [
+                                      CustomIconButton.icon(
+                                        icon: Icons.more_horiz, tooltip: "详情",
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(builder: (_) => InfoPage(detail: detail))
+                                          );
+                                        },
+                                      )
+                                    ],
+                                    pinned: true,
+                                    backgroundColor: Colors.transparent,
+                                    flexibleSpace: AnimatedOpacity(
+                                      duration: Duration(milliseconds: 300),
+                                      opacity: showHeaderBg ? 1 : 0,
+                                      child: Container(color: Theme.of(context).appBarTheme.backgroundColor),
+                                    ),
+                                    systemOverlayStyle: SystemUiOverlayStyle(
+                                      systemStatusBarContrastEnforced: false, // 禁用自动调整状态栏颜色
+                                    ),
+                                  );
+                                },
                               ),
                             ),
-                          ],
+                          ];
+                        },
+                        body: RefreshIndicator( // 下拉刷新组件
+                          onRefresh: _refreshDetail,
+                          // 可滚动主要内容
+                          child: CustomScrollView(
+                            controller: _controller,
+                            slivers: [
+                              wBasicCard(), // 书籍基础信息
+                              wPadding(size: 10.0),
+                              wController(), // 书籍控件(收藏|评论)
+                              wPadding(size: 6.0),
+                              wDescription(detail.description), // 书籍简介
+                              wPadding(),
+                              wTags(detail.tags), // 书籍标签
+                              wPadding(),
+                              wTotal(detail.contents.total), // 章节数
+                              ValueListenableBuilder(
+                                valueListenable: _chapterOrder,
+                                builder: (_, chapterOrder, _) => ValueListenableBuilder(
+                                  valueListenable: _updateHighlight,
+                                  builder: (_, updateHighlight, _) => ChapterList( // 章节列表
+                                    bookId: detail.id,
+                                    lastWatched: detail.lastWatched,
+                                    contents: detail.contents,
+                                    onPressed: toReader,
+                                    order: chapterOrder,
+                                    highlight: updateHighlight,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Align( // 浮动按钮控件
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          spacing: 12.0,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // 返回顶部按钮
-                            ValueListenableBuilder(
-                              valueListenable: _showToTopBtn,
-                              builder: (context, showToTopBtn, _) {
-                                return showToTopBtn
-                                    ? TooltipButton(
-                                  onPressed: () {
-                                    _controller.animateTo(0.0, duration: Duration(milliseconds: 200), curve: Curves.ease);
-                                  },
-                                  tooltip: "回到顶部",
-                                  child: Icon(Icons.arrow_upward),
-                                ) : SizedBox.shrink();
-                              },
-                            ),
-                            if (detail.lastWatched != null && detail.lastWatched! >= 0) TooltipButton(
-                              onPressed: () {
-                                if (detail.lastWatched != null && detail.lastWatched! > -1) {
-                                  toReader(bookId: detail.id, chapterId: detail.lastWatched!);
-                                }
-                              },
-                              tooltip: "继续阅读",
-                              child: Icon(Icons.play_arrow),
-                            ),
-                          ],
+                      Align( // 浮动按钮控件
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            spacing: 12.0,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // 返回顶部按钮
+                              ValueListenableBuilder(
+                                valueListenable: _showToTopBtn,
+                                builder: (context, showToTopBtn, _) {
+                                  return showToTopBtn
+                                      ? TooltipButton(
+                                    onPressed: () {
+                                      _controller.animateTo(0.0, duration: Duration(milliseconds: 200), curve: Curves.ease);
+                                    },
+                                    tooltip: "回到顶部",
+                                    child: Icon(Icons.arrow_upward),
+                                  ) : SizedBox.shrink();
+                                },
+                              ),
+                              if (detail.lastWatched != null && detail.lastWatched! >= 0) TooltipButton(
+                                onPressed: () {
+                                  if (detail.lastWatched != null && detail.lastWatched! > -1) {
+                                    toReader(bookId: detail.id, chapterId: detail.lastWatched!);
+                                  }
+                                },
+                                tooltip: "继续阅读",
+                                child: Icon(Icons.play_arrow),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               }
               else { // 请求错误或数据为空

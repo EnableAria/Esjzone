@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTheme {
   static ThemeData fromSeedColor({
@@ -6,6 +7,7 @@ class CustomTheme {
     Brightness brightness = Brightness.light,
     bool darkMode = false,
   }) {
+    Brightness iconBrightness = brightness == Brightness.light ? Brightness.dark : Brightness.light;
     final colorScheme = ColorScheme.fromSeed(
       seedColor: seedColor,
       brightness: brightness,
@@ -22,6 +24,11 @@ class CustomTheme {
         //   color: colorScheme.outlineVariant,
         //   width: 1.0,
         // )),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarIconBrightness: iconBrightness, // 状态栏图标颜色
+          systemNavigationBarColor: colorScheme.surface, // 导航栏背景色
+          systemNavigationBarIconBrightness: iconBrightness// 导航栏图标色
+        ),
       ),
     );
   }

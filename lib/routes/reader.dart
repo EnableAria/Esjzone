@@ -178,109 +178,112 @@ class _ReaderPageState extends State<ReaderPage> {
                     if (didPop) return;
                     _backDetail();
                   },
-                  child: Stack(
-                    children: [
-                      // 章节内容
-                      SelectionArea(
-                        child: Builder(builder: (context) {
-                          return GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () { // 点击监听区域(点击唤起/收起浮动工具栏)
-                              _showControl.value = !_showControl.value;
-                              FocusScope.of(context).unfocus(); // 清除选择焦点
-                            },
-                            child: ScrollConfiguration(
-                              behavior: ScrollConfiguration.of(context).copyWith(
-                                overscroll: false, // 禁用拉伸效果
-                              ),
-                              child: LoadIndicator( // 上拉加载下一章
-                                idleTitle: "继续上拉",
-                                canLoadTitle: "松开加载下一章",
-                                loadingTitle: "加载中",
-                                noDataTitle: "已无下一章",
-                                onLoad: (content.nextChapterId == null || content.nextChapterId! < 0) ? null
-                                    : () async => _toNewChapter(id: content.nextChapterId!),
-                                child: CustomScrollView(
-                                  key: ValueKey(content.id),
-                                  controller: _controller,
-                                  physics: const AlwaysScrollableScrollPhysics(), // 始终可滚动 保证少量内容可上拉换章
-                                  slivers: [
-                                    wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
-                                    SliverList( // 章节正文
-                                      delegate: SliverChildBuilderDelegate(
-                                        childCount: content.isEncrypted ? 1 : content.contents.length,
-                                            (_, index) => content.isEncrypted
-                                            ? EncryptedContent(
-                                          bookId: widget.bookId,
-                                          chapterId: chapterId,
-                                          onSuccess: (html, words) {
-                                            // 更新章节内容为解密后文章
-                                            content = content.copyWith(
-                                              contents: extractChapterText(parse("<div>$html</div>").body),
-                                              words: words,
-                                              isEncrypted: false,
-                                            );
-                                            setState(() {
-                                              _future = _updateContent(request: false);
-                                            });
-                                          },
-                                        )
-                                            : CustomHtml(
-                                              data: content.contents[index],
-                                              fontSize: Provider.of<ReaderSettingsModel>(context).readerSettings.fontSize!,
-                                              showBr: !Provider.of<ReaderSettingsModel>(context).readerSettings.hiddenSpacing!,
-                                            ),
+                  child: SafeArea(
+                    top: false,
+                    child: Stack(
+                      children: [
+                        // 章节内容
+                        SelectionArea(
+                          child: Builder(builder: (context) {
+                            return GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () { // 点击监听区域(点击唤起/收起浮动工具栏)
+                                _showControl.value = !_showControl.value;
+                                FocusScope.of(context).unfocus(); // 清除选择焦点
+                              },
+                              child: ScrollConfiguration(
+                                behavior: ScrollConfiguration.of(context).copyWith(
+                                  overscroll: false, // 禁用拉伸效果
+                                ),
+                                child: LoadIndicator( // 上拉加载下一章
+                                  idleTitle: "继续上拉",
+                                  canLoadTitle: "松开加载下一章",
+                                  loadingTitle: "加载中",
+                                  noDataTitle: "已无下一章",
+                                  onLoad: (content.nextChapterId == null || content.nextChapterId! < 0) ? null
+                                      : () async => _toNewChapter(id: content.nextChapterId!),
+                                  child: CustomScrollView(
+                                    key: ValueKey(content.id),
+                                    controller: _controller,
+                                    physics: const AlwaysScrollableScrollPhysics(), // 始终可滚动 保证少量内容可上拉换章
+                                    slivers: [
+                                      wHeader(title: content.title, author: content.author, updateDate: content.updateDate), // 头部信息
+                                      SliverList( // 章节正文
+                                        delegate: SliverChildBuilderDelegate(
+                                          childCount: content.isEncrypted ? 1 : content.contents.length,
+                                              (_, index) => content.isEncrypted
+                                              ? EncryptedContent(
+                                            bookId: widget.bookId,
+                                            chapterId: chapterId,
+                                            onSuccess: (html, words) {
+                                              // 更新章节内容为解密后文章
+                                              content = content.copyWith(
+                                                contents: extractChapterText(parse("<div>$html</div>").body),
+                                                words: words,
+                                                isEncrypted: false,
+                                              );
+                                              setState(() {
+                                                _future = _updateContent(request: false);
+                                              });
+                                            },
+                                          )
+                                              : CustomHtml(
+                                            data: content.contents[index],
+                                            fontSize: Provider.of<ReaderSettingsModel>(context).readerSettings.fontSize!,
+                                            showBr: !Provider.of<ReaderSettingsModel>(context).readerSettings.hiddenSpacing!,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    wFooter(like: content.like, words: content.words), // 底部信息
-                                  ].map((e) => SliverPadding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                                    sliver: e,
-                                  )).toList(),
+                                      wFooter(like: content.like, words: content.words), // 底部信息
+                                    ].map((e) => SliverPadding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                                      sliver: e,
+                                    )).toList(),
+                                  ),
                                 ),
                               ),
+                            );
+                          }),
+                        ),
+                        // 章节加载进度条
+                        if (_changeChapter) IgnorePointer(
+                          child: Container(
+                            color: Theme.of(context).colorScheme.inverseSurface
+                                .withValues(alpha: 0.1),
+                            child: Center(
+                              child: CircularProgressIndicator(),
                             ),
-                          );
-                        }),
-                      ),
-                      // 章节加载进度条
-                      if (_changeChapter) IgnorePointer(
-                        child: Container(
-                          color: Theme.of(context).colorScheme.inverseSurface
-                              .withValues(alpha: 0.1),
-                          child: Center(
-                            child: CircularProgressIndicator(),
                           ),
                         ),
-                      ),
-                      // 浮动工具栏
-                      ValueListenableBuilder(
-                        valueListenable: _showControl,
-                        builder: (context, showControl, _) {
-                          Duration duration = Duration(milliseconds: 300);
-                          return Stack(
-                            children: [
-                              AnimatedAlign(
-                                duration: duration,
-                                curve: Curves.easeInOut,
-                                alignment: showControl ? Alignment.topCenter : Alignment(0, -2),
-                                child: wFloatingTopBar(title: content.title), // 顶部工具栏
-                              ),
-                              AnimatedAlign(
-                                duration: duration,
-                                curve: Curves.easeInOut,
-                                alignment: showControl ? Alignment.bottomCenter : Alignment(0, 2),
-                                child: wFloatingBottomBar( // 底部工具栏
-                                  prevChapterId: content.prevChapterId,
-                                  nextChapterId: content.nextChapterId,
-                                  isLike: content.isLike,
+                        // 浮动工具栏
+                        ValueListenableBuilder(
+                          valueListenable: _showControl,
+                          builder: (context, showControl, _) {
+                            Duration duration = Duration(milliseconds: 300);
+                            return Stack(
+                              children: [
+                                AnimatedAlign(
+                                  duration: duration,
+                                  curve: Curves.easeInOut,
+                                  alignment: showControl ? Alignment.topCenter : Alignment(0, -2),
+                                  child: wFloatingTopBar(title: content.title), // 顶部工具栏
                                 ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ],
+                                AnimatedAlign(
+                                  duration: duration,
+                                  curve: Curves.easeInOut,
+                                  alignment: showControl ? Alignment.bottomCenter : Alignment(0, 2),
+                                  child: wFloatingBottomBar( // 底部工具栏
+                                    prevChapterId: content.prevChapterId,
+                                    nextChapterId: content.nextChapterId,
+                                    isLike: content.isLike,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }

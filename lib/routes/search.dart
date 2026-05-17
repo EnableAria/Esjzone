@@ -112,17 +112,20 @@ class _SearchPageState extends State<SearchPage> {
         ],
       ),
       // 搜索结果列表
-      body: ValueListenableBuilder(
-        valueListenable: _isInit,
-        builder: (context, isInit, child) {
-          return isInit ? child!
-              : DataView<Book>(
-            key: ValueKey(_key),
-            onUpdate: (index) => Esjzone().bookSearch(_searchText!, _type, _sort, index),
-            itemBuilder: (data, useLine) => BookCard(data: data, useLine: useLine),
-          );
-        },
-        child: Container(), // 初始状态空组件
+      body: SafeArea(
+        top: false,
+        child: ValueListenableBuilder(
+          valueListenable: _isInit,
+          builder: (context, isInit, child) {
+            return isInit ? child!
+                : DataView<Book>(
+              key: ValueKey(_key),
+              onUpdate: (index) => Esjzone().bookSearch(_searchText!, _type, _sort, index),
+              itemBuilder: (data, useLine) => BookCard(data: data, useLine: useLine),
+            );
+          },
+          child: Container(), // 初始状态空组件
+        ),
       ),
     );
   }
