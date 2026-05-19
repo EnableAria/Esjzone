@@ -314,15 +314,7 @@ Contents _extractContents(Element? contents) {
   if (contents != null) {
     // 遍历子节点
     for (Element element in contents.children) {
-      if (element.localName == "a") {
-        // a 标签
-        total++;
-        tempOuter.chapter.add(Chapter(
-          id: _extractHref(element.attributes["href"]),
-          title: element.attributes["data-title"] ?? _unknown,
-        ));
-      }
-      else if (element.localName == "details") {
+      if (element.localName == "details" || element.querySelector("details") != null) {
         // 若 tempOuter 不为空
         if (tempOuter.chapter.isNotEmpty) {
           result.contents.add(tempOuter); // 添加 tempOuter 至 result 中
@@ -347,6 +339,14 @@ Contents _extractContents(Element? contents) {
         }
 
         result.contents.add(tempInner); // 添加 tempInner 至 result 中
+      }
+      else if (element.localName == "a") {
+        // a 标签
+        total++;
+        tempOuter.chapter.add(Chapter(
+          id: _extractHref(element.attributes["href"]),
+          title: element.attributes["data-title"] ?? _unknown,
+        ));
       }
     }
   }
