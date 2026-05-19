@@ -52,6 +52,11 @@ class ChapterList extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14.0,
                 fontWeight: FontWeight.bold,
+                color: lastWatchedDate != null
+                    && subContents.chapter.isNotEmpty
+                    && !subContents.chapter.any((chapter) => chapter.updateDate != null && isNewChapter(chapter.updateDate!, lastWatchedDate!))
+                    ? Theme.of(context).disabledColor
+                    : Theme.of(context).textTheme.bodyLarge?.color,
               ),
             ),
             collapsedBackgroundColor: subContents.chapter.any((chapter) => chapter.id == lastWatched)
