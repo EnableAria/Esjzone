@@ -26,8 +26,8 @@ ListPage<Book> parseHTMLFormList(String htmlStr) {
   result.pageCount = _extractPageCount(document.querySelectorAll("script:not([src])").last.innerHtml);
   for (Element element in books) {
     if (Global.profile.readingPreferences?.showNSFW == false && element.querySelector(".product-badge") != null) continue; // 不展示R18时跳过
-    List<Element> columns = element.querySelectorAll(".card-other>.column");
-    (double, int) ratingData = _extractRating(columns[0].text);
+    Element? cardData = element.querySelector(".card-body");
+    (double, int) ratingData = _extractRating(cardData?.querySelector(".icon-star")?.parent?.text ?? "");
     result.dataList.add(Book(
       id: _extractHref(element.querySelector(".card-title>a")?.attributes["href"]),
       title: (element.querySelector(".card-title")?.text ?? _unknown).trim(),
@@ -35,11 +35,11 @@ ListPage<Book> parseHTMLFormList(String htmlStr) {
       latestChapter: element.querySelector(".card-ep")?.text ?? _unknown,
       rating: ratingData.$1,
       ratingCount: ratingData.$2,
-      words: int.tryParse(columns[0].text.replaceAll(',', '')) ?? 0,
-      views: int.tryParse(columns[1].text) ?? 0,
-      favorite: int.tryParse(columns[2].text) ?? 0,
-      articles: int.tryParse(columns[3].text) ?? 0,
-      comments: int.tryParse(columns[4].text) ?? 0,
+      words: int.tryParse(cardData?.querySelector(".icon-file-text")?.parent?.text.replaceAll(',', '') ?? "") ?? 0,
+      views: int.tryParse(cardData?.querySelector(".icon-eye")?.parent?.text ?? "") ?? 0,
+      favorite: int.tryParse(cardData?.querySelector(".icon-heart")?.parent?.text ?? "") ?? 0,
+      articles: int.tryParse(cardData?.querySelector(".icon-feather")?.parent?.text ?? "") ?? 0,
+      comments: int.tryParse(cardData?.querySelector(".icon-message-square")?.parent?.text ?? "") ?? 0,
       imgSrc: _extractSrc(element.querySelector(".lazyload")?.attributes["data-src"]),
       nsfw: element.querySelector(".product-badge") != null,
     ));
@@ -138,7 +138,7 @@ Detail parseHTMLFormDetail(String htmlStr, int id) {
       if (item.contains(":"))
       item.substring(0, item.indexOf(":")).trim() : item.substring(item.indexOf(":")+1, item.length).trim()
   };
-  List<Element> label = content.querySelectorAll(".book-detail label");
+  Element? labels = content.querySelector(".book-detail .text-muted");
   List<String> tags = (content.querySelector(".widget-tags")?.querySelectorAll("a") ?? []).map((e) => e.text.trim()).toList();
   List<Element> outLink = content.querySelectorAll(".out-link a");
   result = Detail(
@@ -149,9 +149,9 @@ Detail parseHTMLFormDetail(String htmlStr, int id) {
     author: content.querySelector("ul.book-detail li>a")?.text ?? _unknown,
     updateDate: listItem["更新日期"] ?? _unknown,
     rating: double.parse(content.querySelector(".text-center>div")?.text ?? "0"),
-    words: int.tryParse(label[2].text.replaceAll(',', '')) ?? 0,
-    views: int.tryParse(label[0].text) ?? 0,
-    favorite: int.tryParse(label[1].text) ?? 0,
+    words: int.tryParse(labels?.querySelector(".icon-file-text")?.parent?.text.replaceAll(',', '') ?? "") ?? 0,
+    views: int.tryParse(labels?.querySelector(".icon-eye")?.parent?.text ?? "") ?? 0,
+    favorite: int.tryParse(labels?.querySelector(".icon-heart")?.parent?.text ?? "") ?? 0,
     imgSrc: _extractSrc(content.querySelector(".product-gallery img")?.attributes["src"]),
     nsfw: tags.contains("R18") || document.querySelector("#ticrf") != null,
     tags: tags,
