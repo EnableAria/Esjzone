@@ -172,6 +172,7 @@ class _ReaderPageState extends State<ReaderPage> {
                 _isInInitialized = true;
               }
               if (_isInInitialized) { // 展示内容
+                FocusNode textFocusNode = FocusNode(); // 焦点
                 return PopScope(
                   canPop: false,
                   onPopInvokedWithResult: (didPop, _) {
@@ -184,12 +185,13 @@ class _ReaderPageState extends State<ReaderPage> {
                       children: [
                         // 章节内容
                         SelectionArea(
+                          focusNode: textFocusNode,
                           child: Builder(builder: (context) {
                             return GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () { // 点击监听区域(点击唤起/收起浮动工具栏)
                                 _showControl.value = !_showControl.value;
-                                FocusScope.of(context).unfocus(); // 清除选择焦点
+                                textFocusNode.unfocus(); // 清除选择焦点
                               },
                               child: ScrollConfiguration(
                                 behavior: ScrollConfiguration.of(context).copyWith(
