@@ -54,6 +54,7 @@ class Global {
               reverseChapterList: Optional.fromNullable(profileFromJson.readingPreferences?.reverseChapterList ?? false),
               highlightUpdate: Optional.fromNullable(profileFromJson.readingPreferences?.highlightUpdate ?? false),
               volumeKeyPaging: Optional.fromNullable(profileFromJson.readingPreferences?.volumeKeyPaging ?? true),
+              toolbarTapProtection: Optional.fromNullable(profileFromJson.readingPreferences?.toolbarTapProtection ?? false),
               showNSFW: Optional.fromNullable(profileFromJson.readingPreferences?.showNSFW ?? true),
             ),
           ),
@@ -75,6 +76,7 @@ class Global {
           reverseChapterList: false,
           highlightUpdate: false,
           volumeKeyPaging: true,
+          toolbarTapProtection: false,
           showNSFW: true,
         )
       );

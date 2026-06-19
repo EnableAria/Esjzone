@@ -187,12 +187,15 @@ class _ReaderPageState extends State<ReaderPage> {
                         SelectionArea(
                           focusNode: textFocusNode,
                           child: Builder(builder: (context) {
+                            bool toolbarTapProtection = Global.profile.readingPreferences?.toolbarTapProtection ?? false;
+                            void showControlFuc() { // 点击监听区域(点击唤起/收起浮动工具栏)
+                              _showControl.value = !_showControl.value;
+                              textFocusNode.unfocus(); // 清除选择焦点
+                            }
                             return GestureDetector(
                               behavior: HitTestBehavior.translucent,
-                              onTap: () { // 点击监听区域(点击唤起/收起浮动工具栏)
-                                _showControl.value = !_showControl.value;
-                                textFocusNode.unfocus(); // 清除选择焦点
-                              },
+                              onTap: toolbarTapProtection ? null : showControlFuc,
+                              onDoubleTap: toolbarTapProtection ? showControlFuc : null,
                               child: ScrollConfiguration(
                                 behavior: ScrollConfiguration.of(context).copyWith(
                                   overscroll: false, // 禁用拉伸效果

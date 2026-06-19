@@ -33,6 +33,12 @@ class ReaderSettings extends StatelessWidget {
             initValue: Provider.of<ReadingPreferencesModel>(context, listen: false).readingPreferences.volumeKeyPaging ?? true,
             onChanged: (value) => Provider.of<ReadingPreferencesModel>(context, listen: false).update(volumeKeyPaging: value),
           ),
+          SettingSwitch(
+            title: "工具栏防误触",
+            subtitle: ["单击唤起/收起工具栏", "双击唤起/收起工具栏"],
+            initValue: Provider.of<ReadingPreferencesModel>(context, listen: false).readingPreferences.toolbarTapProtection ?? false,
+            onChanged: (value) => Provider.of<ReadingPreferencesModel>(context, listen: false).update(toolbarTapProtection: value),
+          ),
           SettingGroup(title: "其他"),
           SettingSwitch(
             title: "成人内容",

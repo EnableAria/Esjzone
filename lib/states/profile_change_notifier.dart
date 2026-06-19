@@ -68,6 +68,7 @@ class ReadingPreferencesModel extends ProfileChangeNotifier {
         reverseChapterList: false,
         highlightUpdate: false,
         volumeKeyPaging: true,
+        toolbarTapProtection: false,
         showNSFW: true,
       );
 
@@ -84,12 +85,14 @@ class ReadingPreferencesModel extends ProfileChangeNotifier {
     bool? reverseChapterList,
     bool? highlightUpdate,
     bool? volumeKeyPaging,
+    bool? toolbarTapProtection,
     bool? showNSFW,
   }) {
     readingPreferences = readingPreferences.copyWith(
       reverseChapterList: Optional.fromNullable(reverseChapterList ?? readingPreferences.reverseChapterList),
       highlightUpdate: Optional.fromNullable(highlightUpdate ?? readingPreferences.highlightUpdate),
       volumeKeyPaging: Optional.fromNullable(volumeKeyPaging ?? readingPreferences.volumeKeyPaging),
+      toolbarTapProtection: Optional.fromNullable(toolbarTapProtection ?? readingPreferences.toolbarTapProtection),
       showNSFW: Optional.fromNullable(showNSFW ?? readingPreferences.showNSFW),
     );
   }
