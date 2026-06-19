@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../common/format.dart';
 
 /// 图标按钮(标题栏和工具菜单)
 class CustomIconButton extends StatelessWidget {
@@ -344,43 +345,53 @@ void _showFilterDialog({
     context: context,
     builder: (_) {
       return Dialog(
-        child: ListView(
-          padding: EdgeInsets.symmetric(vertical: 24),
-          shrinkWrap: true,
-          children: options.asMap().entries.fold([], (result, entry) {
-            int index = entry.key;
-            Options<Enum> e = entry.value;
-            return result..addAll([
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Text(e.title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize + 1),
-                ),
-              ),
-              ...e.options.map((value) => InkWell(
-                onTap: () {
-                  if (onChanged != null) onChanged(index, value);
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    (value as dynamic).description,
+        child: ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(
+            overscroll: false, // 禁用拉伸效果
+          ),
+          child: ListView(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            shrinkWrap: true,
+            children: options.asMap().entries.fold([], (result, entry) {
+              int index = entry.key;
+              Options<Enum> e = entry.value;
+              return result..addAll([
+                Padding(
+                  padding: EdgeInsets.only(top: index == 0 ? 0 : 16, bottom: 8),
+                  child: Text(e.title,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                      decoration: value == e.initialValue
-                          ? TextDecoration.underline
-                          : TextDecoration.none,
-                      decorationThickness: 2.0,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize + 1),
                   ),
                 ),
-              )),
-            ]);
-          }),
-        ),
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 10,
+                  runSpacing: 4,
+                  children: e.options.map((value) => TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
+                      backgroundColor: value == e.initialValue
+                          ? Theme.of(context).colorScheme.surfaceContainer
+                          : null,
+                    ),
+                    onPressed: () {
+                      if (onChanged != null) onChanged(index, value);
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      formatFilter((value as dynamic).description),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: fontSize,
+                        decorationThickness: 2.0,
+                      ),
+                    ),
+                  )).toList(),
+                ),
+              ]);
+            }),
+          ),
+        )
       );
     },
   );

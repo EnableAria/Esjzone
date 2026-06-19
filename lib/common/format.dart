@@ -23,3 +23,12 @@ String formatBytes(int number) {
   List<String> unit = ["B", "KB", "MB", "GB", "TB"];
   return "${(number / pow(1024, index)).toStringAsFixed(2)} ${unit[index]}";
 }
+
+/// 格式化文本(手动换行)
+String formatFilter(String text) {
+  if (text.length > 3) {
+    int half = (text.length ~/ 2) + (text.length % 2);
+    return "${text.substring(0, half)}\n${text.substring(half)}";
+  }
+  return text;
+}
