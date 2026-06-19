@@ -396,7 +396,7 @@ class _DetailPageState extends State<DetailPage> {
                                 Expanded(flex: 1,
                                   child: IconText(
                                     icon: Icons.visibility,
-                                    text: "${detail.views}",
+                                    text: formatWordNumber(detail.views),
                                     size: 18.0,
                                     fittedText: true,
                                   ),
@@ -405,7 +405,7 @@ class _DetailPageState extends State<DetailPage> {
                                 Expanded(flex: 1,
                                   child: IconText(
                                     icon: Icons.favorite,
-                                    text: "${detail.favorite}",
+                                    text: formatWordNumber(detail.favorite),
                                     size: 18.0,
                                     fittedText: true,
                                   ),

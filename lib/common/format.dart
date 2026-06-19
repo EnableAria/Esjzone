@@ -9,9 +9,9 @@ String formatNumber(int number) {
 }
 
 /// 格式化数字(字数统计)
-String formatWordNumber(int number) {
+String formatWordNumber(int number, [verbose = false]) {
   if (number <= 0) return "0";
-  int index = max(0, (log(number) / log(1000)).floor() - 1);
+  int index = max(0, (log(number) / log(1000)).floor() - (verbose ? 1 : 0));
   List<String> unit = ["", "k", "m", "b"];
   return "${number ~/ pow(1000, index)}${unit[index]}";
 }
