@@ -3,6 +3,7 @@ import 'data_card.dart';
 import 'icon_text.dart';
 import 'ratio_image.dart';
 import '../models/book.dart';
+import '../widgets/info_card.dart';
 
 // 书籍卡片组件
 class BookCard extends DataCard<Book> {
@@ -15,6 +16,14 @@ class BookCard extends DataCard<Book> {
         padding: const EdgeInsets.all(6.0),
         child: GestureDetector(
           onTap: () => Navigator.of(context).pushNamed("detail", arguments: data.id),
+          onLongPress: () async {
+            await showDialog(
+              context: context,
+              builder: (_) {
+                return InfoCardDialog(book: data);
+              },
+            );
+          },
           child: Container(
             color: Colors.transparent, // 扩大点击区域
             child: Column(
