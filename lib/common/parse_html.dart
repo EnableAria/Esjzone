@@ -14,6 +14,7 @@ import '../models/contents.dart';
 import '../models/favorite.dart';
 import '../models/forum_row.dart';
 import '../models/chapter_content.dart';
+import '../routes/image.dart';
 import '../widgets/network_image.dart';
 String _unknown = "<unknown>";
 
@@ -399,6 +400,16 @@ TextSpan _extractCommentText(Element? comment) {
         else if (element.localName == "span") {
           children.add(WidgetSpan(
             child: CustomNetImage(_extractCommentSrc(element.attributes["style"]), small: true),
+          ));
+        }
+        else if (element.localName == "img") {
+          children.add(WidgetSpan(
+            child: HeroImagePage(child: Center(
+              child: CustomNetImage(
+                _extractSrc(element.attributes["src"]),
+                fit: BoxFit.contain,
+              ),
+            )),
           ));
         }
         else {
