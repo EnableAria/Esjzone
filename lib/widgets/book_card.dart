@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'data_card.dart';
-import 'icon_text.dart';
 import 'ratio_image.dart';
 import '../models/book.dart';
 import '../widgets/info_card.dart';

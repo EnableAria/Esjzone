@@ -341,7 +341,7 @@ void _showFilterDialog({
   required void Function(int, Enum?)? onChanged,
   double fontSize = 14.0,
 }) async {
-  await showDialog<int>(
+  await showDialog(
     context: context,
     builder: (_) {
       return Dialog(
@@ -391,7 +391,7 @@ void _showFilterDialog({
               ]);
             }),
           ),
-        )
+        ),
       );
     },
   );
