@@ -36,7 +36,7 @@ class CustomHtml extends StatelessWidget {
       extensions: [
         TagExtension(
           tagsToExtend: {"br"},
-          builder: (context) => SizedBox(height: fontSize),
+          builder: (context) => SizedBox(height: fontSize, width: double.infinity),
         ),
         TagExtension(
           tagsToExtend: {"img"},
