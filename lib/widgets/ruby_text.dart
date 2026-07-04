@@ -8,7 +8,7 @@ class RubyText extends StatelessWidget {
     required this.ruby,
     required this.textStyle,
     required this.rubyStyle,
-    this.spacing = 2,
+    this.spacing = 4,
   });
 
   final String text;
@@ -28,7 +28,7 @@ class RubyText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         (rubyWidth == targetWidth || ruby.length <= 1)
-            ? Text(ruby, style: rubyStyle)
+            ? Text(ruby, style: rubyStyle, strutStyle: StrutStyle(forceStrutHeight: true))
             : _buildJustifiedText(
           text: ruby,
           style: rubyStyle,
@@ -36,7 +36,7 @@ class RubyText extends StatelessWidget {
         ),
         SizedBox(height: spacing),
         (baseWidth == targetWidth || text.length <= 1)
-            ? Text(text, style: textStyle)
+            ? Text(text, style: textStyle, strutStyle: StrutStyle(forceStrutHeight: true))
             : _buildJustifiedText(
           text: text,
           style: textStyle,
@@ -56,7 +56,7 @@ class RubyText extends StatelessWidget {
       width: targetWidth,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: text.characters.map((e) => Text(e, style: style)).toList(),
+        children: text.characters.map((e) => Text(e, style: style, strutStyle: StrutStyle(forceStrutHeight: true))).toList(),
       ),
     );
   }
