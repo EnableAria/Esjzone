@@ -350,14 +350,19 @@ void _showFilterDialog({
             overscroll: false, // 禁用拉伸效果
           ),
           child: ListView(
-            padding: EdgeInsets.symmetric(vertical: 24),
+            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 4),
             shrinkWrap: true,
             children: options.asMap().entries.fold([], (result, entry) {
               int index = entry.key;
               Options<Enum> e = entry.value;
               return result..addAll([
+                if (index > 0) Row(children: [
+                  const Expanded(flex: 1, child: SizedBox.shrink()),
+                  const Flexible(flex: 3, child: Divider(),),
+                  const Expanded(flex: 1, child: SizedBox.shrink()),
+                ],),
                 Padding(
-                  padding: EdgeInsets.only(top: index == 0 ? 0 : 16, bottom: 8),
+                  padding: EdgeInsets.only(top: index == 0 ? 0 : 4, bottom: 8),
                   child: Text(e.title,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize + 1),
@@ -365,7 +370,7 @@ void _showFilterDialog({
                 ),
                 Wrap(
                   alignment: WrapAlignment.center,
-                  spacing: 10,
+                  spacing: 4,
                   runSpacing: 4,
                   children: e.options.map((value) => TextButton(
                     style: TextButton.styleFrom(
