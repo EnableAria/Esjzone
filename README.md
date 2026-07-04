@@ -11,8 +11,8 @@
 <table>
     <tr>
         <td><img alt="首页" src="./screenshot/v1.1.0/home.jpg"></td>
-        <td><img alt="详情页" src="./screenshot/v1.1.0/detail.jpg"></td>
-        <td><img alt="阅读页" src="./screenshot/v1.1.0/reader.jpg"></td>
+        <td><img alt="详情页" src="./screenshot/v1.1.4/detail.jpg"></td>
+        <td><img alt="阅读页" src="./screenshot/v1.1.4/reader.jpg"></td>
     </tr>
 </table>
 
