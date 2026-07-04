@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../common/manager.dart';
+import '../common/network.dart';
 import '../common/parse_html.dart';
 
 // 网络图片组件封装
@@ -35,6 +36,25 @@ class CustomNetImage extends StatelessWidget {
         fit: fit ?? BoxFit.contain,
         placeholderBuilder: (_) => small ? wProgressIndicator() : Center(child: wProgressIndicator()), // 加载展示圆形进度条
         errorBuilder: (_, _, _) => small ? Icon(Icons.error) : Center(child: Icon(Icons.error)), // 错误展示错误图标
+      );
+    }
+    else if (src == "${Esjzone.dio.options.baseUrl}/assets/img/empty.jpg" || src.isEmpty) {
+      return SizedBox(
+        width: width,
+        height: height,
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              "No\nImage",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
       );
     }
     else {
