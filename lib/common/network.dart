@@ -243,7 +243,7 @@ class Esjzone {
 
     try {
       var pageResponse = await dio.get("/forum/$forumId/$bookId/"); // 访问页面 更新cookie | 获取总数
-      int total = parseTotalFormForum(pageResponse.data); // 贴文总数
+      int total = (parseTotalFormForum(pageResponse.data) / 20).ceil() * 20; // 贴文总数(对20取整)
 
       String? token = await getToken(path: "/forum/$forumId/$bookId/"); // 获取 token
       if (token != null) {
