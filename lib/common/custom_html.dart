@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../routes/image.dart';
+import '../widgets/link_text.dart';
 import '../widgets/ruby_text.dart';
 import '../widgets/network_image.dart';
 
@@ -37,6 +38,18 @@ class CustomHtml extends StatelessWidget {
         TagExtension(
           tagsToExtend: {"br"},
           builder: (context) => SizedBox(height: fontSize, width: double.infinity),
+        ),
+        TagExtension(
+            tagsToExtend: {"a"},
+            builder: (context) {
+              return context.element?.text == null || context.element!.text.isEmpty
+                  ? SizedBox.shrink()
+                  : LinkText(
+                text: context.element!.text,
+                url: context.attributes["href"],
+                style: context.style?.generateTextStyle(),
+              );
+            }
         ),
         TagExtension(
           tagsToExtend: {"img"},
