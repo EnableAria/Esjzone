@@ -272,8 +272,13 @@ String? _extractSpace(String? str) {
 /// 解析图片路径
 String _extractSrc(String? src) {
   if (src == null || src.isEmpty) return "";
-  if (src.isNotEmpty && src[0] == '/') { // 相对路径
-    return "${Esjzone.dio.options.baseUrl}$src";
+  if (src.isNotEmpty && src[0] == '/'){
+    if (src.isNotEmpty && src[1] == '/') { // 网络路径
+      return "https:$src";
+    }
+    else { // 相对路径
+      return "${Esjzone.dio.options.baseUrl}$src";
+    }
   }
   else { // 绝对路径
     return src;
