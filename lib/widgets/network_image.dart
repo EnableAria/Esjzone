@@ -34,7 +34,7 @@ class CustomNetImage extends StatelessWidget {
         width: small ? smallDimension : width,
         height: small ? smallDimension : height,
         fit: fit ?? BoxFit.contain,
-        placeholderBuilder: (_) => small ? wProgressIndicator() : Center(child: wProgressIndicator()), // 加载展示圆形进度条
+        placeholderBuilder: (_) => wProgressIndicator(), // 加载展示圆形进度条
         errorBuilder: (_, _, _) => small ? Icon(Icons.error) : Center(child: Icon(Icons.error)), // 错误展示错误图标
       );
     }
@@ -68,7 +68,7 @@ class CustomNetImage extends StatelessWidget {
         cacheKey: cacheKey,
         cacheManager: CustomCacheManager.tempCache,
         memCacheWidth: 320, // 内存缓存宽度限制
-        placeholder: (_, _) => small ? wProgressIndicator() : Center(child: wProgressIndicator()), // 加载展示圆形进度条
+        placeholder: (_, _) => wProgressIndicator(), // 加载展示圆形进度条
         errorWidget: (_, _, _) => small ? Icon(Icons.error) : Center(child: Icon(Icons.error)), // 错误展示错误图标
       )
           : Image.network(
@@ -76,8 +76,9 @@ class CustomNetImage extends StatelessWidget {
         width: small ? smallDimension : width,
         height: small ? smallDimension : height,
         fit: fit,
-        loadingBuilder: (_, child, loading) {
-          if (loading != null) return small ? wProgressIndicator() : Center(child: wProgressIndicator());
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          if (wasSynchronouslyLoaded) return child;
+          if (frame == null) return wProgressIndicator();
           return child;
         },
         errorBuilder: (_, _, _) => small ? Icon(Icons.error) : Center(child: Icon(Icons.error)), // 错误展示错误图标
@@ -87,10 +88,14 @@ class CustomNetImage extends StatelessWidget {
 
   /// 加载进度条封装
   Widget wProgressIndicator() {
-    return SizedBox.square(
-      dimension: small ? smallDimension : null,
+    return small
+        ? SizedBox.square(
+      dimension: smallDimension,
       child: CircularProgressIndicator(),
-    );
+    )
+        : Center(child: SizedBox.square(
+      child: CircularProgressIndicator(),
+    ));
   }
 
   /// 判断svg格式
