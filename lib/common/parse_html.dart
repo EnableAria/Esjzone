@@ -87,7 +87,7 @@ ListPage<History> parseHTMLFormHistory(String htmlStr) {
   return result;
 }
 
-/// 解析 评论列表Html 为 ListPage\<Comment>
+/// 解析 评论列表Html 为 List\<Comment>
 List<Comment> parseHTMLFormComment(List<Element> comments) {
   List<Comment> result = [];
 
@@ -394,31 +394,38 @@ TextSpan _extractCommentText(Element? comment) {
       // 元素节点
       else if (node.nodeType == Node.ELEMENT_NODE) {
         Element element = node as Element;
-        if (element.localName == "s") {
-          children.add(TextSpan(
-            style: TextStyle(
-              decoration: TextDecoration.lineThrough,
-            ),
-            children: [_extractCommentText(element)],
-          ));
-        }
-        else if (element.localName == "span") {
-          children.add(WidgetSpan(
-            child: CustomNetImage(_extractCommentSrc(element.attributes["style"]), small: true),
-          ));
-        }
-        else if (element.localName == "img") {
-          children.add(WidgetSpan(
-            child: HeroImagePage(child: Center(
-              child: CustomNetImage(
-                _extractSrc(element.attributes["src"]),
-                fit: BoxFit.contain,
+        switch (element.localName) {
+          case "s":
+            children.add(TextSpan(
+              style: TextStyle(
+                decoration: TextDecoration.lineThrough,
               ),
-            )),
-          ));
-        }
-        else {
-          children.add(TextSpan(text: element.text));
+              children: [_extractCommentText(element)],
+            ));
+            break;
+          case "span":
+            String src = _extractCommentSrc(element.attributes["style"]);
+            children.add(src.isEmpty
+                ? TextSpan(text: element.text)
+                : WidgetSpan(child: CustomNetImage(src, small: true))
+            );
+            break;
+          case "img":
+            children.add(WidgetSpan(
+              child: HeroImagePage(child: Center(
+                child: CustomNetImage(
+                  _extractSrc(element.attributes["src"]),
+                  fit: BoxFit.contain,
+                ),
+              )),
+            ));
+            break;
+          case "br":
+            children.add(TextSpan(text: "\n"));
+            break;
+          default:
+            children.add(TextSpan(text: element.text));
+            break;
         }
       }
     }
