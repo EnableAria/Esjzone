@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../common/manager.dart';
+import '../../widgets/progress_indicator.dart';
 
 // 设置路由页
 class StorageSettings extends StatefulWidget {
@@ -36,11 +37,7 @@ class StorageSettingsState extends State<StorageSettings> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              coverCache ?? "正在获取...",
-              style: TextStyle(fontSize: 40),
-            ),
-            Text("封面缓存占用"),
+            StorageRing(storage: coverCache, size: 200,),
             Padding(padding: EdgeInsets.only(top: 40)),
             ElevatedButton(
               style: TextButton.styleFrom(
