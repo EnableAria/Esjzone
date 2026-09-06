@@ -1,5 +1,6 @@
 {
   "fontSize?": 0.0,
+  "convert?": 0,
   "hiddenSpacing?": false,
   "autoLike?": false
 }

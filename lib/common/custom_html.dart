@@ -1,3 +1,4 @@
+import 'package:esjzone/common/chinese_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,16 +15,18 @@ class CustomHtml extends StatelessWidget {
     this.defaultData = "",
     this.fontSize = 13.0,
     this.showBr = true,
+    this.convert = ChineseVariant.original,
   });
   final String? data;
   final String defaultData;
   final double fontSize;
   final bool showBr;
+  final ChineseVariant convert;
 
   @override
   Widget build(BuildContext context) {
     return Html(
-      data: data ?? defaultData,
+      data: (data ?? defaultData).convert(convert),
       onLinkTap: (url, _, _) { if (url != null) launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication); },
       style: {
         "*": Style(

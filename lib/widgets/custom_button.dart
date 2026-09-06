@@ -335,6 +335,35 @@ class FilterTextButtonState extends State<FilterTextButton> {
   }
 }
 
+class CheckIconButton extends StatelessWidget {
+  const CheckIconButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+    this.checked = false,
+  });
+  final Widget icon;
+  final void Function()? onPressed;
+  final bool checked;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: DefaultTextStyle(
+        style: DefaultTextStyle.of(context).style.copyWith(
+          color: checked ? Theme.of(context).colorScheme.onPrimary : null,
+        ),
+        child: icon,
+      ),
+      onPressed: checked ? null : onPressed,
+      style: IconButton.styleFrom(
+        disabledForegroundColor: Theme.of(context).colorScheme.onPrimary,
+        disabledBackgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+    );
+  }
+}
+
 void _showFilterDialog({
   required BuildContext context,
   required List<Options<Enum>> options,

@@ -1,3 +1,4 @@
+import 'package:esjzone/common/chinese_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:provider/provider.dart';
@@ -236,6 +237,7 @@ class _ReaderPageState extends State<ReaderPage> {
                                             data: content.contents[index],
                                             fontSize: Provider.of<ReaderSettingsModel>(context).readerSettings.fontSize!,
                                             showBr: !Provider.of<ReaderSettingsModel>(context).readerSettings.hiddenSpacing!,
+                                            convert: ChineseVariant.values[Provider.of<ReaderSettingsModel>(context).readerSettings.convert!],
                                           ),
                                         ),
                                       ),
