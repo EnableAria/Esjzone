@@ -37,11 +37,12 @@ Widget _commentCard(Comment comment) {
       children: [
         // 用户头像
         ClipOval(
-          child: CustomNetImage(
-            comment.commentator.profileSrc,
-            width: 40.0,
-            height: 40.0,
-            fit: BoxFit.cover,
+          child: SizedBox.square(
+            dimension: 40.0,
+            child: CustomNetImage(
+              comment.commentator.profileSrc,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         SizedBox(width: 10.0),
